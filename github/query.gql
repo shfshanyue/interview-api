@@ -1,0 +1,36 @@
+query issues ($after: String) {
+  repository (name: "Daily-Question", owner: "shfshanyue") {
+    id
+    issues (first: 100, after: $after, states: OPEN) {
+      pageInfo {
+        hasNextPage
+        endCursor
+      }
+      nodes {
+        id
+        number
+        title
+        body
+        comments (first: 30) {
+          nodes {
+            id
+            body
+            star: reactions (content: THUMBS_UP) {
+              totalCount
+            }
+            author {
+              login
+              url
+            }
+          }
+        }
+        labels (first: 5) {
+          nodes {
+            id
+            name
+          }
+        }
+      }
+    }
+  }
+}

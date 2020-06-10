@@ -1,0 +1,31 @@
+{
+  "name": "Daily-Question-GraphQL",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "dev": "nodemon index.ts",
+    "codegen": "graphql-codegen --config github/codegen.yaml",
+    "issues": "ts-node scripts/issues.ts"
+  },
+  "engines": {
+    "node": ">=12.16.0"
+  },
+  "license": "MIT",
+  "dependencies": {
+    "apollo-server": "^2.14.3",
+    "fetch-cookie": "^0.9.1",
+    "graphql": "^15.1.0",
+    "graphql-request": "^2.0.0"
+  },
+  "devDependencies": {
+    "@graphql-codegen/cli": "^1.15.3",
+    "@graphql-codegen/typescript": "^1.15.3",
+    "@graphql-codegen/typescript-graphql-request": "^1.15.3",
+    "@graphql-codegen/typescript-operations": "^1.15.3",
+    "@types/node": "^14.0.13",
+    "node-fetch": "^2.6.0",
+    "nodemon": "^2.0.4",
+    "ts-node": "^8.10.2",
+    "typescript": "^3.9.3"
+  }
+}

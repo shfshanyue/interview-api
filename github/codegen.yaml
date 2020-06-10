@@ -1,0 +1,15 @@
+overwrite: true
+schema: github/schema.json
+documents: github/query.gql
+generates:
+  github/query.ts:
+    plugins:
+      - typescript
+      - typescript-operations
+      - typescript-graphql-request
+    config:
+      namingConvention:
+        typeNames: change-case#pascalCase
+        transformUnderscore: true
+        enumValues: keep
+        rawRequest: true
