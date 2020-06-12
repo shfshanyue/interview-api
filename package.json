@@ -12,10 +12,12 @@
   },
   "license": "MIT",
   "dependencies": {
+    "@types/lodash": "^4.14.155",
     "apollo-server": "^2.14.3",
     "fetch-cookie": "^0.9.1",
     "graphql": "^15.1.0",
-    "graphql-request": "^2.0.0"
+    "graphql-request": "^2.0.0",
+    "lodash": "^4.17.15"
   },
   "devDependencies": {
     "@graphql-codegen/cli": "^1.15.3",
