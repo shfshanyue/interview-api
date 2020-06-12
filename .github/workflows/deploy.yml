@@ -1,0 +1,40 @@
+name: Deploy
+
+on:
+  push:
+  schedule:
+  - cron:  '30 20 * * *'
+
+jobs:
+  build:
+    env:
+      A: 3
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v1
+    - run: printenv
+    - name: use Node.js 12.x
+      uses: actions/setup-node@v1
+      with:
+        node-version: 12.x
+    - run: npm install
+
+    # 根据 github API 生成所有的 Issues
+    - run: npm run issues
+
+    # 编译为 js
+    - run: npm run build
+
+    # 整理 serverless 需要输出的 sls.js
+    - run: mv index.js sls.js
+
+    # 只打包生产环境中文件，减少 serverless 部署时间
+    - run: npm ci --production
+
+    # 设置腾讯云的 appid/secret，存储到 github 的 secrets 中
+    - name: setup tencent
+      uses: manyuanrong/setup-ossutil@master
+      with:
+        endpoint: oss-cn-beijing.aliyuncs.com
