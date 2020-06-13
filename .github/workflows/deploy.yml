@@ -5,21 +5,24 @@ on:
   schedule:
   - cron:  '30 20 * * *'
 
-jobs:
-  build:
-    env:
-      A: 3
+env:
+  ACCESS_TOKEN: ${{ secrets.ACCESS_TOKEN }}
+  TENCENT_SECRET_ID: ${{ secrets.TENCENT_SECRET_ID }}
+  TENCENT_SECRET_KEY: ${{ secrets.TENCENT_SECRET_KEY }}
 
-    runs-on: ubuntu-latest
+jobs:
+  serverless:
+    runs-on: macos-latest
 
     steps:
     - uses: actions/checkout@v1
-    - run: printenv
-    - name: use Node.js 12.x
+    - name: use Node.js 12.16
       uses: actions/setup-node@v1
       with:
-        node-version: 12.x
-    - run: npm install
+        node-version: "12.16"
+    - run: |
+        npm ci
+        npm i -g serverless
 
     # 根据 github API 生成所有的 Issues
     - run: npm run issues
@@ -28,13 +31,12 @@ jobs:
     - run: npm run build
 
     # 整理 serverless 需要输出的 sls.js
-    - run: mv index.js sls.js
-
-    # 只打包生产环境中文件，减少 serverless 部署时间
-    - run: npm ci --production
+    - run: mv index.js app.js
+    - run: |
+        cd ..
+        sls --version
+        sls registry
 
     # 设置腾讯云的 appid/secret，存储到 github 的 secrets 中
-    - name: setup tencent
-      uses: manyuanrong/setup-ossutil@master
-      with:
-        endpoint: oss-cn-beijing.aliyuncs.com
+    - name: deploy
+      run: sls deploy --debug

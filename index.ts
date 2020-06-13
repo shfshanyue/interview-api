@@ -26,7 +26,7 @@ const typeDefs = gql`
       limit: Int
       random: Boolean
     ): [Question!]
-    question (id: ID!): Question
+    question (number: Int!): Question
   }
 
   type Question {
@@ -69,8 +69,8 @@ const resolvers = {
       }
       return q.slice(0, limit || 1000)
     },
-    question ({}, { id }: { id: number }) {
-      return questionsById[id]
+    question ({}, { number }: { number: number }) {
+      return questionsById[number]
     }
   },
   Question: {
@@ -114,6 +114,10 @@ const server = new ApolloServer({
 const app = express()
 
 server.applyMiddleware({ app })
+
+app.use('/', (req, res) => {
+  res.send('hello, shanyue.')
+})
 
 app.listen({ port: 4000 }, () =>
   console.log(`🚀 Server ready at http://localhost:4000${server.graphqlPath}`)

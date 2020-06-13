@@ -1,5 +1,7 @@
+
 component: express # (required) name of the component. In that case, it's express.
 name: Daily-Question-GraphQL # (required) name of your express component instance.
+org: shanyue
 
 inputs:
   src: ./ # (optional) path to the source folder. default is a hello world app.
@@ -18,6 +20,10 @@ inputs:
     customDomains: # 自定义域名绑定
       - domain: interview.shanyue.tech
         certificateId: e1nq0FQp
+        isDefaultMapping: 'FALSE'
+        pathMappingSet:
+          - path: /
+            environment: release
         protocols: # 绑定自定义域名的协议类型，默认与服务的前端协议一致。
           - http # 支持http协议
           - https # 支持https协议
