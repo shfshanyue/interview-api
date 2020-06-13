@@ -1,4 +1,5 @@
-import { ApolloServer, gql } from 'apollo-server'
+import { ApolloServer, gql } from 'apollo-server-express'
+import express from 'express'
 import _ from 'lodash'
 
 import issues from './data/issues.json'
@@ -103,9 +104,20 @@ const resolvers = {
 
 const server = new ApolloServer({
   typeDefs,
-  resolvers
+  resolvers,
+  rootValue: {},
+  formatError (e) {
+    console.error(e.originalError)
+    return e
+  }
 })
+const app = express()
 
-server.listen().then(({ url }) => {
-  console.log(`🚀 Server ready at ${url}`)
-})
+server.applyMiddleware({ app })
+
+app.listen({ port: 4000 }, () =>
+  console.log(`🚀 Server ready at http://localhost:4000${server.graphqlPath}`)
+)
+
+// 为了与腾讯云的 express component 适配
+module.exports = app
