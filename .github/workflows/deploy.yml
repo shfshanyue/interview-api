@@ -9,6 +9,7 @@ env:
   ACCESS_TOKEN: ${{ secrets.ACCESS_TOKEN }}
   TENCENT_SECRET_ID: ${{ secrets.TENCENT_SECRET_ID }}
   TENCENT_SECRET_KEY: ${{ secrets.TENCENT_SECRET_KEY }}
+  SERVERLESS_PLATFORM_VENDOR: tencent
 
 jobs:
   serverless:
