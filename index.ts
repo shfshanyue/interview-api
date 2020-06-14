@@ -25,6 +25,7 @@ const typeDefs = gql`
       topic: Topic
       limit: Int
       random: Boolean
+      withAnswer: Boolean
     ): [Question!]
     question (number: Int!): Question
   }
@@ -57,13 +58,19 @@ const resolvers = {
     BASE: 'base'
   },
   Query: {
-    questions ({}, { label, topic, limit, random }: {
+    questions ({}, { label, topic, limit, random, withAnswer }: {
       label?: string;
       topic?: string;
       limit?: number;
       random?: boolean;
+      withAnswer?: boolean;
     }) {
-      const q = _.filter(allQuestions, _.pick({ label, topic }))
+      const q = _.filter(allQuestions, _.pick({ label, topic })).filter(qq => {
+        const question: Issue = qq as any
+        return withAnswer ? question.comments.nodes?.find(comment => {
+          return comment?.author?.login === 'shfshanyue'
+        }) : true
+      })
       if (random) {
         return _.sampleSize(q, limit)
       }

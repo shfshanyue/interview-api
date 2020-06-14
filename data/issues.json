@@ -9073,5 +9073,105 @@
         }
       ]
     }
+  },
+  {
+    "id": "MDU6SXNzdWU2MzgwODI1NDU=",
+    "number": 351,
+    "title": "【Q348】node 中 module.exports 与 exports 有什么区别",
+    "body": "",
+    "comments": {
+      "nodes": []
+    },
+    "labels": {
+      "nodes": [
+        {
+          "id": "MDU6TGFiZWwxNzI2MDg3MTMx",
+          "name": "node"
+        }
+      ]
+    }
+  },
+  {
+    "id": "MDU6SXNzdWU2MzgxMzY2ODg=",
+    "number": 352,
+    "title": "【Q349】如何把 json 数据转化为 demo.json 并下载文件",
+    "body": "",
+    "comments": {
+      "nodes": [
+        {
+          "id": "MDEyOklzc3VlQ29tbWVudDY0MzYwMzAyNA==",
+          "body": "json 视为字符串，可以利用 `DataURL` 进行下载\r\n\r\n`Text -> DataURL`\r\n\r\n除了使用 DataURL，还可以转化为 Object URL 进行下载\r\n\r\n`Text -> Blob -> Object URL`\r\n\r\n可以把以下代码直接粘贴到控制台下载文件\r\n\r\n``` js\r\nfunction download (url, name) {\r\n  const a = document.createElement('a')\r\n  a.download = name\r\n  a.rel = 'noopener'\r\n  a.href = url\r\n  // 触发模拟点击\r\n  a.dispatchEvent(new MouseEvent('click'))\r\n  // 或者 a.click()\r\n}\r\n\r\nconst json = {\r\n  a: 3,\r\n  b: 4,\r\n  c: 5\r\n}\r\nconst str = JSON.stringify(json, null, 2)\r\n\r\n// 方案一：Text -> DataURL\r\nconst dataUrl = `data:,${str}`\r\ndownload(dataUrl, 'demo.json')\r\n\r\n// 方案二：Text -> Blob -> ObjectURL\r\nconst url = URL.createObjectURL(new Blob(str.split('')))\r\ndownload(url, 'demo1.json')\r\n```",
+          "star": {
+            "totalCount": 0
+          },
+          "author": {
+            "login": "shfshanyue",
+            "url": "https://github.com/shfshanyue"
+          }
+        }
+      ]
+    },
+    "labels": {
+      "nodes": [
+        {
+          "id": "MDU6TGFiZWwxNjUxNDAyMzE2",
+          "name": "html"
+        }
+      ]
+    }
+  },
+  {
+    "id": "MDU6SXNzdWU2MzgxODI2ODI=",
+    "number": 353,
+    "title": "【Q350】如何实现一个 timeout 的中间件",
+    "body": "",
+    "comments": {
+      "nodes": []
+    },
+    "labels": {
+      "nodes": [
+        {
+          "id": "MDU6TGFiZWwxNjk2MzM2ODQy",
+          "name": "micro-service"
+        },
+        {
+          "id": "MDU6TGFiZWwxNzI2MDg3MTMx",
+          "name": "node"
+        },
+        {
+          "id": "MDU6TGFiZWwxNjUxNDAyMzIy",
+          "name": "server"
+        }
+      ]
+    }
+  },
+  {
+    "id": "MDU6SXNzdWU2MzgzMTkyNDk=",
+    "number": 354,
+    "title": "【Q351】如何得知目前 node 版本的 v8 版本号",
+    "body": "",
+    "comments": {
+      "nodes": [
+        {
+          "id": "MDEyOklzc3VlQ29tbWVudDY0Mzc0MzQ5MQ==",
+          "body": "在 `process.versions` 中可以查看 node 及相关依赖的版本号\r\n\r\n``` js\r\n> process.versions\r\n{\r\n  node: '12.16.3',\r\n  v8: '7.8.279.23-node.35',\r\n  uv: '1.34.2',\r\n  zlib: '1.2.11',\r\n  brotli: '1.0.7',\r\n  ares: '1.16.0',\r\n  modules: '72',\r\n  nghttp2: '1.40.0',\r\n  napi: '5',\r\n  llhttp: '2.0.4',\r\n  http_parser: '2.9.3',\r\n  openssl: '1.1.1g',\r\n  cldr: '36.0',\r\n  icu: '65.1',\r\n  tz: '2019c',\r\n  unicode: '12.1'\r\n}\r\n```",
+          "star": {
+            "totalCount": 0
+          },
+          "author": {
+            "login": "shfshanyue",
+            "url": "https://github.com/shfshanyue"
+          }
+        }
+      ]
+    },
+    "labels": {
+      "nodes": [
+        {
+          "id": "MDU6TGFiZWwxNzI2MDg3MTMx",
+          "name": "node"
+        }
+      ]
+    }
   }
 ]

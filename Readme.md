@@ -2,9 +2,11 @@
 
 这是关于 [面试每日一题](https://github.com/shfshanyue/Daily-Question) 提供的 GraphQL 接口
 
-[GraphQL Playground and Documentation](https://interview.shanyue.tech/graphql)
-
 ## Query
+
+![Query](./assets/query.png)
+
+更多文档查看 [GraphQL Playground and Documentation](https://interview.shanyue.tech/graphql)
 
 ### 获取所有面试题
 
