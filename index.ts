@@ -27,7 +27,14 @@ const typeDefs = gql`
       random: Boolean
       withAnswer: Boolean
     ): [Question!]
-    question (number: Int!): Question
+    question (
+      number: Int
+      label: String
+      topic: Topic
+      limit: Int
+      random: Boolean
+      withAnswer: Boolean
+    ): Question
   }
 
   type Question {
@@ -76,8 +83,23 @@ const resolvers = {
       }
       return q.slice(0, limit || 1000)
     },
-    question ({}, { number }: { number: number }) {
-      return questionsById[number]
+    question ({}, { number, label, topic, random, withAnswer }: {
+      label?: string;
+      topic?: string;
+      random?: boolean;
+      withAnswer?: boolean;
+      number?: number
+    }) {
+      if (number) {
+        return questionsById[number]
+      }
+      const q = _.filter(allQuestions, _.pick({ label, topic })).filter(qq => {
+        const question: Issue = qq as any
+        return withAnswer ? question.comments.nodes?.find(comment => {
+          return comment?.author?.login === 'shfshanyue'
+        }) : true
+      })
+      return _.sample(q)
     }
   },
   Question: {
