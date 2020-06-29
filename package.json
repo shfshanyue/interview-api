@@ -14,17 +14,16 @@
   },
   "license": "MIT",
   "dependencies": {
-    "@types/lodash": "^4.14.155",
     "apollo-server": "^2.14.3",
     "apollo-server-express": "^2.14.4",
-    "fetch-cookie": "^0.9.1",
     "graphql": "^15.1.0",
-    "graphql-request": "^2.0.0",
     "lodash": "^4.17.15"
   },
   "devDependencies": {
+    "@types/lodash": "^4.14.155",
     "@graphql-codegen/cli": "^1.15.3",
     "@graphql-codegen/typescript": "^1.15.3",
+    "graphql-request": "^2.0.0",
     "@graphql-codegen/typescript-graphql-request": "^1.15.3",
     "@graphql-codegen/typescript-operations": "^1.15.3",
     "@types/node": "^14.0.13",

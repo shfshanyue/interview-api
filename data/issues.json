@@ -3427,6 +3427,17 @@
             "login": "shfshanyue",
             "url": "https://github.com/shfshanyue"
           }
+        },
+        {
+          "id": "MDEyOklzc3VlQ29tbWVudDY0Njk2NDg5NA==",
+          "body": "比如 nginx 中的 etag 由 last_modified 与 content_length 组成，而 last_modified 又由 mtime 组成。\r\n\r\n\r\n那Etag是怎么解决last_modified，当编辑文件却未更改文件时间的问题？",
+          "star": {
+            "totalCount": 0
+          },
+          "author": {
+            "login": "collins999",
+            "url": "https://github.com/collins999"
+          }
         }
       ]
     },
@@ -3837,17 +3848,6 @@
           "author": {
             "login": "zhangwen9229",
             "url": "https://github.com/zhangwen9229"
-          }
-        },
-        {
-          "id": "MDEyOklzc3VlQ29tbWVudDU5Njg3NDM1Mg==",
-          "body": "辣鸡",
-          "star": {
-            "totalCount": 0
-          },
-          "author": {
-            "login": "BokeLu",
-            "url": "https://github.com/BokeLu"
           }
         }
       ]
@@ -6144,8 +6144,8 @@
             "totalCount": 0
           },
           "author": {
-            "login": "CaiyueDamowang",
-            "url": "https://github.com/CaiyueDamowang"
+            "login": "YueCai",
+            "url": "https://github.com/YueCai"
           }
         }
       ]
@@ -7794,7 +7794,7 @@
       "nodes": [
         {
           "id": "MDEyOklzc3VlQ29tbWVudDYyMTcxNTI4NA==",
-          "body": "如果有 `x-forwarded-for` 的请求头，则取其中的第一个 IP，否则取建立连接 socket 的 remoteAddr\r\n\r\n以下是 `koa` 获取 IP 的方法\r\n\r\n``` js\r\n  get ips() {\r\n    const proxy = this.app.proxy;\r\n    const val = this.get(this.app.proxyIpHeader);\r\n    let ips = proxy && val\r\n      ? val.split(/\\s*,\\s*/)\r\n      : [];\r\n    if (this.app.maxIpsCount > 0) {\r\n      ips = ips.slice(-this.app.maxIpsCount);\r\n    }\r\n    return ips;\r\n  },\r\n\r\n  get ip() {\r\n    if (!this[IP]) {\r\n      this[IP] = this.ips[0] || this.socket.remoteAddress || '';\r\n    }\r\n    return this[IP];\r\n  },\r\n```",
+          "body": "如果有 `x-forwarded-for` 的请求头，则取其中的第一个 IP，否则取建立连接 socket 的 remoteAddr。\r\n\r\n而 `x-forwarded-for` 基本已成为了基于 proxy 的标准HTTP头，格式如下，可见第一个 IP 代表其真实的 IP，可以参考 MDN [X-Forwarded-For](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/X-Forwarded-For)\r\n\r\n``` js\r\nX-Forwarded-For: 203.0.113.195, 70.41.3.18, 150.172.238.178\r\nX-Forwarded-For: <client>, <proxy1>, <proxy2>\r\n```\r\n\r\n以下是 `koa` 获取 IP 的方法\r\n\r\n``` js\r\n  get ips() {\r\n    const proxy = this.app.proxy;\r\n    const val = this.get(this.app.proxyIpHeader);\r\n    let ips = proxy && val\r\n      ? val.split(/\\s*,\\s*/)\r\n      : [];\r\n    if (this.app.maxIpsCount > 0) {\r\n      ips = ips.slice(-this.app.maxIpsCount);\r\n    }\r\n    return ips;\r\n  },\r\n\r\n  get ip() {\r\n    if (!this[IP]) {\r\n      this[IP] = this.ips[0] || this.socket.remoteAddress || '';\r\n    }\r\n    return this[IP];\r\n  },\r\n```\r\n\r\n参见源码: <https://github.com/koajs/koa/blob/master/lib/request.js#L433>",
           "star": {
             "totalCount": 0
           },
@@ -8996,7 +8996,12 @@
       ]
     },
     "labels": {
-      "nodes": []
+      "nodes": [
+        {
+          "id": "MDU6TGFiZWwxNzE2ODAxMDI2",
+          "name": "git"
+        }
+      ]
     }
   },
   {
@@ -9170,6 +9175,136 @@
         {
           "id": "MDU6TGFiZWwxNzI2MDg3MTMx",
           "name": "node"
+        }
+      ]
+    }
+  },
+  {
+    "id": "MDU6SXNzdWU2Mzg0OTQ3MjU=",
+    "number": 355,
+    "title": "【Q352】k8s 中如何删除所有 Evicted 状态的 pod",
+    "body": "",
+    "comments": {
+      "nodes": [
+        {
+          "id": "MDEyOklzc3VlQ29tbWVudDY0Mzg3MDI2OQ==",
+          "body": "``` bash\r\n$ kubectl get pods\r\nNAME                                             READY   STATUS             RESTARTS   AGE\r\ncert-manager-5d8fd69d88-4nxw5                    1/1     Running            0          63d\r\ncert-manager-5d8fd69d88-f7f2w                    0/1     Evicted            0          63d\r\ncert-manager-5d8fd69d88-mpgqq                    0/1     Evicted            0          63d\r\ncert-manager-5d8fd69d88-s7dtg                    0/1     Evicted            0          232d\r\ncert-manager-5d8fd69d88-vdmrx                    0/1     Evicted            0          63d\r\ncert-manager-5d8fd69d88-zlpv4                    0/1     Evicted            0          63d\r\ncert-manager-cainjector-755bbf9c6b-455nm         0/1     Evicted            0          63d\r\n```\r\n\r\n可通过 `kubectl get pods` 来找到 `Evicted` 状态的 POD，通过 `awk` 和 `kubectl delete pod` 选中目标 pod 并删除，命令如下\r\n\r\n``` bash\r\n$  kubectl get pods | grep Evicted | awk '{print $1}' | xargs kubectl delete pod\r\n```",
+          "star": {
+            "totalCount": 0
+          },
+          "author": {
+            "login": "shfshanyue",
+            "url": "https://github.com/shfshanyue"
+          }
+        }
+      ]
+    },
+    "labels": {
+      "nodes": [
+        {
+          "id": "MDU6TGFiZWwxNjYwMTIxNDcw",
+          "name": "k8s"
+        }
+      ]
+    }
+  },
+  {
+    "id": "MDU6SXNzdWU2Mzg2NjQ5OTc=",
+    "number": 356,
+    "title": "【Q353】k8s 中 Deployment 与 StatefulSet 有什么区别",
+    "body": "",
+    "comments": {
+      "nodes": []
+    },
+    "labels": {
+      "nodes": [
+        {
+          "id": "MDU6TGFiZWwxNjYwMTIxNDcw",
+          "name": "k8s"
+        }
+      ]
+    }
+  },
+  {
+    "id": "MDU6SXNzdWU2NDExMTc0NDg=",
+    "number": 357,
+    "title": "【Q354】在 node 中如何判断一个对象是 stream",
+    "body": "",
+    "comments": {
+      "nodes": []
+    },
+    "labels": {
+      "nodes": [
+        {
+          "id": "MDU6TGFiZWwxNzI2MDg3MTMx",
+          "name": "node"
+        }
+      ]
+    }
+  },
+  {
+    "id": "MDU6SXNzdWU2NDEyMTEzNTY=",
+    "number": 358,
+    "title": "【Q355】什么是 Iterable 对象，与 Array 有什么区别",
+    "body": "",
+    "comments": {
+      "nodes": [
+        {
+          "id": "MDEyOklzc3VlQ29tbWVudDY0Njk5MTA4Mw==",
+          "body": "实现了 `[Symbol.iterator]` 属性的对象即是 `Iterable` 对象，然后可以使用操作符 `for...of` 进行迭代\r\n\r\n``` js\r\n```\r\n\r\n详细参考 <https://javascript.info/iterable>",
+          "star": {
+            "totalCount": 0
+          },
+          "author": {
+            "login": "shfshanyue",
+            "url": "https://github.com/shfshanyue"
+          }
+        }
+      ]
+    },
+    "labels": {
+      "nodes": [
+        {
+          "id": "MDU6TGFiZWwxNjUxNDAyMzE4",
+          "name": "js"
+        }
+      ]
+    }
+  },
+  {
+    "id": "MDU6SXNzdWU2NDI0NzczMTE=",
+    "number": 360,
+    "title": "【Q356】在 node 端如何向服务器上传文件",
+    "body": "",
+    "comments": {
+      "nodes": []
+    },
+    "labels": {
+      "nodes": [
+        {
+          "id": "MDU6TGFiZWwxNjgwMDkyMDA5",
+          "name": "http"
+        },
+        {
+          "id": "MDU6TGFiZWwxNzI2MDg3MTMx",
+          "name": "node"
+        }
+      ]
+    }
+  },
+  {
+    "id": "MDU6SXNzdWU2NDU2MTg2MDg=",
+    "number": 361,
+    "title": "【Q357】js 如何全部替代一个子串为另一个子串",
+    "body": "",
+    "comments": {
+      "nodes": []
+    },
+    "labels": {
+      "nodes": [
+        {
+          "id": "MDU6TGFiZWwxNjUxNDAyMzE4",
+          "name": "js"
         }
       ]
     }
