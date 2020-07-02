@@ -4034,7 +4034,19 @@
     "title": "【Q134】ssh 的原理是什么",
     "body": "",
     "comments": {
-      "nodes": []
+      "nodes": [
+        {
+          "id": "MDEyOklzc3VlQ29tbWVudDY1MjE1ODM3OQ==",
+          "body": "搬运 [图解SSH原理](https://www.jianshu.com/p/33461b619d53)",
+          "star": {
+            "totalCount": 0
+          },
+          "author": {
+            "login": "hedongxiaoshimei",
+            "url": "https://github.com/hedongxiaoshimei"
+          }
+        }
+      ]
     },
     "labels": {
       "nodes": [
@@ -7352,7 +7364,7 @@
           "id": "MDEyOklzc3VlQ29tbWVudDYyNDQxOTc5Ng==",
           "body": "`CSP` 可以最大限度地防止 `XSS` 攻击，它只允许加载指定的脚本及样式等，通过 http 的响应头 `Content Security Policy` 控制。\r\n\r\n如果网站必须加载内联脚本 (inline script) ，则可以提供一个 `nonce` 才能执行脚本，这样攻击者无法注入脚本进行攻击。\r\n\r\n可参考阮一峰 [Content Security Policy 入门教程](http://www.ruanyifeng.com/blog/2016/09/csp.html)",
           "star": {
-            "totalCount": 0
+            "totalCount": 1
           },
           "author": {
             "login": "shfshanyue",
@@ -7374,6 +7386,10 @@
     },
     "labels": {
       "nodes": [
+        {
+          "id": "MDU6TGFiZWwxNzY5MDg5MzQ2",
+          "name": "dom"
+        },
         {
           "id": "MDU6TGFiZWwxNjUxNDAyMzE4",
           "name": "js"
@@ -9296,9 +9312,21 @@
     "id": "MDU6SXNzdWU2NDU2MTg2MDg=",
     "number": 361,
     "title": "【Q357】js 如何全部替代一个子串为另一个子串",
-    "body": "",
+    "body": "假设有一个字符串 `hello. hello. hello. ` 需要替换为 `AAA`，即把 `hello. ` 替换为 `A`",
     "comments": {
-      "nodes": []
+      "nodes": [
+        {
+          "id": "MDEyOklzc3VlQ29tbWVudDY1MTU2NDM3Ng==",
+          "body": "如果需要全量替换字符串，可以使用 `String.prototype.replace(re, replacer)`，其中正则表达式需要开启 `global` flag\r\n\r\n``` js\r\nconst s = 'foo foo foo'\r\ns.replce(/foo/g, 'bar')\r\n```\r\n\r\n那如题中，是否可以使用正则表达式来替代子串\r\n\r\n答：**不可以，因为使用子串构建正则时，有可能有特殊字符**，如下\r\n\r\n``` js\r\n> 'hello. helloX hello3 '.replace(new RegExp('hello. ', 'g'), 'A')\r\n< \"AAA\"\r\n```\r\n\r\n而在 `javascript` 中替换子串只能使用一种巧妙的办法：`str.split('foo').join('bar')`\r\n\r\n``` js\r\n> 'hello. hello. hello. '.split('hello. ').join('A')\r\n< \"AAA\"\r\n```\r\n\r\n真是一个巧(笨)妙(拙)的办法啊！！！！！**大概 TC39 也意识到了一个问题，于是出了一个新的 API**，在 `ESNext` 中\r\n\r\n``` js\r\nString.prototype.replaceAll()\r\n\r\n'aabbcc'.replaceAll('b', '.'); \r\n// 'aa..cc'\r\n```\r\n\r\n详细文档在 [String.prototype.replaceAll](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String/replaceAll)\r\n\r\n## 总结(及直接答案)\r\n\r\n两种办法\r\n\r\n+ `str.split('foo').join('bar')`\r\n+ `str.replaceAll('foo', 'bar')`，在 `ESNext` 中，目前支持性不好",
+          "star": {
+            "totalCount": 0
+          },
+          "author": {
+            "login": "shfshanyue",
+            "url": "https://github.com/shfshanyue"
+          }
+        }
+      ]
     },
     "labels": {
       "nodes": [
