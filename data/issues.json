@@ -10,7 +10,7 @@
           "id": "MDEyOklzc3VlQ29tbWVudDU0OTEzMzE0NQ==",
           "body": "懒加载，顾名思义，在当前网页，滑动页面到能看到图片的时候再加载图片\r\n\r\n故问题拆分成两个：\r\n\r\n1. 如何判断图片出现在了当前视口 （即如何判断我们能够看到图片）\r\n2. 如何控制图片的加载\r\n\r\n## 方案一\r\n\r\n### 如何判断图片出现在了当前视口\r\n\r\n`clientTop`，`offsetTop`，`clientHeight` 以及 `scrollTop` 各种关于图片的高度作比对\r\n\r\n这些高度都代表了什么意思？\r\n\r\n这我以前有可能是知道的，那时候我比较单纯，喜欢死磕。我现在想通了，背不过的东西就不要背了\r\n\r\n**所以它有一个问题：复杂琐碎不好理解！**\r\n\r\n仅仅知道它静态的高度还不够，我们还需要知道动态的\r\n\r\n**如何动态？监听 `window.scroll` 事件**\r\n\r\n### 如何控制图片的加载\r\n\r\n``` html\r\n<img data-src=\"shanyue.jpg\">\r\n```\r\n\r\n首先设置一个临时属性 `data-src`，控制加载时使用 `src` 代替 `data-src`\r\n\r\n## 方案二\r\n\r\n改进一下\r\n\r\n### 如何判断图片出现在了当前视口\r\n\r\n引入一个新的 API， **`Element.getBoundingClientRect()` 方法返回元素的大小及其相对于视口的位置。**\r\n\r\n<img alt=\"getBoundingClientRect示例图\" src=\"https://mdn.mozillademos.org/files/15087/rect.png\">\r\n\r\n那如何判断图片出现在了当前视口呢，根据示例图示意，代码如下，这个就比较好理解了，就可以很容易地背会(就可以愉快地去面试了)。\r\n\r\n``` js\r\n// clientHeight 代表当前视口的高度\r\nimg.getBoundingClientRect().top < document.documentElement.clientHeight\r\n```\r\n\r\n**监听 `window.scroll` 事件也优化一下**\r\n\r\n加个节流器，提高性能。工作中一般使用 `lodash.throttle` 就可以了，万能的 `lodash` 啊！\r\n\r\n``` js\r\n_.throttle(func, [wait=0], [options={}])\r\n```\r\n\r\n参考 [什么是防抖和节流，他们的应用场景有哪些](https://github.com/shfshanyue/Daily-Question/issues/3)\r\n\r\n## 方案三\r\n\r\n再改进一下\r\n\r\n### 如何判断图片出现在了当前视口\r\n\r\n**方案二使用的方法是: `window.scroll` 监听 `Element.getBoundingClientRect()` 并使用 `_.throttle` 节流**\r\n\r\n**一系列组合动作太复杂了，于是浏览器出了一个三合一事件: `IntersectionObserver` API，一个能够监听元素是否到了当前视口的事件，一步到位！**\r\n\r\n事件回调的参数是 [IntersectionObserverEntry](https://developer.mozilla.org/en-US/docs/Web/API/IntersectionObserverEntry) 的集合，代表关于是否在可见视口的一系列值\r\n\r\n其中，`entry.isIntersecting` 代表目标元素可见\r\n\r\n``` javascript\r\nconst observer = new IntersectionObserver((changes) => {\r\n  // changes: 目标元素集合\r\n  changes.forEach((change) => {\r\n    // intersectionRatio\r\n    if (change.isIntersecting) {\r\n      const img = change.target\r\n      img.src = img.dataset.src\r\n      observer.unobserve(img)\r\n    }\r\n  })\r\n})\r\n\r\nobserver.observe(img)\r\n```\r\n\r\n**当然，`IntersectionObserver` 除了给图片做懒加载外，还可以对单页应用资源做预加载。**\r\n\r\n如在 `next.js v9` 中，会对视口内的资源做预加载，可以参考 [next 9 production optimizations](https://nextjs.org/blog/next-9#production-optimizations)\r\n\r\n``` jsx\r\n<Link href=\"/about\">\r\n  <a>关于山月</a>\r\n</Link>\r\n```\r\n\r\n## 方案四\r\n\r\n浏览器觉得懒加载这事可以交给自己做，你们开发者加个属性就好了。实在是...！\r\n\r\n``` html\r\n<img src=\"shanyue.jpg\" loading=\"lazy\">\r\n```\r\n\r\n不过目前浏览器兼容性不太好，关于 `loading` 属性的文章也可以查看 [Native image lazy-loading for the web!](https://addyosmani.com/blog/lazy-loading/)\r\n",
           "star": {
-            "totalCount": 4
+            "totalCount": 6
           },
           "author": {
             "login": "shfshanyue",
@@ -85,6 +85,17 @@
             "login": "xiaoai7904",
             "url": "https://github.com/xiaoai7904"
           }
+        },
+        {
+          "id": "MDEyOklzc3VlQ29tbWVudDY1Mzg5OTIzNw==",
+          "body": "## 防抖 (debounce)\r\n\r\n防抖，顾名思义，防止抖动，以免把一次事件误认为多次，敲键盘就是一个每天都会接触到的防抖操作。\r\n\r\n想要了解一个概念，必先了解概念所应用的场景。在 JS 这个世界中，有哪些防抖的场景呢\r\n\r\n1. 登录、发短信等按钮避免用户点击太快，以致于发送了多次请求，需要防抖\r\n1. 调整浏览器窗口大小时，resize 次数过于频繁，造成计算过多，此时需要一次到位，就用到了防抖\r\n1. 文本编辑器实时保存，当无任何更改操作一秒后进行保存\r\n\r\n代码如下，可以看出来**防抖重在清零 `clearTimeout(timer)`**\r\n\r\n``` js\r\nfunction debounce (f, wait) {\r\n  let timer\r\n  return (...args) => {\r\n    clearTimeout(timer)\r\n    timer = setTimeout(() => {\r\n      f(...args)\r\n    }, wait)\r\n  }\r\n}\r\n```\r\n\r\n## 节流 (throttle)\r\n\r\n节流，顾名思义，控制水的流量。控制事件发生的频率，如控制为1s发生一次，甚至1分钟发生一次。与服务端(server)及网关(gateway)控制的限流 (Rate Limit) 类似。\r\n\r\n1. `scroll` 事件，每隔一秒计算一次位置信息等\r\n1. 浏览器播放事件，每个一秒计算一次进度信息等\r\n1. input 框实时搜索并发送请求展示下拉列表，没隔一秒发送一次请求 (也可做防抖)\r\n\r\n代码如下，可以看出来**节流重在开关锁 `timer=null`**\r\n\r\n``` js\r\nfunction throttle (f, wait) {\r\n  let timer\r\n  return (...args) => {\r\n    if (timer) { return }\r\n    timer = setTimeout(() => {\r\n      f(...args)\r\n      timer = null\r\n    }, wait)\r\n  }\r\n}\r\n```\r\n\r\n## 总结 (简要答案)\r\n\r\n+ 防抖：防止抖动，单位时间内事件触发会被重置，避免事件被误伤触发多次。代码实现重在清零 `clearTimeout`\r\n+ 节流：控制流量，单位时间内事件只能触发一次，如果服务器端的限流即 Rate Limit。代码实现重在开锁关锁 `timer=timeout; timer=null`",
+          "star": {
+            "totalCount": 1
+          },
+          "author": {
+            "login": "shfshanyue",
+            "url": "https://github.com/shfshanyue"
+          }
         }
       ]
     },
@@ -106,7 +117,7 @@
       "nodes": [
         {
           "id": "MDEyOklzc3VlQ29tbWVudDU0OTM0MjE4MQ==",
-          "body": "通过 `ps` 可以获知一个进程所占用的内存\r\n\r\n``` bash\r\n$ ps -O rss -p 3506\r\n  PID   RSS S TTY          TIME COMMAND\r\n 3506  6984 S pts/1    00:00:00 vim\r\n```\r\n\r\n如果要监控内存，肯定使用对进程万能的命令 `pidstat` （PS: 这名字一听就知道是干嘛的）\r\n\r\n``` bash\r\n# -r 显示内存信息\r\n# -p 指定 pid\r\n# 1: 每个一秒打印一次\r\n$ pidstat -r -p 3506 1\r\nLinux 3.10.0-957.21.3.el7.x86_64 (shanyue)      11/04/19        _x86_64_        (2 CPU)\r\n\r\n20:47:35      UID       PID  minflt/s  majflt/s     VSZ    RSS   %MEM  Command\r\n20:47:36        0      3506      0.00      0.00  139940   6984   0.18  vim\r\n20:47:37        0      3506      0.00      0.00  139940   6984   0.18  vim\r\n20:47:38        0      3506      0.00      0.00  139940   6984   0.18  vim\r\n20:47:39        0      3506      0.00      0.00  139940   6984   0.18  vim\r\n20:47:40        0      3506      0.00      0.00  139940   6984   0.18  vim\r\n20:47:41        0      3506      0.00      0.00  139940   6984   0.18  vim\r\n```\r\n\r\n当然，也可以使用万能的 `htop` 命令\r\n\r\n参考: [linux 各项监控指标小记](https://shanyue.tech/op/linux-monitor)",
+          "body": "通过 `ps` 可以获知一个进程所占用的内存\r\n\r\n``` bash\r\n$ ps -O rss -p 3506\r\n  PID   RSS S TTY          TIME COMMAND\r\n 3506  6984 S pts/1    00:00:00 vim\r\n```\r\n\r\n如果要监控内存，肯定使用对进程万能的命令 `pidstat` （PS: 这名字一听就知道是干嘛的）\r\n\r\n``` bash\r\n# -r 显示内存信息\r\n# -p 指定 pid\r\n# 1: 每个一秒打印一次\r\n$ pidstat -r -p 3506 1\r\nLinux 3.10.0-957.21.3.el7.x86_64 (shanyue)      11/04/19        _x86_64_        (2 CPU)\r\n\r\n20:47:35      UID       PID  minflt/s  majflt/s     VSZ    RSS   %MEM  Command\r\n20:47:36        0      3506      0.00      0.00  139940   6984   0.18  vim\r\n20:47:37        0      3506      0.00      0.00  139940   6984   0.18  vim\r\n20:47:38        0      3506      0.00      0.00  139940   6984   0.18  vim\r\n20:47:39        0      3506      0.00      0.00  139940   6984   0.18  vim\r\n20:47:40        0      3506      0.00      0.00  139940   6984   0.18  vim\r\n20:47:41        0      3506      0.00      0.00  139940   6984   0.18  vim\r\n```\r\n\r\n`pidstat` 是属于 `sysstat` 下的 linux 性能工具，但在 mac 中，如何定位内存的变化？此时可以使用万能的 `top/htop`\r\n\r\n ``` bash\r\n $ htop -p 31796\r\n ```\r\n\r\n![image](https://user-images.githubusercontent.com/13389461/86353210-7b210080-bc99-11ea-9885-8e5ca1b909b5.png)\r\n\r\n## 总结\r\n\r\n简而言之，有以下三个命令\r\n\r\n1. `pidstat -r`\r\n1. `htop/top -p`\r\n1. `ps -O rss -p`\r\n\r\n关于更多指标的监控可以参考我的文章: [linux 各项监控指标小记](https://shanyue.tech/op/linux-monitor.html)",
           "star": {
             "totalCount": 0
           },
@@ -2169,7 +2180,7 @@
       "nodes": [
         {
           "id": "MDEyOklzc3VlQ29tbWVudDU1OTYzNTA3Mg==",
-          "body": "使用 `sed` 或者 `head`/`tail`，以要输出第100行为例\r\n\r\n```\r\nsed -n 100p Readme.md\r\n\r\nhead -100 Readme.md | tail -1\r\n```\r\n\r\n关于 `sed` 更多的用法可以参考我的文章: [sed 命令详解及示例](https://shanyue.tech/op/linux-sed.html#sed-%E5%91%BD%E4%BB%A4%E8%AF%A6%E8%A7%A3)",
+          "body": "通常使用 `sed` 命令打印特定行，如\r\n\r\n``` bash\r\n# -n: 按特定格式打印\r\n# 100p: 指打印第一百行\r\n$ sed -n 100p Readme.md\r\n```\r\n\r\n但 `sed` 打印的本领，远不止于此，除了打印特定行，还可以打印一段范围的行，如\r\n\r\n``` bash\r\n# 打印文件中第 100-120 行\r\n$ sed -n 100,120p Readme.md\r\n\r\n# 打印文件中第 100-120 行\r\n$ sed -n 100,+20p Readme.md\r\n```\r\n\r\n还有一种本办法，`head`/`tail` 的组合命令，以要输出第100行为例\r\n\r\n``` bash\r\n# 输出前100行，再通过 pipe，输出最后一行\r\n$ head -100 Readme.md | tail -1\r\n```\r\n\r\n关于 `sed` 更多的用法可以参考我的文章: [sed 命令详解及示例](https://shanyue.tech/op/linux-sed.html)\r\n\r\n## 总结\r\n\r\n两种方法\r\n\r\n1. `sed -n 100p Readme.md`\r\n1. `head -100 Readme.md | tail -1`",
           "star": {
             "totalCount": 0
           },
@@ -5556,7 +5567,19 @@
     "title": "【Q191】什么是 Open Graph 协议，用来做什么",
     "body": "",
     "comments": {
-      "nodes": []
+      "nodes": [
+        {
+          "id": "MDEyOklzc3VlQ29tbWVudDY1NTI0NjQwNQ==",
+          "body": "Open Graph 协议可以让任何一个网页集成到社交图谱中。例如，facebook就是一种社交图谱(social graph)。\r\n一旦一个网页按照该协议进行集成，这个网页就像是社交图谱的一个节点，例如，你的网页集成了open graph协议，\r\n按照协议加入了网页的标题，描述以及图片信息等等，那么你在facebook中分享这个网页的时候，facebook就会按照\r\n你定义的内容来展示这个网页。\r\n\r\n这个协议其实很简单，主要是通过在html中加入一些元数据（meta）标签来实现，例如\r\n在head中加入meta标签，property是以og(open graph)开头, 后面跟着具体属性，content里面是属性的值，\r\n下面这段描述的就是一个类型为 video.movie，标题为 The rock，以及url和图片信息。这个例子就可以当做是\r\n为 https://www.imdb.com/title/tt0117500/ 实现了Open Graph协议、\r\n\r\n```\r\n<html prefix=\"og: http://ogp.me/ns#\">\r\n<head>\r\n<title>The Rock (1996)</title>\r\n<meta property=\"og:title\" content=\"The Rock\" />\r\n<meta property=\"og:type\" content=\"video.movie\" />\r\n<meta property=\"og:url\" content=\"http://www.imdb.com/title/tt0117500/\" />\r\n<meta property=\"og:image\" content=\"http://ia.media-imdb.com/images/rock.jpg\" />\r\n...\r\n</head>\r\n...\r\n</html>\r\n```\r\n结论：\r\n这个协议主要是Facebook提出来的，为了更好的展示用户分享的网页的内容，实现这个协议，有助于SEO优化，告诉google该网页有哪些内容，以及关键词等。\r\n\r\n可以快速实现Open Graph协议的工具有：\r\nWordpress的SEO plugin\r\n使用Facebook的Facebook Page功能\r\n\r\n \r\nReference:\r\n1. The Open Graph Protocol https://ogp.me/\r\n2. Open Graph Protocol for Facebook Explained with Examples  https://www.optimizesmart.com/how-to-use-open-graph-protocol/",
+          "star": {
+            "totalCount": 0
+          },
+          "author": {
+            "login": "grace-shi",
+            "url": "https://github.com/grace-shi"
+          }
+        }
+      ]
     },
     "labels": {
       "nodes": [
@@ -6156,8 +6179,8 @@
             "totalCount": 0
           },
           "author": {
-            "login": "YueCai",
-            "url": "https://github.com/YueCai"
+            "login": "CaiyueDamowang",
+            "url": "https://github.com/CaiyueDamowang"
           }
         }
       ]
@@ -7810,7 +7833,7 @@
       "nodes": [
         {
           "id": "MDEyOklzc3VlQ29tbWVudDYyMTcxNTI4NA==",
-          "body": "如果有 `x-forwarded-for` 的请求头，则取其中的第一个 IP，否则取建立连接 socket 的 remoteAddr。\r\n\r\n而 `x-forwarded-for` 基本已成为了基于 proxy 的标准HTTP头，格式如下，可见第一个 IP 代表其真实的 IP，可以参考 MDN [X-Forwarded-For](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/X-Forwarded-For)\r\n\r\n``` js\r\nX-Forwarded-For: 203.0.113.195, 70.41.3.18, 150.172.238.178\r\nX-Forwarded-For: <client>, <proxy1>, <proxy2>\r\n```\r\n\r\n以下是 `koa` 获取 IP 的方法\r\n\r\n``` js\r\n  get ips() {\r\n    const proxy = this.app.proxy;\r\n    const val = this.get(this.app.proxyIpHeader);\r\n    let ips = proxy && val\r\n      ? val.split(/\\s*,\\s*/)\r\n      : [];\r\n    if (this.app.maxIpsCount > 0) {\r\n      ips = ips.slice(-this.app.maxIpsCount);\r\n    }\r\n    return ips;\r\n  },\r\n\r\n  get ip() {\r\n    if (!this[IP]) {\r\n      this[IP] = this.ips[0] || this.socket.remoteAddress || '';\r\n    }\r\n    return this[IP];\r\n  },\r\n```\r\n\r\n参见源码: <https://github.com/koajs/koa/blob/master/lib/request.js#L433>",
+          "body": "**如果有 `x-forwarded-for` 的请求头，则取其中的第一个 IP，否则取建立连接 socket 的 remoteAddr。**\r\n\r\n而 `x-forwarded-for` 基本已成为了基于 proxy 的标准HTTP头，格式如下，可见第一个 IP 代表其真实的 IP，可以参考 MDN [X-Forwarded-For](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/X-Forwarded-For)\r\n\r\n``` js\r\nX-Forwarded-For: 203.0.113.195, 70.41.3.18, 150.172.238.178\r\nX-Forwarded-For: <client>, <proxy1>, <proxy2>\r\n```\r\n\r\n以下是 `koa` 获取 IP 的方法\r\n\r\n``` js\r\n  get ips() {\r\n    const proxy = this.app.proxy;\r\n    const val = this.get(this.app.proxyIpHeader);\r\n    let ips = proxy && val\r\n      ? val.split(/\\s*,\\s*/)\r\n      : [];\r\n    if (this.app.maxIpsCount > 0) {\r\n      ips = ips.slice(-this.app.maxIpsCount);\r\n    }\r\n    return ips;\r\n  },\r\n\r\n  get ip() {\r\n    if (!this[IP]) {\r\n      this[IP] = this.ips[0] || this.socket.remoteAddress || '';\r\n    }\r\n    return this[IP];\r\n  },\r\n```\r\n\r\n参见源码: <https://github.com/koajs/koa/blob/master/lib/request.js#L433>",
           "star": {
             "totalCount": 0
           },
@@ -8649,7 +8672,7 @@
       "nodes": [
         {
           "id": "MDEyOklzc3VlQ29tbWVudDY0MTYxNjcwNQ==",
-          "body": "- `Access-Control-Allow-Origin`\r\n- `Access-Control-Allow-Methods`\r\n- `Access-Control-Expose-Headers`\r\n- `Access-Control-Allow-Headers`\r\n- `Access-Control-Max-Age`\r\n- `Access-Control-Allow-Credentials`\r\n\r\n关于如何写一个 `cors` 的中间件可以参考 [koajs/cors](https://github.com/koajs/cors)",
+          "body": "- `Access-Control-Allow-Origin`\r\n- `Access-Control-Allow-Methods`\r\n- `Access-Control-Allow-Headers`\r\n- `Access-Control-Allow-Credentials`\r\n- `Access-Control-Expose-Headers`\r\n- `Access-Control-Max-Age`\r\n\r\n关于如何写一个 `cors` 的中间件可以参考 [koajs/cors](https://github.com/koajs/cors)",
           "star": {
             "totalCount": 0
           },
@@ -9317,7 +9340,7 @@
       "nodes": [
         {
           "id": "MDEyOklzc3VlQ29tbWVudDY1MTU2NDM3Ng==",
-          "body": "如果需要全量替换字符串，可以使用 `String.prototype.replace(re, replacer)`，其中正则表达式需要开启 `global` flag\r\n\r\n``` js\r\nconst s = 'foo foo foo'\r\ns.replce(/foo/g, 'bar')\r\n```\r\n\r\n那如题中，是否可以使用正则表达式来替代子串\r\n\r\n答：**不可以，因为使用子串构建正则时，有可能有特殊字符**，如下\r\n\r\n``` js\r\n> 'hello. helloX hello3 '.replace(new RegExp('hello. ', 'g'), 'A')\r\n< \"AAA\"\r\n```\r\n\r\n而在 `javascript` 中替换子串只能使用一种巧妙的办法：`str.split('foo').join('bar')`\r\n\r\n``` js\r\n> 'hello. hello. hello. '.split('hello. ').join('A')\r\n< \"AAA\"\r\n```\r\n\r\n真是一个巧(笨)妙(拙)的办法啊！！！！！**大概 TC39 也意识到了一个问题，于是出了一个新的 API**，在 `ESNext` 中\r\n\r\n``` js\r\nString.prototype.replaceAll()\r\n\r\n'aabbcc'.replaceAll('b', '.'); \r\n// 'aa..cc'\r\n```\r\n\r\n详细文档在 [String.prototype.replaceAll](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String/replaceAll)\r\n\r\n## 总结(及直接答案)\r\n\r\n两种办法\r\n\r\n+ `str.split('foo').join('bar')`\r\n+ `str.replaceAll('foo', 'bar')`，在 `ESNext` 中，目前支持性不好",
+          "body": "如果需要全量替换字符串，可以使用 `String.prototype.replace(re, replacer)`，其中正则表达式需要开启 `global` flag\r\n\r\n``` js\r\nconst s = 'foo foo foo'\r\ns.replce(/foo/g, 'bar')\r\n```\r\n\r\n那如题中，**是否可以使用正则表达式来替代子串**\r\n\r\n答：**不可以，因为使用子串构建正则时，有可能有特殊字符，就有可能出现问题**，如下\r\n\r\n``` js\r\n// 期待结果: 'AhelloX hello3 '\r\n> 'hello. helloX hello3 '.replace(new RegExp('hello. ', 'g'), 'A')\r\n< \"AAA\"\r\n```\r\n\r\n而在 `javascript` 中替换子串只能使用一种巧妙的办法：`str.split('foo').join('bar')`\r\n\r\n``` js\r\n> 'hello. hello. hello. '.split('hello. ').join('A')\r\n< \"AAA\"\r\n```\r\n\r\n真是一个巧(笨)妙(拙)的办法啊！！！！！**大概 TC39 也意识到了一个问题，于是出了一个新的 API**，在 `ESNext` 中\r\n\r\n``` js\r\nString.prototype.replaceAll()\r\n\r\n'aabbcc'.replaceAll('b', '.'); \r\n// 'aa..cc'\r\n```\r\n\r\n详细文档在 [String.prototype.replaceAll](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String/replaceAll)\r\n\r\n## 总结(及直接答案)\r\n\r\n两种办法\r\n\r\n+ `str.split('foo').join('bar')`\r\n+ `str.replaceAll('foo', 'bar')`，在 `ESNext` 中，目前支持性不好",
           "star": {
             "totalCount": 0
           },
@@ -9333,6 +9356,56 @@
         {
           "id": "MDU6TGFiZWwxNjUxNDAyMzE4",
           "name": "js"
+        }
+      ]
+    }
+  },
+  {
+    "id": "MDU6SXNzdWU2NTMxOTc1Njk=",
+    "number": 363,
+    "title": "【Q358】什么情况下会发送 OPTIONS 请求",
+    "body": "",
+    "comments": {
+      "nodes": []
+    },
+    "labels": {
+      "nodes": [
+        {
+          "id": "MDU6TGFiZWwxNjgwMDkyMDA5",
+          "name": "http"
+        },
+        {
+          "id": "MDU6TGFiZWwxNjUxNDAyMzIy",
+          "name": "server"
+        }
+      ]
+    }
+  },
+  {
+    "id": "MDU6SXNzdWU2NTMzMzY1MjQ=",
+    "number": 364,
+    "title": "【Q359】CORS 如果需要指定多个域名怎么办",
+    "body": "",
+    "comments": {
+      "nodes": [
+        {
+          "id": "MDEyOklzc3VlQ29tbWVudDY1NTg2Mjg2NA==",
+          "body": "`CORS` 通过控制 `Access-Control-Allow-Origin` 控制哪些域名可以共享资源，取值如下\r\n\r\n``` bash\r\nAccess-Control-Allow-Origin: <origin> | *\r\n```\r\n\r\n其中 `*` 代表所有域名，`origin` 代表指定特定域名，那如何设置多个域名了？\r\n\r\n此时需要通过代码实现，**根据请求头中的 `Origin` 来设置响应头 `Access-Control-Allow-Origin`**，那 Origin 又是什么东西？\r\n\r\n## 请求头: Origin\r\n\r\n并不是所有请求都会自动带上 `Origin`，在浏览器中带 `Origin` 的逻辑如下\r\n\r\n1. 如果存在跨域，则带上 `Origin`，值为当前域名\r\n1. 如果不存在跨域，则不带 `Origin`\r\n\r\n逻辑理清楚后，关于服务器中对于 `Access-Control-Allow-Origin` 设置多域名的逻辑也很清晰了\r\n\r\n1. 如果请求头不带有 `Origin`，证明未跨域，则不作任何处理\r\n1. 如果请求头带有 `Origin`，证明跨域，根据 `Origin` 设置相应的 `Access-Control-Allow-Origin: <Origin>`\r\n\r\n使用伪代码实现如下:\r\n\r\n``` js\r\n// 获取 Origin 请求头\r\nconst requestOrigin = ctx.get('Origin');\r\n\r\n// 如果没有，则跳过\r\nif (!requestOrigin) {\r\n  return await next();\r\n}\r\n\r\n// 设置响应头\r\nctx.set('Access-Control-Allow-Origin', requestOrigin)\r\n```\r\n\r\n## Vary: Origin\r\n\r\n此时可以给多个域名控制 CORS，但此时假设有两个域名访问 `static.shanyue.tech` 的跨域资源\r\n\r\n1. `foo.shanyue.tech`，响应头中返回 `Access-Control-Allow-Origin: foo.shanyue.tech`\r\n1. `bar.shanyue.tech`，响应头中返回 `Access-Control-Allow-Origin: bar.shanyue.tech`\r\n\r\n看起来一切正常，但如果中间有缓存怎么办？\r\n\r\n1. `foo.shanyue.tech`，响应头中返回 `Access-Control-Allow-Origin: foo.shanyue.tech`，被 CDN 缓存\r\n1. **`bar.shanyue.tech`，因由缓存，响应头中返回 `Access-Control-Allow-Origin: foo.shanyue.tech`，跨域出现问题**\r\n\r\n此时，`Vary: Origin` 就上场了，代表为不同的 `Origin` 缓存不同的资源\r\n\r\n## 总结 (简要答案)\r\n\r\nCORS 如何指定多个域名？\r\n\r\n**根据请求头中的 `Origin` 来设置响应头 `Access-Control-Allow-Origin`**，思路如下\r\n\r\n1. 总是设置 `Vary: Origin`，避免 CDN 缓存破坏 CORS 配置\r\n1. 如果请求头不带有 `Origin`，证明未跨域，则不作任何处理\r\n1. 如果请求头带有 `Origin`，证明浏览器访问跨域，根据 `Origin` 设置相应的 `Access-Control-Allow-Origin: <Origin>` \r\n\r\n使用伪代码实现如下\r\n\r\n``` js\r\n// 获取 Origin 请求头\r\nconst requestOrigin = ctx.get('Origin');\r\n\r\nctx.set('Vary', 'Origin')\r\n\r\n// 如果没有，则跳过\r\nif (!requestOrigin) {\r\n  return await next();\r\n}\r\n\r\n// 设置响应头\r\nctx.set('Access-Control-Allow-Origin', requestOrigin)\r\n```\r\n\r\n>  相关问题：[如何避免 CDN 为 PC 端缓存移动端页面](https://github.com/shfshanyue/Daily-Question/issues/330)",
+          "star": {
+            "totalCount": 0
+          },
+          "author": {
+            "login": "shfshanyue",
+            "url": "https://github.com/shfshanyue"
+          }
+        }
+      ]
+    },
+    "labels": {
+      "nodes": [
+        {
+          "id": "MDU6TGFiZWwxNjgwMDkyMDA5",
+          "name": "http"
         }
       ]
     }

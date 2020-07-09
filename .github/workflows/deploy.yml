@@ -44,5 +44,5 @@ jobs:
         npm i --production
 
     # 设置腾讯云的 appid/secret，存储到 github 的 secrets 中
-    # - name: deploy
-    #   run: sls deploy --debug
+    - name: deploy
+      run: sls deploy --debug
