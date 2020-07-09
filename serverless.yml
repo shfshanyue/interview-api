@@ -17,13 +17,13 @@ inputs:
       - https
     environment: release
     enableCORS: true #  允许跨域
-    customDomains: # 自定义域名绑定
-      - domain: interview.shanyue.tech
-        certificateId: e1nq0FQp
-        isDefaultMapping: 'FALSE'
-        pathMappingSet:
-          - path: /
-            environment: release
-        protocols: # 绑定自定义域名的协议类型，默认与服务的前端协议一致。
-          - http # 支持http协议
-          - https # 支持https协议
+    # customDomains: # 自定义域名绑定
+    #   - domain: interview.shanyue.tech
+    #     certificateId: e1nq0FQp
+    #     isDefaultMapping: 'FALSE'
+    #     pathMappingSet:
+    #       - path: /
+    #         environment: release
+    #     protocols: # 绑定自定义域名的协议类型，默认与服务的前端协议一致。
+    #       - http # 支持http协议
+    #       - https # 支持https协议
