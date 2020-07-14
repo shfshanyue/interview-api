@@ -90,7 +90,7 @@
           "id": "MDEyOklzc3VlQ29tbWVudDY1Mzg5OTIzNw==",
           "body": "## 防抖 (debounce)\r\n\r\n防抖，顾名思义，防止抖动，以免把一次事件误认为多次，敲键盘就是一个每天都会接触到的防抖操作。\r\n\r\n想要了解一个概念，必先了解概念所应用的场景。在 JS 这个世界中，有哪些防抖的场景呢\r\n\r\n1. 登录、发短信等按钮避免用户点击太快，以致于发送了多次请求，需要防抖\r\n1. 调整浏览器窗口大小时，resize 次数过于频繁，造成计算过多，此时需要一次到位，就用到了防抖\r\n1. 文本编辑器实时保存，当无任何更改操作一秒后进行保存\r\n\r\n代码如下，可以看出来**防抖重在清零 `clearTimeout(timer)`**\r\n\r\n``` js\r\nfunction debounce (f, wait) {\r\n  let timer\r\n  return (...args) => {\r\n    clearTimeout(timer)\r\n    timer = setTimeout(() => {\r\n      f(...args)\r\n    }, wait)\r\n  }\r\n}\r\n```\r\n\r\n## 节流 (throttle)\r\n\r\n节流，顾名思义，控制水的流量。控制事件发生的频率，如控制为1s发生一次，甚至1分钟发生一次。与服务端(server)及网关(gateway)控制的限流 (Rate Limit) 类似。\r\n\r\n1. `scroll` 事件，每隔一秒计算一次位置信息等\r\n1. 浏览器播放事件，每个一秒计算一次进度信息等\r\n1. input 框实时搜索并发送请求展示下拉列表，没隔一秒发送一次请求 (也可做防抖)\r\n\r\n代码如下，可以看出来**节流重在开关锁 `timer=null`**\r\n\r\n``` js\r\nfunction throttle (f, wait) {\r\n  let timer\r\n  return (...args) => {\r\n    if (timer) { return }\r\n    timer = setTimeout(() => {\r\n      f(...args)\r\n      timer = null\r\n    }, wait)\r\n  }\r\n}\r\n```\r\n\r\n## 总结 (简要答案)\r\n\r\n+ 防抖：防止抖动，单位时间内事件触发会被重置，避免事件被误伤触发多次。代码实现重在清零 `clearTimeout`\r\n+ 节流：控制流量，单位时间内事件只能触发一次，如果服务器端的限流即 Rate Limit。代码实现重在开锁关锁 `timer=timeout; timer=null`",
           "star": {
-            "totalCount": 1
+            "totalCount": 2
           },
           "author": {
             "login": "shfshanyue",
@@ -986,7 +986,7 @@
       "nodes": [
         {
           "id": "MDEyOklzc3VlQ29tbWVudDU1Mjc4NDQ1Ng==",
-          "body": "[fingerprintjs2](https://github.com/Valve/fingerprintjs2)",
+          "body": "由于不同的系统显卡绘制 `canvas` 时渲染参数、抗锯齿等算法不同，因此绘制成图片数据的 `CRC` 校验也不一样。\r\n\r\n``` js\r\nfunction getCanvasFp () {\r\n  const canvas = document.getElementById('canvas')\r\n  const ctx = canvas.getContext('2d')\r\n  ctx.font = '14px Arial'\r\n  ctx.fillStyle = '#ccc'\r\n  ctx.fillText('hello, shanyue', 2, 2)\r\n  return canvas.toDataURL('image/jpeg')\r\n}\r\n```\r\n\r\n因此根据 `canvas` 可以获取浏览器指纹信息。\r\n\r\n1. 绘制 `canvas`，获取 `base64` 的 dataurl\r\n1. 对 dataurl 这个字符串进行 `md5` 摘要计算，得到指纹信息\r\n\r\n但是对于常见的需求就有成熟的解决方案，若在生产环境使用，可以使用以下库\r\n\r\n+ [fingerprintjs2](https://github.com/Valve/fingerprintjs2)\r\n\r\n它依据以下信息，获取到浏览器指纹信息\r\n\r\n1. `canvas`\r\n1. `webgl`\r\n1. `UserAgent`\r\n1. `AudioContext`\r\n1. 对新式 API 的支持程度等\r\n\r\n``` js\r\nrequestIdleCallback(function () {\r\n  Fingerprint2.get((components) => {\r\n    const values = components.map((component) => component.value)\r\n    const fp = Fingerprint2.x64hash128(values.join(''), 31)\r\n  })\r\n})\r\n```\r\n\r\n## 简答\r\n\r\n根据 `canvas` 可以获取浏览器指纹信息\r\n\r\n1. 绘制 `canvas`，获取 `base64` 的 dataurl\r\n1. 对 dataurl 这个字符串进行 `md5` 摘要计算，得到指纹信息\r\n\r\n若在生产环境使用，可以使用 [fingerprintjs2](https://github.com/Valve/fingerprintjs2)",
           "star": {
             "totalCount": 0
           },
@@ -4479,7 +4479,7 @@
       "nodes": [
         {
           "id": "MDEyOklzc3VlQ29tbWVudDU2OTIxNzAyNg==",
-          "body": "``` js\r\n{\"a\":3,\"b\":4,\"c\":null}\r\n```\r\n\r\n对重中的 `null`，`function` 将在 `JSON.stringify` 时会忽略掉",
+          "body": "> ``` js\r\n> const obj = {\r\n>   a: 3,\r\n>   b: 4,\r\n>   c: null,\r\n>   d: undefined,\r\n>   get e () {}\r\n> }\r\n> ```\r\n> \r\n> console.log(JSON.stringify(obj))\r\n>\r\n> 输出什么？\r\n\r\n``` js\r\n{\"a\":3,\"b\":4,\"c\":null}\r\n```\r\n\r\n对其中的 `undefined`，`function` 将在 `JSON.stringify` 时会忽略掉",
           "star": {
             "totalCount": 0
           },
@@ -5265,7 +5265,19 @@
     "title": "【Q178】如何使用 css 写一个有 3D 效果的立方体",
     "body": "",
     "comments": {
-      "nodes": []
+      "nodes": [
+        {
+          "id": "MDEyOklzc3VlQ29tbWVudDY1NjQ0NDE0Mw==",
+          "body": "`<div class=\"warp\">\r\n\t<div class=\"box box1\">1</div>\r\n    <div class=\"box box2\">2</div>\r\n    <div class=\"box box3\">3</div>\r\n    <div class=\"box box4\">4</div>\r\n    <div class=\"box box5\">5</div>\r\n    <div class=\"box box6\">6</div>\r\n</div>`\r\n`* {\r\n\tmargin: 0;\r\n\tpadding: 0;\r\n}\r\n\r\nbody {\r\n\tperspective: none;\r\n\tperspective-origin: 50% 50%;\r\n}\r\n\r\n.warp {\r\n\twidth: 500px;\r\n\theight: 500px;\r\n\tmargin: 100px auto;\r\n\t\r\n\tposition: relative;\r\n\t\r\n\ttransform-style: preserve-3d;\r\n\t\r\n\ttransform: rotateX(45deg) rotateY(45deg);\r\n\t\r\n\tanimation: play 5s linear infinite;\r\n}\r\n\r\n.box {\r\n\twidth: 200px;\r\n\theight: 200px;\r\n\tborder: 2px solid #ccc;\r\n\t\r\n\ttext-align: center;\r\n\tline-height: 200px;\r\n\tfont-size: 150px;\r\n\tfont-weight: bold;\r\n\tcolor: #fff;\r\n\t\r\n\tposition: absolute;\r\n\ttop: 150px;\r\n\tleft: 150px;\r\n}\r\n\r\n.box1 {\r\n\tbackground: rgba(135,135,135,.3);\r\n\ttransform: rotateY(90deg) translateZ(100px);\r\n}\r\n\r\n.box2 {\r\n\tbackground: rgba(135,0,255,.3);\r\n\ttransform: rotateY(90deg) translateZ(-100px);\r\n}\r\n\r\n.box3 {\r\n\tbackground: rgba(255,125,125,.3);\r\n\ttransform: rotateX(90deg) translateZ(-100px);\r\n}\r\n\r\n.box4 {\r\n\tbackground: rgba(125,255,125,.3);\r\n\ttransform: rotateX(90deg) translateZ(100px);\r\n}\r\n\r\n.box5 {\r\n\tbackground: rgba(30,150,189,.3);\r\n\ttransform: translateZ(100px);\r\n}\r\n\r\n.box6 {\r\n\tbackground: rgba(169,150,189,.3);\r\n\ttransform: translateZ(-100px);\r\n}\r\n\r\n@keyframes play {\r\n\tfrom{ transform: rotateX(0) rotateY(0) rotateZ(0);}\r\n\tto {transform: rotateX(360deg) rotateY(180deg) rotateZ(90deg);}\r\n}`",
+          "star": {
+            "totalCount": 0
+          },
+          "author": {
+            "login": "lihan1k",
+            "url": "https://github.com/lihan1k"
+          }
+        }
+      ]
     },
     "labels": {
       "nodes": [
@@ -5833,6 +5845,17 @@
           "author": {
             "login": "blank121",
             "url": "https://github.com/blank121"
+          }
+        },
+        {
+          "id": "MDEyOklzc3VlQ29tbWVudDY1NzMzOTAwMQ==",
+          "body": "tree shaking通过扫描所有 ES6 的 export，找出被 import 的内容并添加到最终代码中。tree shaking的使用时 **源码必须遵循 ES6 的模块规范 (import & export)，如果是 CommonJS 规范 (require) 则无法使用。** 也就是说，需要给babel里面配置一下\"es6不要解析\"：\r\n```\r\n// .babelrc\r\n\r\n{\r\n    \"presets\": [\r\n        [\"es2015\", {\"modules\": false}]\r\n    ]\r\n}\r\n```\r\ntree shaking在webpack2.0里面需要进行手动设置，webpack3和webpack4里面为默认设置。\r\n### 一、对于方法的处理\r\n**通过tree shaking设置后，webpack里面会将没有使用的方法标记为：\r\n`unused harmony export xxx`，但代码仍然保留。（webpack编译后的源码里面仍然包含没有使用的方法）**\r\n随后使用`UglifyJSPlugin`进行第二步，将已经标记的没有使用的方法进行删除。\r\n### 二、对于类的处理\r\n**与标记方法不同，webpack打包时会将整个类进行标记，也就是说，即使类里面的方法没有被使用也会进行打包编译。** 这表明 webpack tree shaking 只处理顶层内容，例如类和对象内部都不会再被分别处理。\r\n综上所述，可以得出 **“对于已经 import 但未实际使用的模块使用 webpack 还会对它打包”** 。\r\n当然，想要精简代码是可以实现的，具体文章参考：[Webpack 之 treeShaking](https://www.jianshu.com/p/cf930283d404)",
+          "star": {
+            "totalCount": 0
+          },
+          "author": {
+            "login": "ming131419",
+            "url": "https://github.com/ming131419"
           }
         }
       ]
@@ -8719,7 +8742,19 @@
     "title": "【Q327】如何避免 CDN 为 PC 端缓存移动端页面",
     "body": "",
     "comments": {
-      "nodes": []
+      "nodes": [
+        {
+          "id": "MDEyOklzc3VlQ29tbWVudDY1NzE1NTk1OA==",
+          "body": "如果 PC 端和移动端是一套代码则不会出现这个问题。**这个问题出现在 PC 端和移动端是两套代码，却共用一个域名。**\r\n\r\n使用 `nginx` 配置如下，根据 UA 判断是否移动端，而走不同的逻辑 (判断UA是否移动端容易出问题)\r\n\r\n``` conf\r\nlocation / {\r\n    // 默认 PC 端\r\n    root /usr/local/website/web;\r\n    \r\n    # 判断 UA，访问移动端\r\n    if ( $http_user_agent ~* \"(Android|webOS|iPhone|iPad|BlackBerry)\" ){ \r\n        root /usr/local/website/mobile;\r\n    }\r\n \r\n    index index.html index.htm;\r\n}\r\n```\r\n\r\n解决方案通常使用 `Vary` 响应头，来控制 CDN 对不同请求头的缓存。\r\n\r\n**此处可以使用 `Vary: User-Agent` ，代表如果 User-Agent 不一样，则重新发起请求，而非从缓存中读取页面**\r\n\r\n``` txt\r\nVary: User-Agent\r\n```\r\n\r\n当然，`User-Agent` 实在过多，此时缓存失效就会过多。\r\n\r\n## 简答\r\n\r\n使用 `Vary: User-Agent`，根据 UA 进行缓存。\r\n\r\n``` txt\r\nVary: User-Agent\r\n```\r\n\r\n但最好不要出现这种情况，PC 端和移动端如果是两套代码，建议用两个域名，理由如下\r\n\r\n1. `nginx` 判断是否移动端容易出错\r\n1. 对缓存不友好\r\n",
+          "star": {
+            "totalCount": 0
+          },
+          "author": {
+            "login": "shfshanyue",
+            "url": "https://github.com/shfshanyue"
+          }
+        }
+      ]
     },
     "labels": {
       "nodes": [
@@ -8908,6 +8943,10 @@
         {
           "id": "MDU6TGFiZWwxNjUxNDAyMzIw",
           "name": "css"
+        },
+        {
+          "id": "MDU6TGFiZWwxNjUxNDAyMzEx",
+          "name": "open"
         }
       ]
     }
@@ -9366,7 +9405,19 @@
     "title": "【Q358】什么情况下会发送 OPTIONS 请求",
     "body": "",
     "comments": {
-      "nodes": []
+      "nodes": [
+        {
+          "id": "MDEyOklzc3VlQ29tbWVudDY1NjUyMzIyNQ==",
+          "body": "[搬运地址](https://blog.csdn.net/kahhy/article/details/81563063)\r\n1:请求的方法不是GET/HEAD/POST\r\n2:POST请求的Content-Type 异常\r\n3:请求设置了自定义的header字段\r\n",
+          "star": {
+            "totalCount": 0
+          },
+          "author": {
+            "login": "hedongxiaoshimei",
+            "url": "https://github.com/hedongxiaoshimei"
+          }
+        }
+      ]
     },
     "labels": {
       "nodes": [
@@ -9406,6 +9457,110 @@
         {
           "id": "MDU6TGFiZWwxNjgwMDkyMDA5",
           "name": "http"
+        }
+      ]
+    }
+  },
+  {
+    "id": "MDU6SXNzdWU2NTQ0ODg0NjQ=",
+    "number": 365,
+    "title": "【Q360】localhost 与 127.0.0.1 有什么区别",
+    "body": "",
+    "comments": {
+      "nodes": [
+        {
+          "id": "MDEyOklzc3VlQ29tbWVudDY1NjUyMDM1Ng==",
+          "body": "localhost 可以更改后指向其它地址。\r\n127.0.0.1 是约定的本机IP。\r\n类似互联网中域名与服务器IP的关系。",
+          "star": {
+            "totalCount": 0
+          },
+          "author": {
+            "login": "hedongxiaoshimei",
+            "url": "https://github.com/hedongxiaoshimei"
+          }
+        }
+      ]
+    },
+    "labels": {
+      "nodes": [
+        {
+          "id": "MDU6TGFiZWwxNjUxNDAyMzE0",
+          "name": "network"
+        }
+      ]
+    }
+  },
+  {
+    "id": "MDU6SXNzdWU2NTQ1NzUyMDE=",
+    "number": 366,
+    "title": "【Q361】既然 cors 配置可以做跨域控制，那可以防止 CSRF 攻击吗 ",
+    "body": "",
+    "comments": {
+      "nodes": [
+        {
+          "id": "MDEyOklzc3VlQ29tbWVudDY1NjY5NzU2Nw==",
+          "body": "**对 CORS 一点用也没有**\r\n\r\n1. **`form` 提交不通过 `CORS` 检测**，你可以在本地进行测试\r\n1.  即使通过 `xhr` 及 `fetch` 进行提交被 CORS 拦住，**但是对于简单请求而言，请求仍被发送**，已造成了攻击\r\n",
+          "star": {
+            "totalCount": 0
+          },
+          "author": {
+            "login": "shfshanyue",
+            "url": "https://github.com/shfshanyue"
+          }
+        }
+      ]
+    },
+    "labels": {
+      "nodes": [
+        {
+          "id": "MDU6TGFiZWwxNjgwMDkyMDA5",
+          "name": "http"
+        }
+      ]
+    }
+  },
+  {
+    "id": "MDU6SXNzdWU2NTU3ODEwMjg=",
+    "number": 367,
+    "title": "【Q362】js 动画和 css 动画那个性能比较好",
+    "body": "",
+    "comments": {
+      "nodes": []
+    },
+    "labels": {
+      "nodes": [
+        {
+          "id": "MDU6TGFiZWwxNzY5MDg5MzQ2",
+          "name": "dom"
+        }
+      ]
+    }
+  },
+  {
+    "id": "MDU6SXNzdWU2NTU3ODM0NDM=",
+    "number": 368,
+    "title": "【Q363】如何获取当前系统中的在线用户数 (并发用户数)",
+    "body": "一些 SaaS 系统基于 Pricing 的考虑，会限制团队人数及同时在线数，如何实现",
+    "comments": {
+      "nodes": [
+        {
+          "id": "MDEyOklzc3VlQ29tbWVudDY1NzUxMzc5Mw==",
+          "body": "> 一些 SaaS 系统基于 Pricing 的考虑，会限制团队人数及同时在线数，如何实现\r\n\r\n",
+          "star": {
+            "totalCount": 0
+          },
+          "author": {
+            "login": "shfshanyue",
+            "url": "https://github.com/shfshanyue"
+          }
+        }
+      ]
+    },
+    "labels": {
+      "nodes": [
+        {
+          "id": "MDU6TGFiZWwxNjUxNDAyMzIy",
+          "name": "server"
         }
       ]
     }
