@@ -648,7 +648,7 @@
         },
         {
           "id": "MDEyOklzc3VlQ29tbWVudDU2ODY1NTA5NQ==",
-          "body": "使用 `flex` 布局，左侧 `330px`，右侧 `flex-grow: 1`。`pug` 代码及 `css` 代码示例如下\r\n\r\n``` pug\r\n.container\r\n  .left\r\n  .main\r\n```\r\n\r\n``` css\r\n.container {\r\n  display: flex;\r\n}\r\n\r\n.left {\r\n  flex-basis: 330px;\r\n}\r\n\r\n.main {\r\n  flex-grow: 1;\r\n}\r\n```",
+          "body": "使用 `flex` 布局，左侧 `300px`，右侧 `flex-grow: 1`。`pug` 代码及 `css` 代码示例如下\r\n\r\n``` pug\r\n.container\r\n  .left\r\n  .main\r\n```\r\n\r\n``` css\r\n.container {\r\n  display: flex;\r\n}\r\n\r\n.left {\r\n  flex-basis: 300px;\r\n}\r\n\r\n.main {\r\n  flex-grow: 1;\r\n}\r\n```",
           "star": {
             "totalCount": 0
           },
@@ -986,7 +986,7 @@
       "nodes": [
         {
           "id": "MDEyOklzc3VlQ29tbWVudDU1Mjc4NDQ1Ng==",
-          "body": "由于不同的系统显卡绘制 `canvas` 时渲染参数、抗锯齿等算法不同，因此绘制成图片数据的 `CRC` 校验也不一样。\r\n\r\n``` js\r\nfunction getCanvasFp () {\r\n  const canvas = document.getElementById('canvas')\r\n  const ctx = canvas.getContext('2d')\r\n  ctx.font = '14px Arial'\r\n  ctx.fillStyle = '#ccc'\r\n  ctx.fillText('hello, shanyue', 2, 2)\r\n  return canvas.toDataURL('image/jpeg')\r\n}\r\n```\r\n\r\n因此根据 `canvas` 可以获取浏览器指纹信息。\r\n\r\n1. 绘制 `canvas`，获取 `base64` 的 dataurl\r\n1. 对 dataurl 这个字符串进行 `md5` 摘要计算，得到指纹信息\r\n\r\n但是对于常见的需求就有成熟的解决方案，若在生产环境使用，可以使用以下库\r\n\r\n+ [fingerprintjs2](https://github.com/Valve/fingerprintjs2)\r\n\r\n它依据以下信息，获取到浏览器指纹信息\r\n\r\n1. `canvas`\r\n1. `webgl`\r\n1. `UserAgent`\r\n1. `AudioContext`\r\n1. 对新式 API 的支持程度等\r\n\r\n``` js\r\nrequestIdleCallback(function () {\r\n  Fingerprint2.get((components) => {\r\n    const values = components.map((component) => component.value)\r\n    const fp = Fingerprint2.x64hash128(values.join(''), 31)\r\n  })\r\n})\r\n```\r\n\r\n## 简答\r\n\r\n根据 `canvas` 可以获取浏览器指纹信息\r\n\r\n1. 绘制 `canvas`，获取 `base64` 的 dataurl\r\n1. 对 dataurl 这个字符串进行 `md5` 摘要计算，得到指纹信息\r\n\r\n若在生产环境使用，可以使用 [fingerprintjs2](https://github.com/Valve/fingerprintjs2)",
+          "body": "由于不同的系统显卡绘制 `canvas` 时渲染参数、抗锯齿等算法不同，因此绘制成图片数据的 `CRC` 校验也不一样。\r\n\r\n``` js\r\nfunction getCanvasFp () {\r\n  const canvas = document.getElementById('canvas')\r\n  const ctx = canvas.getContext('2d')\r\n  ctx.font = '14px Arial'\r\n  ctx.fillStyle = '#ccc'\r\n  ctx.fillText('hello, shanyue', 2, 2)\r\n  return canvas.toDataURL('image/jpeg')\r\n}\r\n```\r\n\r\n因此根据 `canvas` 可以获取浏览器指纹信息。\r\n\r\n1. 绘制 `canvas`，获取 `base64` 的 dataurl\r\n1. 对 dataurl 这个字符串进行 `md5` 摘要计算，得到指纹信息\r\n\r\n但是对于常见的需求就有成熟的解决方案，若在生产环境使用，可以使用以下库\r\n\r\n+ [fingerprintjs2](https://github.com/Valve/fingerprintjs2)\r\n\r\n它依据以下信息，获取到浏览器指纹信息，**而这些信息，则成为 `component`**\r\n\r\n1. `canvas`\r\n1. `webgl`\r\n1. `UserAgent`\r\n1. `AudioContext`\r\n1. 对新式 API 的支持程度等\r\n\r\n``` js\r\nrequestIdleCallback(function () {\r\n  Fingerprint2.get((components) => {\r\n    const values = components.map((component) => component.value)\r\n    const fp = Fingerprint2.x64hash128(values.join(''), 31)\r\n  })\r\n})\r\n```\r\n\r\n在 `fingerprintjs2` 中，对于 `component` 也有分类\r\n\r\n+ [browser independent component](https://github.com/Valve/fingerprintjs2/wiki/Browser-independent-components)：有些 `component` 同一设备跨浏览器也可以得到相同的值，有些独立浏览器，得到不同的值\r\n+ [stable component](https://github.com/Valve/fingerprintjs2/wiki/Stable-components): 有些 `component` 刷新后值就会发生变化，称为不稳定组件\r\n\r\n在实际业务中，可根据业务选择合适的组件\r\n\r\n``` js\r\nconst options = {\r\n  excludes: {userAgent: true, language: true}\r\n}\r\n```\r\n\r\n## 简答\r\n\r\n根据 `canvas` 可以获取浏览器指纹信息\r\n\r\n1. 绘制 `canvas`，获取 `base64` 的 dataurl\r\n1. 对 dataurl 这个字符串进行 `md5` 摘要计算，得到指纹信息\r\n\r\n若在生产环境使用，可以使用 [fingerprintjs2](https://github.com/Valve/fingerprintjs2)，根据业务需求，如单设备是否可跨浏览器，以此选择合适的 `component`",
           "star": {
             "totalCount": 0
           },
@@ -8353,7 +8353,7 @@
       "nodes": [
         {
           "id": "MDEyOklzc3VlQ29tbWVudDYzNzQ1MjAyOA==",
-          "body": "通过 `css3` 中选择器 `:nth-child` 来实现\r\n\r\n``` css\r\ntr:nth-child(2n) {\r\n  background-color: red;\r\n}\r\n\r\n\r\ntr:nth-child(2n+1) {\r\n  background-color: blue;\r\n}\r\n```",
+          "body": "通过 `css3` 中伪类 `:nth-child` 来实现。其中 `:nth-child(an+b)` 匹配下标 `{ an + b; n = 0, 1, 2, ...} ` 且结果为整数的子元素\r\n\r\n+ `nth-child(2n)`/`nth-child(even)`: 双行样式\r\n+ `nth-child(2n+1)`/`nth-child(odd)`: 单行样式\r\n\r\n其中 `tr` 在表格中代表行，实现表格中单双行样式就很简单了：\r\n\r\n``` css\r\ntr:nth-child(2n) {\r\n  background-color: red;\r\n}\r\n\r\n\r\ntr:nth-child(2n+1) {\r\n  background-color: blue;\r\n}\r\n```\r\n\r\n同理：\r\n\r\n1. 如何匹配最前三个子元素: `:nth-child(-n+3)`\r\n1. 如何匹配最后三个子元素: `:nth-last-child(-n+3)`",
           "star": {
             "totalCount": 0
           },
@@ -9561,6 +9561,35 @@
         {
           "id": "MDU6TGFiZWwxNjUxNDAyMzIy",
           "name": "server"
+        }
+      ]
+    }
+  },
+  {
+    "id": "MDU6SXNzdWU2NTk4Njk1NTk=",
+    "number": 369,
+    "title": "【Q364】css 如何匹配前N个子元素及最后N个子元素",
+    "body": "",
+    "comments": {
+      "nodes": [
+        {
+          "id": "MDEyOklzc3VlQ29tbWVudDY2MDQxODQwNA==",
+          "body": "见 [【Q307】如何实现表格单双行条纹样式](https://github.com/shfshanyue/Daily-Question/issues/309)\r\n\r\n+ 如何匹配最前三个子元素: `:nth-child(-n+3)`\r\n+ 如何匹配最后三个子元素: `:nth-last-child(-n+3)`",
+          "star": {
+            "totalCount": 0
+          },
+          "author": {
+            "login": "shfshanyue",
+            "url": "https://github.com/shfshanyue"
+          }
+        }
+      ]
+    },
+    "labels": {
+      "nodes": [
+        {
+          "id": "MDU6TGFiZWwxNjUxNDAyMzIw",
+          "name": "css"
         }
       ]
     }
