@@ -2,6 +2,7 @@ import fetch from 'node-fetch'
 import { GraphQLClient } from 'graphql-request'
 import fs from 'fs'
 import path from 'path'
+import { retry, sleep } from '@shanyue/promise-utils'
 
 import { getSdk } from '../github/query'
 
@@ -28,7 +29,11 @@ async function getIssues (after: string | undefined = undefined): Promise<any> {
   return ([...issues?.nodes || [], ...moreIssues]).filter(issue => issue.title.startsWith('【Q'))
 }
 
-getIssues().then(data => {
+retry(async (i: number) => {
+  console.log('Retring ', i)
+  await sleep(300)
+  return getIssues()
+}, { times: 10 }).then(data => {
   fs.writeFileSync(path.resolve(__dirname, '../data/issues.json'), JSON.stringify(data, null, 2))
 }).catch((e) => {
   console.error(e)

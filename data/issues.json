@@ -10,7 +10,7 @@
           "id": "MDEyOklzc3VlQ29tbWVudDU0OTEzMzE0NQ==",
           "body": "懒加载，顾名思义，在当前网页，滑动页面到能看到图片的时候再加载图片\r\n\r\n故问题拆分成两个：\r\n\r\n1. 如何判断图片出现在了当前视口 （即如何判断我们能够看到图片）\r\n2. 如何控制图片的加载\r\n\r\n## 方案一\r\n\r\n### 如何判断图片出现在了当前视口\r\n\r\n`clientTop`，`offsetTop`，`clientHeight` 以及 `scrollTop` 各种关于图片的高度作比对\r\n\r\n这些高度都代表了什么意思？\r\n\r\n这我以前有可能是知道的，那时候我比较单纯，喜欢死磕。我现在想通了，背不过的东西就不要背了\r\n\r\n**所以它有一个问题：复杂琐碎不好理解！**\r\n\r\n仅仅知道它静态的高度还不够，我们还需要知道动态的\r\n\r\n**如何动态？监听 `window.scroll` 事件**\r\n\r\n### 如何控制图片的加载\r\n\r\n``` html\r\n<img data-src=\"shanyue.jpg\">\r\n```\r\n\r\n首先设置一个临时属性 `data-src`，控制加载时使用 `src` 代替 `data-src`\r\n\r\n## 方案二\r\n\r\n改进一下\r\n\r\n### 如何判断图片出现在了当前视口\r\n\r\n引入一个新的 API， **`Element.getBoundingClientRect()` 方法返回元素的大小及其相对于视口的位置。**\r\n\r\n<img alt=\"getBoundingClientRect示例图\" src=\"https://mdn.mozillademos.org/files/15087/rect.png\">\r\n\r\n那如何判断图片出现在了当前视口呢，根据示例图示意，代码如下，这个就比较好理解了，就可以很容易地背会(就可以愉快地去面试了)。\r\n\r\n``` js\r\n// clientHeight 代表当前视口的高度\r\nimg.getBoundingClientRect().top < document.documentElement.clientHeight\r\n```\r\n\r\n**监听 `window.scroll` 事件也优化一下**\r\n\r\n加个节流器，提高性能。工作中一般使用 `lodash.throttle` 就可以了，万能的 `lodash` 啊！\r\n\r\n``` js\r\n_.throttle(func, [wait=0], [options={}])\r\n```\r\n\r\n参考 [什么是防抖和节流，他们的应用场景有哪些](https://github.com/shfshanyue/Daily-Question/issues/3)\r\n\r\n## 方案三\r\n\r\n再改进一下\r\n\r\n### 如何判断图片出现在了当前视口\r\n\r\n**方案二使用的方法是: `window.scroll` 监听 `Element.getBoundingClientRect()` 并使用 `_.throttle` 节流**\r\n\r\n**一系列组合动作太复杂了，于是浏览器出了一个三合一事件: `IntersectionObserver` API，一个能够监听元素是否到了当前视口的事件，一步到位！**\r\n\r\n事件回调的参数是 [IntersectionObserverEntry](https://developer.mozilla.org/en-US/docs/Web/API/IntersectionObserverEntry) 的集合，代表关于是否在可见视口的一系列值\r\n\r\n其中，`entry.isIntersecting` 代表目标元素可见\r\n\r\n``` javascript\r\nconst observer = new IntersectionObserver((changes) => {\r\n  // changes: 目标元素集合\r\n  changes.forEach((change) => {\r\n    // intersectionRatio\r\n    if (change.isIntersecting) {\r\n      const img = change.target\r\n      img.src = img.dataset.src\r\n      observer.unobserve(img)\r\n    }\r\n  })\r\n})\r\n\r\nobserver.observe(img)\r\n```\r\n\r\n**当然，`IntersectionObserver` 除了给图片做懒加载外，还可以对单页应用资源做预加载。**\r\n\r\n如在 `next.js v9` 中，会对视口内的资源做预加载，可以参考 [next 9 production optimizations](https://nextjs.org/blog/next-9#production-optimizations)\r\n\r\n``` jsx\r\n<Link href=\"/about\">\r\n  <a>关于山月</a>\r\n</Link>\r\n```\r\n\r\n## 方案四\r\n\r\n浏览器觉得懒加载这事可以交给自己做，你们开发者加个属性就好了。实在是...！\r\n\r\n``` html\r\n<img src=\"shanyue.jpg\" loading=\"lazy\">\r\n```\r\n\r\n不过目前浏览器兼容性不太好，关于 `loading` 属性的文章也可以查看 [Native image lazy-loading for the web!](https://addyosmani.com/blog/lazy-loading/)\r\n",
           "star": {
-            "totalCount": 6
+            "totalCount": 7
           },
           "author": {
             "login": "shfshanyue",
@@ -26,6 +26,17 @@
           "author": {
             "login": "zhaoguangyue",
             "url": "https://github.com/zhaoguangyue"
+          }
+        },
+        {
+          "id": "MDEyOklzc3VlQ29tbWVudDY2MDkyNzE1MQ==",
+          "body": "intersectionObserver ",
+          "star": {
+            "totalCount": 0
+          },
+          "author": {
+            "login": "hanhang123",
+            "url": "https://github.com/hanhang123"
           }
         }
       ]
@@ -340,8 +351,8 @@
             "totalCount": 0
           },
           "author": {
-            "login": "geekftz",
-            "url": "https://github.com/geekftz"
+            "login": "hackftz",
+            "url": "https://github.com/hackftz"
           }
         },
         {
@@ -648,9 +659,9 @@
         },
         {
           "id": "MDEyOklzc3VlQ29tbWVudDU2ODY1NTA5NQ==",
-          "body": "使用 `flex` 布局，左侧 `300px`，右侧 `flex-grow: 1`。`pug` 代码及 `css` 代码示例如下\r\n\r\n``` pug\r\n.container\r\n  .left\r\n  .main\r\n```\r\n\r\n``` css\r\n.container {\r\n  display: flex;\r\n}\r\n\r\n.left {\r\n  flex-basis: 300px;\r\n}\r\n\r\n.main {\r\n  flex-grow: 1;\r\n}\r\n```",
+          "body": "使用 `flex` 布局，左侧 `300px`，右侧 `flex-grow: 1`。`pug` 代码及 `css` 代码示例如下\r\n\r\n``` pug\r\n.container\r\n  .left\r\n  .main\r\n```\r\n\r\n``` css\r\n.container {\r\n  display: flex;\r\n}\r\n\r\n.left {\r\n  flex-basis: 300px;\r\n}\r\n\r\n.main {\r\n  flex-grow: 1;\r\n}\r\n```\r\n\r\n此处看起来比较圆满了，其实还有一个缺陷: **如果 .main 区域过大挤压 .left 区域怎么办**，此时还需要加一个禁止挤压\r\n\r\n``` css\r\n.left {\r\n  flex-basis: 300px;\r\n  flex-shrink: 0;\r\n}\r\n```\r\n\r\n## 总结\r\n\r\n使用 `flex` 进行如下布局\r\n\r\n``` pug\r\n.container\r\n  .left\r\n  .main\r\n```\r\n\r\n``` css\r\n.container {\r\n  display: flex;\r\n}\r\n\r\n.left {\r\n  flex-basis: 300px;\r\n  flex-shrink: 0;\r\n}\r\n\r\n.main {\r\n  flex-grow: 1;\r\n}\r\n```",
           "star": {
-            "totalCount": 0
+            "totalCount": 1
           },
           "author": {
             "login": "shfshanyue",
@@ -5328,7 +5339,19 @@
     "title": "【Q181】如何用一行代码实现 compose 函数",
     "body": "",
     "comments": {
-      "nodes": []
+      "nodes": [
+        {
+          "id": "MDEyOklzc3VlQ29tbWVudDY2MTU2NDM1NA==",
+          "body": "```\r\nfunction compose() {\r\n\r\n  let fns = [...arguments];\r\n\r\n  return function() {\r\n    let args = [...arguments];\r\n    let result = fns.reduce((ret, fn) => {\r\n      ret = fn.apply(this, ret);\r\n      return Array.isArray(ret) ? ret : [ret];\r\n    }, args);\r\n    \r\n    return result;\r\n  }\r\n}\r\n\r\nlet toUpperCase = (x) => x.toUpperCase();\r\nlet exclaim = (x) => x + '!';\r\nlet shout = compose(toUpperCase,exclaim);\r\nlet str = shout('hello world');\r\nconsole.log(str);\r\n```\r\n\r\n第一次试着写，简单查了一下compose是什么意思，竟然拼凑出来了。请各位指正。  :smile:",
+          "star": {
+            "totalCount": 0
+          },
+          "author": {
+            "login": "LRQLRQ",
+            "url": "https://github.com/LRQLRQ"
+          }
+        }
+      ]
     },
     "labels": {
       "nodes": [
@@ -7681,7 +7704,19 @@
     "title": "【Q278】为什么不能在表达式里面定义 react hooks",
     "body": "",
     "comments": {
-      "nodes": []
+      "nodes": [
+        {
+          "id": "MDEyOklzc3VlQ29tbWVudDY2MDkyNDk4Mg==",
+          "body": "https://zh-hans.reactjs.org/docs/hooks-rules.html#explanation",
+          "star": {
+            "totalCount": 0
+          },
+          "author": {
+            "login": "Kffhi",
+            "url": "https://github.com/Kffhi"
+          }
+        }
+      ]
     },
     "labels": {
       "nodes": [
@@ -8333,7 +8368,19 @@
     "title": "【Q306】如何实现左右固定，中间自适应布局",
     "body": "",
     "comments": {
-      "nodes": []
+      "nodes": [
+        {
+          "id": "MDEyOklzc3VlQ29tbWVudDY2MDYxMTkzOA==",
+          "body": "可以参考 [【Q017】css 如何实现左侧固定300px，右侧自适应的布局](https://github.com/shfshanyue/Daily-Question/issues/18)\r\n\r\n\r\n``` pug\r\n.container\r\n  .left\r\n  .main\r\n  .right\r\n```\r\n\r\n``` css\r\n.container {\r\n  display: flex;\r\n}\r\n\r\n.left {\r\n  flex-basis: 300px;\r\n  flex-shrink: 0;\r\n}\r\n\r\n.right {\r\n  flex-basis: 300px;\r\n  flex-shrink: 0;\r\n}\r\n\r\n.main {\r\n  flex-grow: 1;\r\n}\r\n```",
+          "star": {
+            "totalCount": 0
+          },
+          "author": {
+            "login": "shfshanyue",
+            "url": "https://github.com/shfshanyue"
+          }
+        }
+      ]
     },
     "labels": {
       "nodes": [
@@ -8396,7 +8443,19 @@
     "title": "【Q309】简述下 css specificity",
     "body": "",
     "comments": {
-      "nodes": []
+      "nodes": [
+        {
+          "id": "MDEyOklzc3VlQ29tbWVudDY2MDYxNjUyMA==",
+          "body": "`css specificity` 即 css 中关于选择器的权重，以下三种类型的选择器依次下降\r\n\r\n1. `id` 选择器，如 `#app`\r\n1. `class`、`attribute` 与 `pseudo-classes` 选择器，如 `.header`、`[type=\"radio\"]` 与 `:hover`\r\n1. `type` 标签选择器，如 `h1` 和 `p`\r\n\r\n其中通配符选择器 `*`，组合选择器 `+ ~ >`，否定伪类选择器 `:not()` 对优先级无影响\r\n\r\n另有内联样式 `<div class=\"foo\" style=\"color: red;\"></div>` 及 `!important`(最高) 具有更高的权重\r\n\r\n> [`:not` 的优先级影响 - codepen](https://codepen.io/shanyue/pen/dyGQqBe) 可以看出 `:not` 对选择器的优先级无任何影响",
+          "star": {
+            "totalCount": 0
+          },
+          "author": {
+            "login": "shfshanyue",
+            "url": "https://github.com/shfshanyue"
+          }
+        }
+      ]
     },
     "labels": {
       "nodes": [
@@ -8974,7 +9033,19 @@
     "title": "【Q339】伪类与伪元素有什么区别",
     "body": "",
     "comments": {
-      "nodes": []
+      "nodes": [
+        {
+          "id": "MDEyOklzc3VlQ29tbWVudDY2MDYxNzY4OQ==",
+          "body": "1. 伪类使用单冒号，而伪元素使用双冒号。如 `:hover` 是伪类，`::before` 是伪元素\r\n1. 伪元素会在文档流生成一个新的元素，并且可以使用 `content` 属性设置内容\r\n\r\n参考 <https://www.w3.org/TR/CSS2/selector.html#pseudo-elements>",
+          "star": {
+            "totalCount": 0
+          },
+          "author": {
+            "login": "shfshanyue",
+            "url": "https://github.com/shfshanyue"
+          }
+        }
+      ]
     },
     "labels": {
       "nodes": [
@@ -9163,7 +9234,19 @@
     "title": "【Q348】node 中 module.exports 与 exports 有什么区别",
     "body": "",
     "comments": {
-      "nodes": []
+      "nodes": [
+        {
+          "id": "MDEyOklzc3VlQ29tbWVudDY2MTA5NzQzMQ==",
+          "body": "`exports` 是 `module.exports` 的引用，类似如下所示\r\n\r\n``` js\r\nconst exports = module.exports\r\n```\r\n\r\n那如下结果会如何导出？\r\n\r\n``` js\r\nmodule.exports = 100\r\nexports = 3\r\n```\r\n\r\n很显然会导出 100，毕竟 `exports` 进行了重指向。\r\n\r\n**那在 node 源码中如何实现的呢？** 从源码里可以看出 **exports** 的实质\r\n\r\n![module wrapper](https://shanyue.tech/assets/img/module-wrapper.70557e4e.png)\r\n\r\n详见源码: <https://github.com/nodejs/node/blob/master/lib/internal/modules/cjs/loader.js#L1252>，可以看出符合猜想\r\n\r\n众所周知，node 中所有的模块代码都被包裹在这个函数中\r\n\r\n``` js\r\n(function(exports, require, module, __filename, __dirname) {\r\n  exports.a = 3\r\n});\r\n```\r\n\r\n而以下源码指出，`exports` 是如何得来\r\n\r\n``` js\r\nconst dirname = path.dirname(filename);\r\nconst require = makeRequireFunction(this, redirects);\r\nlet result;\r\n// 从这里可以看出来 exports 的实质\r\nconst exports = this.exports;\r\nconst thisValue = exports;\r\nconst module = this;\r\nif (requireDepth === 0) statCache = new Map();\r\nif (inspectorWrapper) {\r\n  result = inspectorWrapper(compiledWrapper, thisValue, exports,\r\n                            require, module, filename, dirname);\r\n} else {\r\n\r\n  // 这里是模块包装函数\r\n  result = compiledWrapper.call(thisValue, exports, require, module,\r\n                                filename, dirname);\r\n}\r\n```\r\n\r\n",
+          "star": {
+            "totalCount": 0
+          },
+          "author": {
+            "login": "shfshanyue",
+            "url": "https://github.com/shfshanyue"
+          }
+        }
+      ]
     },
     "labels": {
       "nodes": [
@@ -9443,7 +9526,7 @@
           "id": "MDEyOklzc3VlQ29tbWVudDY1NTg2Mjg2NA==",
           "body": "`CORS` 通过控制 `Access-Control-Allow-Origin` 控制哪些域名可以共享资源，取值如下\r\n\r\n``` bash\r\nAccess-Control-Allow-Origin: <origin> | *\r\n```\r\n\r\n其中 `*` 代表所有域名，`origin` 代表指定特定域名，那如何设置多个域名了？\r\n\r\n此时需要通过代码实现，**根据请求头中的 `Origin` 来设置响应头 `Access-Control-Allow-Origin`**，那 Origin 又是什么东西？\r\n\r\n## 请求头: Origin\r\n\r\n并不是所有请求都会自动带上 `Origin`，在浏览器中带 `Origin` 的逻辑如下\r\n\r\n1. 如果存在跨域，则带上 `Origin`，值为当前域名\r\n1. 如果不存在跨域，则不带 `Origin`\r\n\r\n逻辑理清楚后，关于服务器中对于 `Access-Control-Allow-Origin` 设置多域名的逻辑也很清晰了\r\n\r\n1. 如果请求头不带有 `Origin`，证明未跨域，则不作任何处理\r\n1. 如果请求头带有 `Origin`，证明跨域，根据 `Origin` 设置相应的 `Access-Control-Allow-Origin: <Origin>`\r\n\r\n使用伪代码实现如下:\r\n\r\n``` js\r\n// 获取 Origin 请求头\r\nconst requestOrigin = ctx.get('Origin');\r\n\r\n// 如果没有，则跳过\r\nif (!requestOrigin) {\r\n  return await next();\r\n}\r\n\r\n// 设置响应头\r\nctx.set('Access-Control-Allow-Origin', requestOrigin)\r\n```\r\n\r\n## Vary: Origin\r\n\r\n此时可以给多个域名控制 CORS，但此时假设有两个域名访问 `static.shanyue.tech` 的跨域资源\r\n\r\n1. `foo.shanyue.tech`，响应头中返回 `Access-Control-Allow-Origin: foo.shanyue.tech`\r\n1. `bar.shanyue.tech`，响应头中返回 `Access-Control-Allow-Origin: bar.shanyue.tech`\r\n\r\n看起来一切正常，但如果中间有缓存怎么办？\r\n\r\n1. `foo.shanyue.tech`，响应头中返回 `Access-Control-Allow-Origin: foo.shanyue.tech`，被 CDN 缓存\r\n1. **`bar.shanyue.tech`，因由缓存，响应头中返回 `Access-Control-Allow-Origin: foo.shanyue.tech`，跨域出现问题**\r\n\r\n此时，`Vary: Origin` 就上场了，代表为不同的 `Origin` 缓存不同的资源\r\n\r\n## 总结 (简要答案)\r\n\r\nCORS 如何指定多个域名？\r\n\r\n**根据请求头中的 `Origin` 来设置响应头 `Access-Control-Allow-Origin`**，思路如下\r\n\r\n1. 总是设置 `Vary: Origin`，避免 CDN 缓存破坏 CORS 配置\r\n1. 如果请求头不带有 `Origin`，证明未跨域，则不作任何处理\r\n1. 如果请求头带有 `Origin`，证明浏览器访问跨域，根据 `Origin` 设置相应的 `Access-Control-Allow-Origin: <Origin>` \r\n\r\n使用伪代码实现如下\r\n\r\n``` js\r\n// 获取 Origin 请求头\r\nconst requestOrigin = ctx.get('Origin');\r\n\r\nctx.set('Vary', 'Origin')\r\n\r\n// 如果没有，则跳过\r\nif (!requestOrigin) {\r\n  return await next();\r\n}\r\n\r\n// 设置响应头\r\nctx.set('Access-Control-Allow-Origin', requestOrigin)\r\n```\r\n\r\n>  相关问题：[如何避免 CDN 为 PC 端缓存移动端页面](https://github.com/shfshanyue/Daily-Question/issues/330)",
           "star": {
-            "totalCount": 0
+            "totalCount": 1
           },
           "author": {
             "login": "shfshanyue",
@@ -9472,11 +9555,22 @@
           "id": "MDEyOklzc3VlQ29tbWVudDY1NjUyMDM1Ng==",
           "body": "localhost 可以更改后指向其它地址。\r\n127.0.0.1 是约定的本机IP。\r\n类似互联网中域名与服务器IP的关系。",
           "star": {
-            "totalCount": 0
+            "totalCount": 1
           },
           "author": {
             "login": "hedongxiaoshimei",
             "url": "https://github.com/hedongxiaoshimei"
+          }
+        },
+        {
+          "id": "MDEyOklzc3VlQ29tbWVudDY2MjIwMTI4Ng==",
+          "body": "对99.99%的人来说**没有区别**",
+          "star": {
+            "totalCount": 0
+          },
+          "author": {
+            "login": "libin1991",
+            "url": "https://github.com/libin1991"
           }
         }
       ]
@@ -9545,7 +9639,7 @@
       "nodes": [
         {
           "id": "MDEyOklzc3VlQ29tbWVudDY1NzUxMzc5Mw==",
-          "body": "> 一些 SaaS 系统基于 Pricing 的考虑，会限制团队人数及同时在线数，如何实现\r\n\r\n",
+          "body": "> 一些 SaaS 系统基于定价策略的考虑，会限制团队人数及同时在线数，如何实现？\r\n\r\n通过 `redis` 的 `zset` 可实现并发用户数。\r\n\r\n当一个用户请求任何接口时，实现一个 middleware，处理以下逻辑\r\n\r\n``` js\r\n// 当一个用户访问任何接口时，对该用户Id，写入 zset\r\nawait redis.zadd(`Organization:${organizationId}:concurrent`, Date.now(), `User:${userId}`)\r\n\r\n// 查询当前机构的并发数\r\n// 通过查询一分钟内的活跃用户来确认并发数，如果超过则抛出特定异常\r\nconst activeUsers = await redis.zrangebyscore(`Organization:${organizationId}:concurrent`, Date.now() - 1000 * 60, Date.now())\r\n\r\n// 查出并发数\r\nconst count = activeUsers.length\r\n\r\n// 删掉过期的用户\r\nawait redis.zrembyscore(`Organization:${organizationId}:concurrent`, Date.now() - 1000 * 60, Date.now())\r\n```\r\n\r\n## 总结\r\n\r\n1. 每当用户访问服务时，把该用户的 ID 写入优先级队列，权重为当前时间\r\n1. 根据权重(即时间)计算一分钟内该机构的用户数\r\n1. 删掉一分钟以上过期的用户\r\n",
           "star": {
             "totalCount": 0
           },

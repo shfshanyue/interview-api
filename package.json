@@ -21,13 +21,14 @@
     "npm-check-updates": "^7.0.2"
   },
   "devDependencies": {
-    "@types/lodash": "^4.14.157",
     "@graphql-codegen/cli": "^1.17.0",
     "@graphql-codegen/typescript": "^1.17.0",
-    "graphql-request": "^2.0.0",
     "@graphql-codegen/typescript-graphql-request": "^1.17.0",
     "@graphql-codegen/typescript-operations": "^1.17.0",
+    "@shanyue/promise-utils": "^2.0.4",
+    "@types/lodash": "^4.14.157",
     "@types/node": "^14.0.23",
+    "graphql-request": "^2.0.0",
     "node-fetch": "^2.6.0",
     "nodemon": "^2.0.4",
     "ts-node": "^8.10.2",
