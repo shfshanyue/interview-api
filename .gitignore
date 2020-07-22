@@ -2,3 +2,4 @@ node_modules
 *.js
 .env
 .serverless
+!bin/interview.js
