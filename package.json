@@ -5,6 +5,7 @@
   "scripts": {
     "dev": "nodemon index.ts",
     "build": "tsc",
+    "ncu": "ncu",
     "debug": "node -r ts-node/register --inspect index.ts",
     "codegen": "graphql-codegen --config github/codegen.yaml",
     "issues": "ts-node scripts/issues.ts"

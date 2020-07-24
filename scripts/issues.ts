@@ -33,7 +33,7 @@ retry(async (i: number) => {
   console.log('Retring ', i)
   await sleep(300)
   return getIssues()
-}, { times: 10 }).then(data => {
+}, { times: 100 }).then(data => {
   fs.writeFileSync(path.resolve(__dirname, '../data/issues.json'), JSON.stringify(data, null, 2))
 }).catch((e) => {
   console.error(e)

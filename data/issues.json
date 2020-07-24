@@ -449,6 +449,17 @@
             "login": "xiaoai7904",
             "url": "https://github.com/xiaoai7904"
           }
+        },
+        {
+          "id": "MDEyOklzc3VlQ29tbWVudDY2MzUwOTUzNw==",
+          "body": "1. 可以提高实例初始化启动速度，优化数据响应式系统，由全部监听改为惰性监听（lazy by default)。\r\n2. 数据响应式系统全语言特性支持，添加数组索引修改监听，对象的属性增加和删除。",
+          "star": {
+            "totalCount": 0
+          },
+          "author": {
+            "login": "konglingwen94",
+            "url": "https://github.com/konglingwen94"
+          }
         }
       ]
     },
@@ -8446,7 +8457,7 @@
       "nodes": [
         {
           "id": "MDEyOklzc3VlQ29tbWVudDY2MDYxNjUyMA==",
-          "body": "`css specificity` 即 css 中关于选择器的权重，以下三种类型的选择器依次下降\r\n\r\n1. `id` 选择器，如 `#app`\r\n1. `class`、`attribute` 与 `pseudo-classes` 选择器，如 `.header`、`[type=\"radio\"]` 与 `:hover`\r\n1. `type` 标签选择器，如 `h1` 和 `p`\r\n\r\n其中通配符选择器 `*`，组合选择器 `+ ~ >`，否定伪类选择器 `:not()` 对优先级无影响\r\n\r\n另有内联样式 `<div class=\"foo\" style=\"color: red;\"></div>` 及 `!important`(最高) 具有更高的权重\r\n\r\n> [`:not` 的优先级影响 - codepen](https://codepen.io/shanyue/pen/dyGQqBe) 可以看出 `:not` 对选择器的优先级无任何影响",
+          "body": "`css specificity` 即 css 中关于选择器的权重，以下三种类型的选择器依次下降\r\n\r\n1. `id` 选择器，如 `#app`\r\n1. `class`、`attribute` 与 `pseudo-classes` 选择器，如 `.header`、`[type=\"radio\"]` 与 `:hover`\r\n1. `type` 标签选择器和伪元素选择器，如 `h1`、`p` 和 `::before`\r\n\r\n其中通配符选择器 `*`，组合选择器 `+ ~ >`，否定伪类选择器 `:not()` 对优先级无影响\r\n\r\n另有内联样式 `<div class=\"foo\" style=\"color: red;\"></div>` 及 `!important`(最高) 具有更高的权重\r\n\r\n> [`:not` 的优先级影响 - codepen](https://codepen.io/shanyue/pen/dyGQqBe) 可以看出 `:not` 对选择器的优先级无任何影响",
           "star": {
             "totalCount": 0
           },
@@ -8489,7 +8500,19 @@
     "title": "【Q311】当 cookie 没有设置 maxage 时，cookie 会存在多久",
     "body": "",
     "comments": {
-      "nodes": []
+      "nodes": [
+        {
+          "id": "MDEyOklzc3VlQ29tbWVudDY2MjI2OTQ2OQ==",
+          "body": "不设置max-age和expires，此cookie就是会话级别的，浏览器关闭就没了\r\n",
+          "star": {
+            "totalCount": 0
+          },
+          "author": {
+            "login": "lznbuild",
+            "url": "https://github.com/lznbuild"
+          }
+        }
+      ]
     },
     "labels": {
       "nodes": [
@@ -8526,7 +8549,7 @@
       "nodes": [
         {
           "id": "MDEyOklzc3VlQ29tbWVudDY0MDk4NTczMg==",
-          "body": "通过 `Clipboard API` 可以获取剪切板中内容，但需要获取到 `clipboard-read` 的权限\r\n\r\n``` js\r\nnavigator.clipboard.readText().then(text => console.log(text))\r\n```\r\n\r\n > 注: 该方法在 devtool 中不生效\r\n\r\n相关问题: [【Q019】如何实现选中复制的功能](https://github.com/shfshanyue/Daily-Question/issues/20)\r\n",
+          "body": "通过 `Clipboard API` 可以获取剪切板中内容，但需要获取到 `clipboard-read` 的权限，以下是关于读取剪贴板内容的代码：\r\n\r\n``` js\r\n// 是否能够有读取剪贴板的权限\r\n// result.state == \"granted\" || result.state == \"prompt\"\r\nconst result = await navigator.permissions.query({ name: \"clipboard-read\" })\r\n\r\n// 获取剪贴板内容\r\nconst text = await navigator.clipboard.readText()\r\n```\r\n\r\n > 注: 该方法在 `devtools` 中不生效\r\n\r\n相关问题: [【Q019】如何实现选中复制的功能](https://github.com/shfshanyue/Daily-Question/issues/20)\r\n",
           "star": {
             "totalCount": 0
           },
@@ -9237,7 +9260,7 @@
       "nodes": [
         {
           "id": "MDEyOklzc3VlQ29tbWVudDY2MTA5NzQzMQ==",
-          "body": "`exports` 是 `module.exports` 的引用，类似如下所示\r\n\r\n``` js\r\nconst exports = module.exports\r\n```\r\n\r\n那如下结果会如何导出？\r\n\r\n``` js\r\nmodule.exports = 100\r\nexports = 3\r\n```\r\n\r\n很显然会导出 100，毕竟 `exports` 进行了重指向。\r\n\r\n**那在 node 源码中如何实现的呢？** 从源码里可以看出 **exports** 的实质\r\n\r\n![module wrapper](https://shanyue.tech/assets/img/module-wrapper.70557e4e.png)\r\n\r\n详见源码: <https://github.com/nodejs/node/blob/master/lib/internal/modules/cjs/loader.js#L1252>，可以看出符合猜想\r\n\r\n众所周知，node 中所有的模块代码都被包裹在这个函数中\r\n\r\n``` js\r\n(function(exports, require, module, __filename, __dirname) {\r\n  exports.a = 3\r\n});\r\n```\r\n\r\n而以下源码指出，`exports` 是如何得来\r\n\r\n``` js\r\nconst dirname = path.dirname(filename);\r\nconst require = makeRequireFunction(this, redirects);\r\nlet result;\r\n// 从这里可以看出来 exports 的实质\r\nconst exports = this.exports;\r\nconst thisValue = exports;\r\nconst module = this;\r\nif (requireDepth === 0) statCache = new Map();\r\nif (inspectorWrapper) {\r\n  result = inspectorWrapper(compiledWrapper, thisValue, exports,\r\n                            require, module, filename, dirname);\r\n} else {\r\n\r\n  // 这里是模块包装函数\r\n  result = compiledWrapper.call(thisValue, exports, require, module,\r\n                                filename, dirname);\r\n}\r\n```\r\n\r\n",
+          "body": "**一句话：`exports` 是 `module.exports` 的引用，如果 `exports` 没有重赋值，则二者没有任何区别**\r\n\r\n类似如下所示\r\n\r\n``` js\r\nconst exports = module.exports\r\n```\r\n\r\n那如下结果会如何导出？\r\n\r\n``` js\r\nmodule.exports = 100\r\nexports = 3\r\n```\r\n\r\n很显然会导出 100，毕竟 `exports` 进行了重赋值。\r\n\r\n**那在 node 源码中如何实现的呢？** 从源码里可以看出 **exports** 的实质\r\n\r\n![module wrapper](https://shanyue.tech/assets/img/module-wrapper.70557e4e.png)\r\n\r\n详见源码: <https://github.com/nodejs/node/blob/master/lib/internal/modules/cjs/loader.js#L1252>，可以看出符合猜想\r\n\r\n众所周知，node 中所有的模块代码都被包裹在这个函数中\r\n\r\n``` js\r\n(function(exports, require, module, __filename, __dirname) {\r\n  exports.a = 3\r\n});\r\n```\r\n\r\n而以下源码指出，`exports` 是如何得来\r\n\r\n``` js\r\nconst dirname = path.dirname(filename);\r\nconst require = makeRequireFunction(this, redirects);\r\nlet result;\r\n// 从这里可以看出来 exports 的实质\r\nconst exports = this.exports;\r\nconst thisValue = exports;\r\nconst module = this;\r\nif (requireDepth === 0) statCache = new Map();\r\nif (inspectorWrapper) {\r\n  result = inspectorWrapper(compiledWrapper, thisValue, exports,\r\n                            require, module, filename, dirname);\r\n} else {\r\n\r\n  // 这里是模块包装函数\r\n  result = compiledWrapper.call(thisValue, exports, require, module,\r\n                                filename, dirname);\r\n}\r\n```\r\n\r\n",
           "star": {
             "totalCount": 0
           },
@@ -9266,7 +9289,7 @@
       "nodes": [
         {
           "id": "MDEyOklzc3VlQ29tbWVudDY0MzYwMzAyNA==",
-          "body": "json 视为字符串，可以利用 `DataURL` 进行下载\r\n\r\n`Text -> DataURL`\r\n\r\n除了使用 DataURL，还可以转化为 Object URL 进行下载\r\n\r\n`Text -> Blob -> Object URL`\r\n\r\n可以把以下代码直接粘贴到控制台下载文件\r\n\r\n``` js\r\nfunction download (url, name) {\r\n  const a = document.createElement('a')\r\n  a.download = name\r\n  a.rel = 'noopener'\r\n  a.href = url\r\n  // 触发模拟点击\r\n  a.dispatchEvent(new MouseEvent('click'))\r\n  // 或者 a.click()\r\n}\r\n\r\nconst json = {\r\n  a: 3,\r\n  b: 4,\r\n  c: 5\r\n}\r\nconst str = JSON.stringify(json, null, 2)\r\n\r\n// 方案一：Text -> DataURL\r\nconst dataUrl = `data:,${str}`\r\ndownload(dataUrl, 'demo.json')\r\n\r\n// 方案二：Text -> Blob -> ObjectURL\r\nconst url = URL.createObjectURL(new Blob(str.split('')))\r\ndownload(url, 'demo1.json')\r\n```",
+          "body": "json 视为字符串，可以利用 `DataURL` 进行下载\r\n\r\n`Text -> DataURL`\r\n\r\n除了使用 DataURL，还可以转化为 Object URL 进行下载\r\n\r\n`Text -> Blob -> Object URL`\r\n\r\n可以把以下代码直接粘贴到控制台下载文件\r\n\r\n``` js\r\nfunction download (url, name) {\r\n  const a = document.createElement('a')\r\n  a.download = name\r\n  a.rel = 'noopener'\r\n  a.href = url\r\n  // 触发模拟点击\r\n  a.dispatchEvent(new MouseEvent('click'))\r\n  // 或者 a.click()\r\n}\r\n\r\nconst json = {\r\n  a: 3,\r\n  b: 4,\r\n  c: 5\r\n}\r\nconst str = JSON.stringify(json, null, 2)\r\n\r\n// 方案一：Text -> DataURL\r\nconst dataUrl = `data:,${str}`\r\ndownload(dataUrl, 'demo.json')\r\n\r\n// 方案二：Text -> Blob -> ObjectURL\r\nconst url = URL.createObjectURL(new Blob(str.split('')))\r\ndownload(url, 'demo1.json')\r\n```\r\n\r\n## 总结\r\n\r\n1. 模拟下载，可以通过新建一个 `<a href=\"url\" download><a>` 标签并设置 `url` 及 `download` 属性来下载\r\n2. 可以通过把 `json` 转化为 `dataurl` 来构造 URL\r\n3. 可以通过把 `json` 转换为 `Blob` 再转化为 `ObjectURL` 来构造 URL",
           "star": {
             "totalCount": 0
           },
@@ -9555,7 +9578,7 @@
           "id": "MDEyOklzc3VlQ29tbWVudDY1NjUyMDM1Ng==",
           "body": "localhost 可以更改后指向其它地址。\r\n127.0.0.1 是约定的本机IP。\r\n类似互联网中域名与服务器IP的关系。",
           "star": {
-            "totalCount": 1
+            "totalCount": 0
           },
           "author": {
             "login": "hedongxiaoshimei",
@@ -9571,6 +9594,28 @@
           "author": {
             "login": "libin1991",
             "url": "https://github.com/libin1991"
+          }
+        },
+        {
+          "id": "MDEyOklzc3VlQ29tbWVudDY2Mjc4MzMwNw==",
+          "body": "如果在浏览器访问时，当前页面的location.hostname(host) 不同，配置代理的时候要注意",
+          "star": {
+            "totalCount": 0
+          },
+          "author": {
+            "login": "ovarte",
+            "url": "https://github.com/ovarte"
+          }
+        },
+        {
+          "id": "MDEyOklzc3VlQ29tbWVudDY2Mjc5NjQxNw==",
+          "body": "localhost也叫local ，正确的解释是：本地服务器\r\n\r\n127.0.0.1在windows等系统的正确解释是：本机地址（本机服务器）\r\n\r\n他们的解析通过本机的host文件，windows自动将localhost解析为127.0.0.1\r\n\r\nlocalhot（local）是不经网卡传输！这点很重要，它不受网络防火墙和网卡相关的的限制。\r\n\r\n127.0.0.1是通过网卡传输，依赖网卡，并受到网络防火墙和网卡相关的限制。\r\n\r\n一般设置程序时本地服务用localhost是最好的，localhost不会解析成ip，也不会占用网卡、网络资源。\r\n\r\n有时候用localhost可以，但用127.0.0.1就不可以的情况就是在于此。猜想localhost访问时，系统带的本机当前用户的权限去访问，而用ip的时候，等于本机是通过网络再去访问本机，可能涉及到网络用户的权限。\r\n\r\n摘录自--https://zhuanlan.zhihu.com/p/26503558",
+          "star": {
+            "totalCount": 0
+          },
+          "author": {
+            "login": "flyingbat",
+            "url": "https://github.com/flyingbat"
           }
         }
       ]
@@ -9684,6 +9729,23 @@
         {
           "id": "MDU6TGFiZWwxNjUxNDAyMzIw",
           "name": "css"
+        }
+      ]
+    }
+  },
+  {
+    "id": "MDU6SXNzdWU2NjM1NjM3NTM=",
+    "number": 370,
+    "title": "【Q365】node 中 nextTick 与 setTimeout 有什么区别",
+    "body": "",
+    "comments": {
+      "nodes": []
+    },
+    "labels": {
+      "nodes": [
+        {
+          "id": "MDU6TGFiZWwxNzI2MDg3MTMx",
+          "name": "node"
         }
       ]
     }
