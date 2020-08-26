@@ -99,9 +99,9 @@
         },
         {
           "id": "MDEyOklzc3VlQ29tbWVudDY1Mzg5OTIzNw==",
-          "body": "## 防抖 (debounce)\r\n\r\n防抖，顾名思义，防止抖动，以免把一次事件误认为多次，敲键盘就是一个每天都会接触到的防抖操作。\r\n\r\n想要了解一个概念，必先了解概念所应用的场景。在 JS 这个世界中，有哪些防抖的场景呢\r\n\r\n1. 登录、发短信等按钮避免用户点击太快，以致于发送了多次请求，需要防抖\r\n1. 调整浏览器窗口大小时，resize 次数过于频繁，造成计算过多，此时需要一次到位，就用到了防抖\r\n1. 文本编辑器实时保存，当无任何更改操作一秒后进行保存\r\n\r\n代码如下，可以看出来**防抖重在清零 `clearTimeout(timer)`**\r\n\r\n``` js\r\nfunction debounce (f, wait) {\r\n  let timer\r\n  return (...args) => {\r\n    clearTimeout(timer)\r\n    timer = setTimeout(() => {\r\n      f(...args)\r\n    }, wait)\r\n  }\r\n}\r\n```\r\n\r\n## 节流 (throttle)\r\n\r\n节流，顾名思义，控制水的流量。控制事件发生的频率，如控制为1s发生一次，甚至1分钟发生一次。与服务端(server)及网关(gateway)控制的限流 (Rate Limit) 类似。\r\n\r\n1. `scroll` 事件，每隔一秒计算一次位置信息等\r\n1. 浏览器播放事件，每个一秒计算一次进度信息等\r\n1. input 框实时搜索并发送请求展示下拉列表，没隔一秒发送一次请求 (也可做防抖)\r\n\r\n代码如下，可以看出来**节流重在开关锁 `timer=null`**\r\n\r\n``` js\r\nfunction throttle (f, wait) {\r\n  let timer\r\n  return (...args) => {\r\n    if (timer) { return }\r\n    timer = setTimeout(() => {\r\n      f(...args)\r\n      timer = null\r\n    }, wait)\r\n  }\r\n}\r\n```\r\n\r\n## 总结 (简要答案)\r\n\r\n+ 防抖：防止抖动，单位时间内事件触发会被重置，避免事件被误伤触发多次。代码实现重在清零 `clearTimeout`\r\n+ 节流：控制流量，单位时间内事件只能触发一次，如果服务器端的限流即 Rate Limit。代码实现重在开锁关锁 `timer=timeout; timer=null`",
+          "body": "## 防抖 (debounce)\r\n\r\n防抖，顾名思义，防止抖动，以免把一次事件误认为多次，敲键盘就是一个每天都会接触到的防抖操作。\r\n\r\n想要了解一个概念，必先了解概念所应用的场景。在 JS 这个世界中，有哪些防抖的场景呢\r\n\r\n1. 登录、发短信等按钮避免用户点击太快，以致于发送了多次请求，需要防抖\r\n1. 调整浏览器窗口大小时，resize 次数过于频繁，造成计算过多，此时需要一次到位，就用到了防抖\r\n1. 文本编辑器实时保存，当无任何更改操作一秒后进行保存\r\n\r\n代码如下，可以看出来**防抖重在清零 `clearTimeout(timer)`**\r\n\r\n``` js\r\nfunction debounce (f, wait) {\r\n  let timer\r\n  return (...args) => {\r\n    clearTimeout(timer)\r\n    timer = setTimeout(() => {\r\n      f(...args)\r\n    }, wait)\r\n  }\r\n}\r\n```\r\n\r\n## 节流 (throttle)\r\n\r\n节流，顾名思义，控制水的流量。控制事件发生的频率，如控制为1s发生一次，甚至1分钟发生一次。与服务端(server)及网关(gateway)控制的限流 (Rate Limit) 类似。\r\n\r\n1. `scroll` 事件，每隔一秒计算一次位置信息等\r\n1. 浏览器播放事件，每个一秒计算一次进度信息等\r\n1. input 框实时搜索并发送请求展示下拉列表，每隔一秒发送一次请求 (也可做防抖)\r\n\r\n代码如下，可以看出来**节流重在加锁 `timer=timeout`**\r\n\r\n``` js\r\nfunction throttle (f, wait) {\r\n  let timer\r\n  return (...args) => {\r\n    if (timer) { return }\r\n    timer = setTimeout(() => {\r\n      f(...args)\r\n      timer = null\r\n    }, wait)\r\n  }\r\n}\r\n```\r\n\r\n## 总结 (简要答案)\r\n\r\n+ 防抖：防止抖动，单位时间内事件触发会被重置，避免事件被误伤触发多次。**代码实现重在清零 `clearTimeout`**。防抖可以比作等电梯，只要有一个人进来，就需要再等一会儿。业务场景有避免登录按钮多次点击的重复提交。\r\n+ 节流：控制流量，单位时间内事件只能触发一次，与服务器端的限流 (Rate Limit) 类似。**代码实现重在开锁关锁 `timer=timeout; timer=null`**。节流可以比作过红绿灯，每等一个红灯时间就可以过一批。",
           "star": {
-            "totalCount": 2
+            "totalCount": 3
           },
           "author": {
             "login": "shfshanyue",
@@ -286,7 +286,7 @@
           "id": "MDEyOklzc3VlQ29tbWVudDU1MTEzMjAxNw==",
           "body": "绝对定位方法：\r\n```\r\n.box {\r\n  postion: absolute;\r\n  top: 50%;\r\n  bottom: 50%;\r\n  width: 50px;\r\n  height: 50px;\r\n  transform: translate(-50%, -50%);\r\n}\r\n<body>\r\n<div class=\"box\"><div>\r\n</body>\r\n```\r\n\r\nflex方法：\r\n```\r\nbody {\r\n    display: flex;\r\n    justify-content: center;\r\n    align-items: center;\r\n}\r\n.box {\r\n  width: 50px;\r\n  height: 50px;\r\n}\r\n\r\n<body>\r\n<div class=\"box\"><div>\r\n</body>\r\n```",
           "star": {
-            "totalCount": 1
+            "totalCount": 2
           },
           "author": {
             "login": "woohs",
@@ -308,7 +308,7 @@
           "id": "MDEyOklzc3VlQ29tbWVudDYwOTUzMTA5NQ==",
           "body": "引自：https://css-tricks.com/centering-css-complete-guide/\r\n1 该元素的宽高固定吗？\r\n在将元素绝对定位为top: 50%; left: 50%;后，可以使用值为宽的一半和高的一半的负margin实现垂直水平居中。（跨浏览器支持很不错）\r\n```\r\n.parent {\r\n  position: relative;\r\n}\r\n\r\n.child {\r\n  width: 300px;\r\n  height: 100px;\r\n  padding: 20px;\r\n\r\n  position: absolute;\r\n  top: 50%;\r\n  left: 50%;\r\n\r\n  margin: -70px 0 0 -170px;\r\n}\r\n```\r\n2 该元素宽高未知？\r\n（1）如果宽高未知，在将元素绝对定位为top: 50%; left: 50%;后，可以使用transform属性来做负的50%移动（基于当前元素宽高）。\r\n```\r\n.parent {\r\n  position: relative;\r\n}\r\n.child {\r\n  position: absolute;\r\n  top: 50%;\r\n  left: 50%;\r\n  transform: translate(-50%, -50%);\r\n}\r\n```\r\n（2）也可以元素相对父容器绝对定位(left: 0;right: 0;top: 0;bottom: 0;)并margin: auto，不需要提前知道尺寸兼容性好。\r\n```\r\n.container {\r\n  position: relative;\r\n  height: 300px;\r\n  border: 1px solid red;\r\n}\r\n.item {\r\n  width: 100px;\r\n  height: 50px;\r\n  position: absolute;\r\n  left: 0;\r\n  top: 0;\r\n  right: 0;\r\n  bottom: 0;\r\n  margin: auto;\r\n  border: 1px solid green;\r\n}\r\n```\r\n3 你要用flexbox吗？\r\n对flexbox进行垂直水平居中，只需设置两个属性为center: align-items、justify-content。\r\n```\r\n.parent {\r\n  display: flex;\r\n  justify-content: center;\r\n  align-items: center;\r\n}\r\n```\r\n4 你要用grid布局吗？\r\n父容器设置为grid布局后，子元素直接margin: auto;即可实现垂直水平居中。\r\n```\r\nbody, html {\r\n  height: 100%;\r\n  display: grid;\r\n}\r\nspan { /* thing to center */\r\n  margin: auto;\r\n}\r\n```\r\n详细案例解释可参考：https://zhuanlan.zhihu.com/p/87134477",
           "star": {
-            "totalCount": 0
+            "totalCount": 1
           },
           "author": {
             "login": "SageSanyue",
@@ -529,6 +529,17 @@
             "login": "libin1991",
             "url": "https://github.com/libin1991"
           }
+        },
+        {
+          "id": "MDEyOklzc3VlQ29tbWVudDY2ODUyOTM1OQ==",
+          "body": "个人最喜欢的两个点\r\n1， 再也不用操心讨厌的this的问题\r\n2，逻辑复用更加方便，代码逻辑更加清晰",
+          "star": {
+            "totalCount": 0
+          },
+          "author": {
+            "login": "JeffWong16",
+            "url": "https://github.com/JeffWong16"
+          }
         }
       ]
     },
@@ -574,11 +585,11 @@
           "id": "MDEyOklzc3VlQ29tbWVudDU2ODk2MjY4Mg==",
           "body": "```js\r\nimport React, { useEffect, useState } from \"react\";\r\n\r\nfunction App() {\r\n    const [count, setCount] = useState(0);\r\n    useEffect(() => {\r\n        const timer = setInterval(() => {\r\n            setCount(count => count + 1)\r\n        }, 1000)\r\n\r\n        return () => {\r\n           clearInterval(timer)\r\n        }\r\n    }, [])\r\n\r\n    return <h1>{count}</h1>\r\n}\r\n```",
           "star": {
-            "totalCount": 12
+            "totalCount": 14
           },
           "author": {
-            "login": "Euron-X",
-            "url": "https://github.com/Euron-X"
+            "login": "1xxu",
+            "url": "https://github.com/1xxu"
           }
         }
       ]
@@ -1141,7 +1152,7 @@
           "id": "MDEyOklzc3VlQ29tbWVudDU1NDYyNzg0NA==",
           "body": "**最简单的 `bind` 一行就可以实现，而在实际面试过程中也不会考察你太多的边界条件**\r\n\r\n``` js\r\nFunction.prototype.fakeBind = function(obj) {\r\n  return (...args) => this.apply(obj, args)\r\n}\r\n```\r\n\r\n测试一下\r\n\r\n``` js\r\nfunction f (arg) {\r\n  console.log(this.a, arg)\r\n}\r\n\r\n// output: 3, 4\r\nf.bind({ a: 3 })(4)\r\n\r\n// output: 3, 4\r\nf.fakeBind({ a: 3 })(4)\r\n```\r\n",
           "star": {
-            "totalCount": 1
+            "totalCount": 2
           },
           "author": {
             "login": "shfshanyue",
@@ -1152,7 +1163,7 @@
           "id": "MDEyOklzc3VlQ29tbWVudDYxMjc1NzYwNA==",
           "body": "那我再抄一个加强版吧嘻嘻\r\n《JavaScript权威指南》P191 ES3实现bind\r\n```\r\nif (!Function.prototype.bind) {\r\n  Function.prototype.bind = function(o /*, args */) {\r\n    var self = this, boundArgs = arguments;\r\n    return function () {\r\n      var i, args = [];\r\n      for (i = 1; i < boundArgs.length; i++) {\r\n        args.push(boundArgs[i])\r\n      }\r\n      for (i = 0; i < arguments.length; i++) {\r\n        args.push(arguments[i])\r\n     }\r\n     return self.apply(o, args)\r\n    }\r\n  }\r\n}\r\n```",
           "star": {
-            "totalCount": 0
+            "totalCount": 1
           },
           "author": {
             "login": "SageSanyue",
@@ -1341,6 +1352,17 @@
           "author": {
             "login": "shfshanyue",
             "url": "https://github.com/shfshanyue"
+          }
+        },
+        {
+          "id": "MDEyOklzc3VlQ29tbWVudDY2OTI0NzU5MQ==",
+          "body": "linux 的发行版，可以在 https://distrowatch.com 查询\r\n\r\n因为平常工作都在 windows 环境下，只有部署的时候才会用到 linux\r\n我司用到的 linux 为 centos 7 版本，比较稳定\r\n我最喜欢的是 deepin，在业余时间接触过这个，图形化的界面很舒服，唯二的缺点是驱动问题和软件源问题",
+          "star": {
+            "totalCount": 0
+          },
+          "author": {
+            "login": "iceytea",
+            "url": "https://github.com/iceytea"
           }
         }
       ]
@@ -4520,6 +4542,17 @@
             "login": "qiushangzhe",
             "url": "https://github.com/qiushangzhe"
           }
+        },
+        {
+          "id": "MDEyOklzc3VlQ29tbWVudDY2OTI5MTA4OQ==",
+          "body": "> > ```js\r\n> > const obj = {\r\n> >   a: 3,\r\n> >   b: 4,\r\n> >   c: null,\r\n> >   d: undefined,\r\n> >   get e () {}\r\n> > }\r\n> > ```\r\n> > \r\n> > \r\n> > console.log(JSON.stringify(obj))\r\n> > 输出什么？\r\n> \r\n> ```js\r\n> {\"a\":3,\"b\":4,\"c\":null}\r\n> ```\r\n> \r\n> 对其中的 `undefined`，`function` 将在 `JSON.stringify` 时会忽略掉\r\n\r\n`const obj` 中的 `get e () {}` 并不是函数，此处应该是重写了 `obj.e` 的 `get` 方法，因为 `get` 方法未定义返回值，因此在执行 `JSON.stringify` 时，执行 `obj.e` 的 `get` 方法，返回 `undefined`，因此被忽略\r\n\r\n让我们更改 `get` 方法的返回值\r\n![image](https://user-images.githubusercontent.com/57755075/89437679-76f57080-d77a-11ea-9208-2e80d6505d68.png)\r\n\r\n看到 666 了吧？",
+          "star": {
+            "totalCount": 0
+          },
+          "author": {
+            "login": "iceytea",
+            "url": "https://github.com/iceytea"
+          }
         }
       ]
     },
@@ -4875,7 +4908,19 @@
     "title": "【Q161】如何删除一个 cookie",
     "body": "",
     "comments": {
-      "nodes": []
+      "nodes": [
+        {
+          "id": "MDEyOklzc3VlQ29tbWVudDY2NDgxMjkzOQ==",
+          "body": "通过把该 `cookie` 的过期时间改为过去时即可删除成功，具体操作的话可以通过操作两个字段来完成\r\n\r\n1. `max-age`: 将要过期的最大秒数，设置为 `-1` 即可删除\r\n1. `expires`: 将要过期的绝对时间，存储到 `cookies` 中需要通过 `date.toUTCString()` 处理，设置为过期时间即可删除\r\n\r\n很明显，`max-age` 更为简单\r\n\r\n``` js\r\n// max-age 设置为 -1 即可成功\r\ndocument.cookie = 'a=3; max-age=-1'\r\n```\r\n\r\n``` js\r\n> document.cookie\r\n< \"\"\r\n\r\n> document.cookie = 'a=3'\r\n< \"a=3\"\r\n\r\n> document.cookie\r\n< \"a=3\"\r\n\r\n// 把该字段的 max-age 设置为 -1\r\n> document.cookie = 'a=3; max-age=-1'\r\n< \"a=3; max-age=-1\"\r\n\r\n// 删除成功\r\n> document.cookie\r\n< \"\"\r\n```",
+          "star": {
+            "totalCount": 0
+          },
+          "author": {
+            "login": "shfshanyue",
+            "url": "https://github.com/shfshanyue"
+          }
+        }
+      ]
     },
     "labels": {
       "nodes": [
@@ -5361,6 +5406,17 @@
             "login": "LRQLRQ",
             "url": "https://github.com/LRQLRQ"
           }
+        },
+        {
+          "id": "MDEyOklzc3VlQ29tbWVudDY2NDcyNTg3NQ==",
+          "body": "看到一种新实现  \r\n```\r\nfunction compose(...fns) {\r\n  fns.reduce( (a, b) => (...args) => a(b(...args)));\r\n}\r\n```",
+          "star": {
+            "totalCount": 0
+          },
+          "author": {
+            "login": "LRQLRQ",
+            "url": "https://github.com/LRQLRQ"
+          }
         }
       ]
     },
@@ -5457,6 +5513,28 @@
           "author": {
             "login": "shfshanyue",
             "url": "https://github.com/shfshanyue"
+          }
+        },
+        {
+          "id": "MDEyOklzc3VlQ29tbWVudDY2OTI4Njc2Nw==",
+          "body": "补充两个用途：\r\n\r\n1. 可以减少 JavaScript 对 DOM 的介入，制作性能更高的动画\r\n2. 配合 content 等通过 CSS 给 JS 传参，得到一些通过 JavaScript 难以获取的参数\r\n\r\nhttps://www.zhangxinxu.com/wordpress/tag/css-var/",
+          "star": {
+            "totalCount": 0
+          },
+          "author": {
+            "login": "iceytea",
+            "url": "https://github.com/iceytea"
+          }
+        },
+        {
+          "id": "MDEyOklzc3VlQ29tbWVudDY3NTIyMzMxMQ==",
+          "body": "对浏览器兼容性有要求吗",
+          "star": {
+            "totalCount": 0
+          },
+          "author": {
+            "login": "liusshuai",
+            "url": "https://github.com/liusshuai"
           }
         }
       ]
@@ -5594,6 +5672,17 @@
           "author": {
             "login": "senking2",
             "url": "https://github.com/senking2"
+          }
+        },
+        {
+          "id": "MDEyOklzc3VlQ29tbWVudDY2NjI2OTE4OQ==",
+          "body": "```\r\n    .triangle {\r\n      width: 0;\r\n      border: 100px solid transparent;\r\n      border-bottom: 100px solid rgba(66, 142, 212, 0.4);\r\n    }\r\n```",
+          "star": {
+            "totalCount": 0
+          },
+          "author": {
+            "login": "Innocentw",
+            "url": "https://github.com/Innocentw"
           }
         }
       ]
@@ -5736,6 +5825,17 @@
           "author": {
             "login": "DoubleRayWang",
             "url": "https://github.com/DoubleRayWang"
+          }
+        },
+        {
+          "id": "MDEyOklzc3VlQ29tbWVudDY2OTI5NDk1Nw==",
+          "body": "1. 读取二进制文件，绘制波形图。\r\n2. 文件转储。",
+          "star": {
+            "totalCount": 0
+          },
+          "author": {
+            "login": "iceytea",
+            "url": "https://github.com/iceytea"
           }
         }
       ]
@@ -6388,7 +6488,19 @@
     "title": "【Q222】数据库中如何查看当前的连接数",
     "body": "",
     "comments": {
-      "nodes": []
+      "nodes": [
+        {
+          "id": "MDEyOklzc3VlQ29tbWVudDY2NDgwNDEwOA==",
+          "body": "**PostgresSQL 的最大连接数与当前连接数**\r\n\r\n``` sql\r\n-- 最大连接数\r\nshow max_connections;\r\n\r\n-- 当前连接数\r\nselect count(*) from pg_stat_activity;\r\n```\r\n\r\n**mysql 的最大连接数与当前连接数**\r\n\r\n``` sql\r\n-- 最大连接数\r\nshow variables like 'max_connections';\r\n\r\n-- 当前连接数\r\nshow full processlist;\r\n```",
+          "star": {
+            "totalCount": 0
+          },
+          "author": {
+            "login": "shfshanyue",
+            "url": "https://github.com/shfshanyue"
+          }
+        }
+      ]
     },
     "labels": {
       "nodes": [
@@ -6485,7 +6597,19 @@
     "title": "【Q227】你如何看待996",
     "body": "",
     "comments": {
-      "nodes": []
+      "nodes": [
+        {
+          "id": "MDEyOklzc3VlQ29tbWVudDY2OTI3NzMxOQ==",
+          "body": "1. 违法\r\n2. 开历史的倒车\r\n3. 容易使员工养成加班文化。最近一新闻提到苏州微软抵制从阿里离职的在职员工搞 996、在工作群里互相攀比加班时间的现象\r\n4. 使员工更不值钱。996 工作制下只有拿到当前工资的 2.275 倍，才在经济账上不吃亏。\r\n5. 对遵循八小时工作制的员工不公平\r\n6. [工作 996，生病 ICU](https://996.icu/#/zh_CN)",
+          "star": {
+            "totalCount": 0
+          },
+          "author": {
+            "login": "iceytea",
+            "url": "https://github.com/iceytea"
+          }
+        }
+      ]
     },
     "labels": {
       "nodes": [
@@ -6610,6 +6734,17 @@
             "login": "allenGKC",
             "url": "https://github.com/allenGKC"
           }
+        },
+        {
+          "id": "MDEyOklzc3VlQ29tbWVudDY2OTMwOTA5OQ==",
+          "body": "> 打篮球，看电影，看不下书怎么办\r\n\r\n看不下就休息，不要勉强自己",
+          "star": {
+            "totalCount": 0
+          },
+          "author": {
+            "login": "iceytea",
+            "url": "https://github.com/iceytea"
+          }
         }
       ]
     },
@@ -6732,7 +6867,19 @@
     "title": "【Q236】主域名的 SEO 是否比二级域名要更好",
     "body": "",
     "comments": {
-      "nodes": []
+      "nodes": [
+        {
+          "id": "MDEyOklzc3VlQ29tbWVudDY2OTMxMTY1OA==",
+          "body": "看场景的。请补充场景。再说这个和前端工程化有啥关系？",
+          "star": {
+            "totalCount": 0
+          },
+          "author": {
+            "login": "iceytea",
+            "url": "https://github.com/iceytea"
+          }
+        }
+      ]
     },
     "labels": {
       "nodes": [
@@ -6885,6 +7032,50 @@
           "author": {
             "login": "Misxiao",
             "url": "https://github.com/Misxiao"
+          }
+        },
+        {
+          "id": "MDEyOklzc3VlQ29tbWVudDY2OTI2MjM2OA==",
+          "body": "> 使用 `async`/`await` 实现\r\n> \r\n> ```js\r\n> const user1 = getUser(1)\r\n> const user2 = getUser(2)\r\n> const user3 = getUser(3)\r\n> \r\n> const u1 =  await user1\r\n> const u2 =  await user2\r\n> const u3 =  await user3\r\n> ```\r\n\r\n这个和上面的 `Promise.all` 并不一样吧。`Promise.all` 是并行操作，`await` 这个是串行操作",
+          "star": {
+            "totalCount": 0
+          },
+          "author": {
+            "login": "iceytea",
+            "url": "https://github.com/iceytea"
+          }
+        },
+        {
+          "id": "MDEyOklzc3VlQ29tbWVudDY2OTI2NTc1Mw==",
+          "body": "> 如获取三个用户的信息，使用 `Promise.all` 的写法\r\n> \r\n> ```js\r\n> const users = await Promise.all(getUser(1), getUser(2), getUser(3))\r\n> ```\r\n> \r\n> 那如何不使用 `Promise.all` 实现以上效果\r\n\r\nPromise.all 后面的参数为数组。。。",
+          "star": {
+            "totalCount": 0
+          },
+          "author": {
+            "login": "iceytea",
+            "url": "https://github.com/iceytea"
+          }
+        },
+        {
+          "id": "MDEyOklzc3VlQ29tbWVudDY2OTI2ODU1Nw==",
+          "body": "```js\r\nlet req1 = () => fetch(`https://github.com/shfshanyue/Daily-Question/issues?page=1&q=is%3Aissue+is%3Aopen`);\r\n\r\nlet req2 = () => fetch(`https://github.com/shfshanyue/Daily-Question/issues?page=2&q=is%3Aissue+is%3Aopen`);\r\n\r\nlet req3 = () => fetch(`https://github.com/shfshanyue/Daily-Question/issues?page=3&q=is%3Aissue+is%3Aopen`);\r\n\r\n// promise.all\r\nconst res = await Promise.all([req1(), req2(), req3()]);\r\n\r\nconst res1 = req1()\r\nconst res2 = req2()\r\nconst res3 = req3()\r\n\r\n// await\r\nconst u1 =  await res1\r\nconst u2 =  await res2\r\nconst u3 =  await res3\r\n\r\n```\r\n\r\n![image](https://user-images.githubusercontent.com/57755075/89433879-71e1f280-d775-11ea-8772-6c26e58d29c3.png)\r\n",
+          "star": {
+            "totalCount": 0
+          },
+          "author": {
+            "login": "iceytea",
+            "url": "https://github.com/iceytea"
+          }
+        },
+        {
+          "id": "MDEyOklzc3VlQ29tbWVudDY2OTI3MDUxNA==",
+          "body": "所以这个题的答案是\r\n\r\ntan90° \r\n不存在",
+          "star": {
+            "totalCount": 0
+          },
+          "author": {
+            "login": "iceytea",
+            "url": "https://github.com/iceytea"
           }
         }
       ]
@@ -7319,7 +7510,19 @@
     "title": "【Q262】当一个排期五天的任务需要在两天后上线如何解决",
     "body": "",
     "comments": {
-      "nodes": []
+      "nodes": [
+        {
+          "id": "MDEyOklzc3VlQ29tbWVudDY2OTI0NDM2Mg==",
+          "body": "1. 分析任务\r\n这个任务是活动页面开发？还是常规需求？\r\n如果是常规需求，可以考虑延期\r\n如果是活动页面，尤其是节假日、特殊纪念日的活动，可以考虑降低用户体验、砍需求等从而降低工作量，继而保证正常上线。因为运营活动的时效性较高\r\n2. 在排期阶段多估算时间，预计是常规工作时间的 1.5 倍\r\n3. 通过加班等方式弥补工期的缺失",
+          "star": {
+            "totalCount": 0
+          },
+          "author": {
+            "login": "iceytea",
+            "url": "https://github.com/iceytea"
+          }
+        }
+      ]
     },
     "labels": {
       "nodes": [
@@ -7442,7 +7645,7 @@
         },
         {
           "id": "MDEyOklzc3VlQ29tbWVudDYyNDQxOTc5Ng==",
-          "body": "`CSP` 可以最大限度地防止 `XSS` 攻击，它只允许加载指定的脚本及样式等，通过 http 的响应头 `Content Security Policy` 控制。\r\n\r\n如果网站必须加载内联脚本 (inline script) ，则可以提供一个 `nonce` 才能执行脚本，这样攻击者无法注入脚本进行攻击。\r\n\r\n可参考阮一峰 [Content Security Policy 入门教程](http://www.ruanyifeng.com/blog/2016/09/csp.html)",
+          "body": "`CSP` **只允许加载指定的脚本及样式**，**最大限度地防止 `XSS` 攻击**，是解决 XSS 的最优解。CSP 的设置根据加载页面时 http 的响应头 `Content Security Policy` 在服务器端控制。\r\n\r\n1. 外部脚本可以通过指定域名来限制：**`Content-Security-Policy: script-src 'self'`**，`self` 代表只加载当前域名\r\n1. 如果网站必须加载内联脚本 (inline script) ，则可以提供一个 `nonce` 才能执行脚本，攻击者则无法注入脚本进行攻击。**`Content-Security-Policy: script-src 'nonce-xxxxxxxxxxxxxxxxxx'`**\r\n\r\n通过 `devtools -> network` 可见 github 的 CSP 配置如下：\r\n\r\n``` bash\r\nContent-Security-Policy: default-src 'none'; \r\n  base-uri 'self'; \r\n  block-all-mixed-content;\r\n  connect-src 'self' uploads.github.com www.githubstatus.com collector.githubapp.com api.github.com www.google-analytics.com github-cloud.s3.amazonaws.com github-production-repository-file-5c1aeb.s3.amazonaws.com github-production-upload-manifest-file-7fdce7.s3.amazonaws.com github-production-user-asset-6210df.s3.amazonaws.com cdn.optimizely.com logx.optimizely.com/v1/events wss://alive.github.com; \r\n  font-src github.githubassets.com; \r\n  form-action 'self' github.com gist.github.com; \r\n  frame-ancestors 'none'; \r\n  frame-src render.githubusercontent.com; \r\n  img-src 'self' data: github.githubassets.com identicons.github.com collector.githubapp.com github-cloud.s3.amazonaws.com *.githubusercontent.com; \r\n  manifest-src 'self'; \r\n  media-src 'none'; \r\n  script-src github.githubassets.com; \r\n  style-src 'unsafe-inline' github.githubassets.com; \r\n  worker-src github.com/socket-worker.js gist.github.com/socket-worker.js\r\n```\r\n\r\n## 相关链接\r\n\r\n+ [Content Security Policy 入门教程 - 阮一峰](http://www.ruanyifeng.com/blog/2016/09/csp.html)\r\n+ [Content Security Policy - w3](https://www.w3.org/TR/CSP3/#directive-form-action)",
           "star": {
             "totalCount": 1
           },
@@ -7500,7 +7703,19 @@
     "title": "【Q269】什么是 XSS 攻击，如何避免",
     "body": "",
     "comments": {
-      "nodes": []
+      "nodes": [
+        {
+          "id": "MDEyOklzc3VlQ29tbWVudDY3ODc4MTc2NA==",
+          "body": "CSS (Cross Site Scripting)，跨站脚本攻击。",
+          "star": {
+            "totalCount": 0
+          },
+          "author": {
+            "login": "shfshanyue",
+            "url": "https://github.com/shfshanyue"
+          }
+        }
+      ]
     },
     "labels": {
       "nodes": [
@@ -7605,7 +7820,7 @@
       "nodes": [
         {
           "id": "MDEyOklzc3VlQ29tbWVudDYxNDAzMTYyOA==",
-          "body": "`HPACK` 协议，其中原理是哈夫曼编码及索引表 (看来常用的数据结构及算法要有所了解)，以下内容摘自 [谷歌开发者文档：http2](https://developers.google.com/web/fundamentals/performance/http2/)\r\n\r\n> 每个 HTTP 传输都承载一组标头，这些标头说明了传输的资源及其属性。 在 HTTP/1.x 中，此元数据始终以纯文本形式，通常会给每个传输增加 500–800 字节的开销。如果使用 HTTP Cookie，增加的开销有时会达到上千字节。 （请参阅测量和控制协议开销。） 为了减少此开销和提升性能，HTTP/2 使用 HPACK 压缩格式压缩请求和响应标头元数据，这种格式采用两种简单但是强大的技术：\r\n>\r\n> 1. 这种格式支持通过静态霍夫曼代码对传输的标头字段进行编码，从而减小了各个传输的大小。\r\n> 1. 这种格式要求客户端和服务器同时维护和更新一个包含之前见过的标头字段的索引列表（换句话说，它可以建立一个共享的压缩上下文），此列表随后会用作参考，对之前传输的值进行有效编码。\r\n",
+          "body": "`HPACK` 协议，其中原理是哈夫曼编码及索引表 (看来常用的数据结构及算法要有所了解)，以下内容摘自 [谷歌开发者文档：http2](https://developers.google.com/web/fundamentals/performance/http2/)\r\n\r\n> 每个 HTTP 传输都承载一组标头，这些标头说明了传输的资源及其属性。 在 HTTP/1.x 中，此元数据始终以纯文本形式，通常会给每个传输增加 500–800 字节的开销。如果使用 HTTP Cookie，增加的开销有时会达到上千字节。 （请参阅测量和控制协议开销。） 为了减少此开销和提升性能，HTTP/2 使用 HPACK 压缩格式压缩请求和响应标头元数据，这种格式采用两种简单但是强大的技术：\r\n>\r\n> 1. 这种格式支持通过静态霍夫曼代码对传输的标头字段进行编码，从而减小了各个传输的大小。\r\n> 1. 这种格式要求客户端和服务器同时维护和更新一个包含之前见过的标头字段的索引列表（换句话说，它可以建立一个共享的压缩上下文），此列表随后会用作参考，对之前传输的值进行有效编码。\r\n\r\n实践出真知，通过 `wireshark` 抓包分析 http2 的报文对理解 http2 收益颇多。\r\n\r\n> 你要有知识，你就得参加变革现实的实践。你要知道梨子的滋味，你就得变革梨子，亲口吃一吃。你要知道原子的组织同性质，你就得实行物理学和化学的实验，变革原子的情况。你要知道革命的理论和方法，你就得参加革命。\r\n\r\n以下是关于抓包信息的截图\r\n\r\n**http2 通过 `Settings` 帧设置 header table size，进行首部压缩**\r\n\r\n![](https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/3f1a9d380a4d47a4aabbbd98af4d3f90~tplv-k3u1fbpfcp-zoom-1.image)\r\n\r\n**http2 通过首部压缩后，:method 伪标头在索引表中的 Index 为 2**\r\n\r\n![](https://p9-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/6b1281937b584bffaa0bbcb9d5621341~tplv-k3u1fbpfcp-zoom-1.image)\r\n\r\n关于常用的标头会存储在静态索引表固定的位置，详见 <https://httpwg.org/specs/rfc7541.html#static.table.definition>\r\n\r\n\r\n![](https://p9-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/2cef31dd10e64340b49caf35cbc01759~tplv-k3u1fbpfcp-zoom-1.image)",
           "star": {
             "totalCount": 0
           },
@@ -7790,7 +8005,19 @@
     "title": "【Q281】响应式布局需要注意哪一些",
     "body": "",
     "comments": {
-      "nodes": []
+      "nodes": [
+        {
+          "id": "MDEyOklzc3VlQ29tbWVudDY2NjI2NTUyOQ==",
+          "body": "栅格布局？",
+          "star": {
+            "totalCount": 0
+          },
+          "author": {
+            "login": "Innocentw",
+            "url": "https://github.com/Innocentw"
+          }
+        }
+      ]
     },
     "labels": {
       "nodes": [
@@ -7807,7 +8034,19 @@
     "title": "【Q282】对一个非定长宽的块状元素如何做垂直水平居中",
     "body": "",
     "comments": {
-      "nodes": []
+      "nodes": [
+        {
+          "id": "MDEyOklzc3VlQ29tbWVudDY2OTc3MTE2Ng==",
+          "body": "flex布局",
+          "star": {
+            "totalCount": 0
+          },
+          "author": {
+            "login": "huxiamei",
+            "url": "https://github.com/huxiamei"
+          }
+        }
+      ]
     },
     "labels": {
       "nodes": [
@@ -8017,13 +8256,29 @@
   {
     "id": "MDU6SXNzdWU2MTU4MjgwMzc=",
     "number": 293,
-    "title": "【Q291】node 中的垃圾回收有哪些机制",
+    "title": "【Q291】简述 node/v8 中的垃圾回收机制",
     "body": "",
     "comments": {
-      "nodes": []
+      "nodes": [
+        {
+          "id": "MDEyOklzc3VlQ29tbWVudDY2MzkzMjE3OA==",
+          "body": "`v8` 中的垃圾回收机制分为三种\r\n\r\n1. `Scavenge`，工作在新生代，把 `from space` 中的存活对象移至 `to space`\r\n1. `Mark-Sweep`，标记清除。新生代的某些对象由于过度活跃会被移至老生代，此时对老生代中活对象进行标记，并清理死对象\r\n1. `Mark-Compact`，标记整理。\r\n\r\n## 相关链接\r\n\r\n1. [主流的垃圾回收机制都有哪些?](https://www.zhihu.com/question/32373436)\r\n1. [各种编程语言的实现都采用了哪些垃圾回收算法](https://www.zhihu.com/question/20018826)",
+          "star": {
+            "totalCount": 0
+          },
+          "author": {
+            "login": "shfshanyue",
+            "url": "https://github.com/shfshanyue"
+          }
+        }
+      ]
     },
     "labels": {
       "nodes": [
+        {
+          "id": "MDU6TGFiZWwxNjUxNDAyMzE4",
+          "name": "js"
+        },
         {
           "id": "MDU6TGFiZWwxNzI2MDg3MTMx",
           "name": "node"
@@ -8390,6 +8645,17 @@
             "login": "shfshanyue",
             "url": "https://github.com/shfshanyue"
           }
+        },
+        {
+          "id": "MDEyOklzc3VlQ29tbWVudDY2NjI2Mzk3Mw==",
+          "body": "```\r\n.box {\r\ndisplay: flex\r\n}\r\n\r\n\r\n.left,.right {\r\nwidth: 300px\r\n}\r\n\r\n.center {\r\nflex: 1\r\n}\r\n```",
+          "star": {
+            "totalCount": 0
+          },
+          "author": {
+            "login": "Innocentw",
+            "url": "https://github.com/Innocentw"
+          }
         }
       ]
     },
@@ -8565,6 +8831,10 @@
         {
           "id": "MDU6TGFiZWwxNzY5MDg5MzQ2",
           "name": "dom"
+        },
+        {
+          "id": "MDU6TGFiZWwxNjUxNDAyMzE2",
+          "name": "html"
         }
       ]
     }
@@ -9018,7 +9288,30 @@
     "title": "【Q337】你做前端有多少时间花在写 css 上",
     "body": "",
     "comments": {
-      "nodes": []
+      "nodes": [
+        {
+          "id": "MDEyOklzc3VlQ29tbWVudDY2NjE5NzQ4NQ==",
+          "body": "非常多",
+          "star": {
+            "totalCount": 0
+          },
+          "author": {
+            "login": "Innocentw",
+            "url": "https://github.com/Innocentw"
+          }
+        },
+        {
+          "id": "MDEyOklzc3VlQ29tbWVudDY2OTIzNTk5NA==",
+          "body": "如果说是开发阶段，我会用 20%-30% 的时间写 CSS。\r\n\r\n比你想象的时间更少？\r\n1. 我们开发的是一套内部的管理系统。\r\n2. 其中一个原因是在 UI 设计时遵循了 element-ui 的规范，而开发使用的 UI 框架为 element-ui，因此大多数的界面并不需要写大量的 CSS，因为预设样式已足够使用。\r\n3. 另外一个不得不提的原因是，针对业务场景，我们开发了一批公共组件，剩余的开发部分只需要对组件进行排列组合即可。\r\n4. 最后是，我们的系统对动效的要求不高，不需要花费大量时间去调整动效。",
+          "star": {
+            "totalCount": 0
+          },
+          "author": {
+            "login": "iceytea",
+            "url": "https://github.com/iceytea"
+          }
+        }
+      ]
     },
     "labels": {
       "nodes": [
@@ -9380,6 +9673,17 @@
             "login": "shfshanyue",
             "url": "https://github.com/shfshanyue"
           }
+        },
+        {
+          "id": "MDEyOklzc3VlQ29tbWVudDY2NDkwMjk2Mw==",
+          "body": "```\r\nkubectl delete po --field-selector status.phase=Evicted\r\n```\r\n\r\n更加精确。",
+          "star": {
+            "totalCount": 1
+          },
+          "author": {
+            "login": "wi1dcard",
+            "url": "https://github.com/wi1dcard"
+          }
         }
       ]
     },
@@ -9415,7 +9719,19 @@
     "title": "【Q354】在 node 中如何判断一个对象是 stream",
     "body": "",
     "comments": {
-      "nodes": []
+      "nodes": [
+        {
+          "id": "MDEyOklzc3VlQ29tbWVudDY2NzY4NTczNg==",
+          "body": "`stream` 可以通过缓冲区来高效利用内存，从而提高性能。常用场景如读写大文件、http-server 中的大静态文件渲染。\r\n\r\n**每一个 stream 都有 `pipe` 函数，可以用来判断一个对象是否 `stream`**。\r\n\r\n代码如下，摘自 [is-stream](https://github.com/sindresorhus/is-stream/blob/master/index.js): 一个周下载量两千万的 npm package。\r\n\r\n``` js\r\nconst isStream = stream =>\r\n\tstream !== null &&\r\n\ttypeof stream === 'object' &&\r\n\ttypeof stream.pipe === 'function';\r\n\r\nisStream.writable = stream =>\r\n\tisStream(stream) &&\r\n\tstream.writable !== false &&\r\n\ttypeof stream._write === 'function' &&\r\n\ttypeof stream._writableState === 'object';\r\n\r\nisStream.readable = stream =>\r\n\tisStream(stream) &&\r\n\tstream.readable !== false &&\r\n\ttypeof stream._read === 'function' &&\r\n\ttypeof stream._readableState === 'object';\r\n\r\nisStream.duplex = stream =>\r\n\tisStream.writable(stream) &&\r\n\tisStream.readable(stream);\r\n\r\nisStream.transform = stream =>\r\n\tisStream.duplex(stream) &&\r\n\ttypeof stream._transform === 'function' &&\r\n\ttypeof stream._transformState === 'object';\r\n```",
+          "star": {
+            "totalCount": 0
+          },
+          "author": {
+            "login": "shfshanyue",
+            "url": "https://github.com/shfshanyue"
+          }
+        }
+      ]
     },
     "labels": {
       "nodes": [
@@ -9521,6 +9837,17 @@
           "author": {
             "login": "hedongxiaoshimei",
             "url": "https://github.com/hedongxiaoshimei"
+          }
+        },
+        {
+          "id": "MDEyOklzc3VlQ29tbWVudDY2NzQ2Nzc0NQ==",
+          "body": "**当一个请求跨域且不是简单请求时就会发送 `OPTIONS` 请求**\r\n\r\n满足以下条件就是一个简单请求:\r\n\r\n1. `Method`: 请求的方法是 `GET`、`POST` 及 `HEAD`\r\n1. `Header`: 请求头是 `Content-Type`、`Accept-Language`、`Content-Language` 等\r\n1. `Content-Type`: 请求类型是 `application/x-www-form-urlencoded`、`multipart/form-data` 或 `text/plain`\r\n\r\n而在项目中常见的 `Content-Type: application/json` 及 `Authorization: <token>` 为典型的**非简单请求**，在发送请求时往往会带上 `Options`\r\n\r\n> 更详细内容请参考 [CORS - MDN](https://developer.mozilla.org/zh-CN/docs/Web/HTTP/Access_control_CORS)",
+          "star": {
+            "totalCount": 0
+          },
+          "author": {
+            "login": "shfshanyue",
+            "url": "https://github.com/shfshanyue"
           }
         }
       ]
@@ -9746,6 +10073,1277 @@
         {
           "id": "MDU6TGFiZWwxNzI2MDg3MTMx",
           "name": "node"
+        }
+      ]
+    }
+  },
+  {
+    "id": "MDU6SXNzdWU2Njg4MTI1Nzc=",
+    "number": 371,
+    "title": "【Q366】如何保存数据库与缓存的双写一致性",
+    "body": "",
+    "comments": {
+      "nodes": []
+    },
+    "labels": {
+      "nodes": [
+        {
+          "id": "MDU6TGFiZWwxNjUxNDAyMzEz",
+          "name": "db"
+        },
+        {
+          "id": "MDU6TGFiZWwxNjY2OTk3OTM5",
+          "name": "redis"
+        }
+      ]
+    }
+  },
+  {
+    "id": "MDU6SXNzdWU2Njk0OTUzMTE=",
+    "number": 372,
+    "title": "【Q367】redux 和 mobx 有什么不同",
+    "body": "",
+    "comments": {
+      "nodes": []
+    },
+    "labels": {
+      "nodes": [
+        {
+          "id": "MDU6TGFiZWwxNjU4MzQ3NDIy",
+          "name": "react"
+        }
+      ]
+    }
+  },
+  {
+    "id": "MDU6SXNzdWU2Njk1NjkyMzQ=",
+    "number": 373,
+    "title": "【Q368】关于 React hooks 的 caputre value，以下输出多少",
+    "body": "``` js\r\nfunction App() {\r\n  const [count, setCount] = useState(0);\r\n  const incr = () => {\r\n    setTimeout(() => {\r\n      setCount(count + 1);\r\n    }, 3000);\r\n  };\r\n  return <h1 onClick={incr}>{count}</h1>;\r\n}\r\n```\r\n\r\n当连续点击 10 次时，会输出多少",
+    "comments": {
+      "nodes": []
+    },
+    "labels": {
+      "nodes": [
+        {
+          "id": "MDU6TGFiZWwxNjU4MzQ3NDIy",
+          "name": "react"
+        }
+      ]
+    }
+  },
+  {
+    "id": "MDU6SXNzdWU2Njk2MjU4MTY=",
+    "number": 374,
+    "title": "【Q369】在 React 项目中 immutable 是优化性能的",
+    "body": "",
+    "comments": {
+      "nodes": []
+    },
+    "labels": {
+      "nodes": [
+        {
+          "id": "MDU6TGFiZWwxNjU4MzQ3NDIy",
+          "name": "react"
+        }
+      ]
+    }
+  },
+  {
+    "id": "MDU6SXNzdWU2Njk5NDE0NzQ=",
+    "number": 375,
+    "title": "【Q370】如何使用 CSS 实现网站的暗黑模式",
+    "body": "",
+    "comments": {
+      "nodes": []
+    },
+    "labels": {
+      "nodes": [
+        {
+          "id": "MDU6TGFiZWwxNjUxNDAyMzIw",
+          "name": "css"
+        }
+      ]
+    }
+  },
+  {
+    "id": "MDU6SXNzdWU2Njk5NDgzNTg=",
+    "number": 376,
+    "title": "【Q371】在 redux 中如何发送请求",
+    "body": "",
+    "comments": {
+      "nodes": []
+    },
+    "labels": {
+      "nodes": [
+        {
+          "id": "MDU6TGFiZWwxNjU4MzQ3NDIy",
+          "name": "react"
+        }
+      ]
+    }
+  },
+  {
+    "id": "MDU6SXNzdWU2NzAzODU1NTE=",
+    "number": 377,
+    "title": "【Q372】redis 是如何删掉过期数据的",
+    "body": "",
+    "comments": {
+      "nodes": []
+    },
+    "labels": {
+      "nodes": [
+        {
+          "id": "MDU6TGFiZWwxNjY2OTk3OTM5",
+          "name": "redis"
+        }
+      ]
+    }
+  },
+  {
+    "id": "MDU6SXNzdWU2NzA0NzM1NDE=",
+    "number": 378,
+    "title": "【Q373】如何为你们的前端项目选择状态管理器",
+    "body": "",
+    "comments": {
+      "nodes": []
+    },
+    "labels": {
+      "nodes": [
+        {
+          "id": "MDU6TGFiZWwxNzA3OTU2MjIw",
+          "name": "前端工程化"
+        }
+      ]
+    }
+  },
+  {
+    "id": "MDU6SXNzdWU2NzA5MTA1MDE=",
+    "number": 379,
+    "title": "【Q374】简单介绍 requestIdleCallback 及使用场景",
+    "body": "",
+    "comments": {
+      "nodes": [
+        {
+          "id": "MDEyOklzc3VlQ29tbWVudDY2ODA0ODk4MQ==",
+          "body": "`requestIdleCallback` 维护一个队列，将在浏览器空闲时间内执行。它属于 [Background Tasks API](https://developer.mozilla.org/zh-CN/docs/Web/API/Background_Tasks_API)，你可以使用 `setTimeout` 来模拟实现\r\n\r\n``` js\r\nwindow.requestIdleCallback = window.requestIdleCallback || function(handler) {\r\n  let startTime = Date.now();\r\n \r\n  return setTimeout(function() {\r\n    handler({\r\n      didTimeout: false,\r\n      timeRemaining: function() {\r\n        return Math.max(0, 50.0 - (Date.now() - startTime));\r\n      }\r\n    });\r\n  }, 1);\r\n}\r\n```\r\n\r\n以上实现过于复杂以及细节化，也可以像 [swr](https://github.com/vercel/swr) 一样做一个简单的模拟实现，以下代码见 <https://github.com/vercel/swr/blob/8670be8072b0c223bc1c040deccd2e69e8978aad/src/use-swr.ts#L33>\r\n\r\n``` js\r\nconst rIC = window['requestIdleCallback'] || (f => setTimeout(f, 1))\r\n```\r\n\r\n在 `rIC` 中执行任务时需要注意以下几点：\r\n\r\n1. 执行重计算而非紧急任务\r\n1. 空闲回调执行时间应该小于 50ms，最好更少\r\n1. 空闲回调中不要操作 DOM，因为它本来就是利用的重拍重绘后的间隙空闲时间，重新操作 DOM 又会造成重拍重绘\r\n\r\nReact 的时间分片便是基于类似 `rIC` 而实现，然而因为 `rIC` 的兼容性及 50ms 流畅问题，React 自制了一个实现: [scheduler](https://github.com/facebook/react/tree/master/packages/scheduler)\r\n\r\n[use-swr](https://github.com/vercel/swr) 中进行资源的 `revalidate` 时，也是通过 `rIC` 来提高性能\r\n\r\n## 参考\r\n\r\n**强烈推荐 MDN 与 w3c 上的两篇介绍**\r\n\r\n+ [Background Tasks API - MDN](https://developer.mozilla.org/zh-CN/docs/Web/API/Background_Tasks_API)\r\n+ [requestIdleCallback - W3C](https://w3c.github.io/requestidlecallback/#idle-periods)",
+          "star": {
+            "totalCount": 0
+          },
+          "author": {
+            "login": "shfshanyue",
+            "url": "https://github.com/shfshanyue"
+          }
+        }
+      ]
+    },
+    "labels": {
+      "nodes": [
+        {
+          "id": "MDU6TGFiZWwxNzY5MDg5MzQ2",
+          "name": "dom"
+        },
+        {
+          "id": "MDU6TGFiZWwxNjUxNDAyMzE2",
+          "name": "html"
+        }
+      ]
+    }
+  },
+  {
+    "id": "MDU6SXNzdWU2NzE2MzgwNjI=",
+    "number": 380,
+    "title": "【Q375】在 redux 中如何写一个记录状态变更的日志插件",
+    "body": "",
+    "comments": {
+      "nodes": []
+    },
+    "labels": {
+      "nodes": [
+        {
+          "id": "MDU6TGFiZWwxNjU4MzQ3NDIy",
+          "name": "react"
+        }
+      ]
+    }
+  },
+  {
+    "id": "MDU6SXNzdWU2NzE2MzgzNzA=",
+    "number": 381,
+    "title": "【Q376】TCP 四次挥手时为什么需要 2MSL",
+    "body": "",
+    "comments": {
+      "nodes": [
+        {
+          "id": "MDEyOklzc3VlQ29tbWVudDY2ODk0MDc5OA==",
+          "body": "**我们先来看看什么是 2MSL ？**\r\nMSL: Maximum Segment Lifetime, 最长报文段寿命\r\n意思是，需要等候 2 * MSL 时间，才会进入关闭状态\r\n\r\n\r\n------------\r\n\r\n\r\n**然后再来看哪个阶段需要 2MSL ？**\r\n\r\n![image](https://user-images.githubusercontent.com/8110936/89364080-470b8600-d704-11ea-9bc7-edd882481c1e.png)\r\n从上图来看，是在 [发送方] 发送完 ACK 后，进入 **TIME_WAIT** 阶段，这个阶段需要等候 2*MSL，才将 TCP 关闭\r\n\r\n------------\r\n\r\n**为什么要等候 2*MSL ？**\r\n\r\n1. 用足够长的等候时间，来确保 [接收方] 能收到 ACK 包\r\n\r\n\t- 如果 [接收方] 在一定时间没收到 (ACK)，会重发 (FIN, ACK)，[发送方] 收到后，会重发 (ACK)，再重置 2*MSL 定时器\r\n\t.\r\n\r\n\r\n2. 防止当前连接延迟到达的数据段，被新的 TCP 连接收到\r\n\r\n\t- 新的 TCP 连接：相同端口，相同地址\r\n\r\n\r\n------------\r\n\r\n**TIME_WAIT 等候时间长短问题**\r\n\r\n1. 等候时间过短\r\n \r\n\t- 可能会收到上一个 TCP 连接延迟到达的数据段\r\n\t.\r\n\r\n2. 等候时间过长\r\n\r\n \t- TCP 连接一直占用着端口，需要关闭后才能建立新的连接，高并发下压力比较大\r\n\r\n",
+          "star": {
+            "totalCount": 1
+          },
+          "author": {
+            "login": "zzetao",
+            "url": "https://github.com/zzetao"
+          }
+        },
+        {
+          "id": "MDEyOklzc3VlQ29tbWVudDY2OTA2ODE2NA==",
+          "body": "可以参考知乎这个问题：\r\n\r\n目的是为了优雅地关闭 TCP 连接。\r\n\r\n[为什么TCP4次挥手时等待为2MSL？](https://www.zhihu.com/question/67013338)\r\n\r\n#26 ",
+          "star": {
+            "totalCount": 0
+          },
+          "author": {
+            "login": "shfshanyue",
+            "url": "https://github.com/shfshanyue"
+          }
+        }
+      ]
+    },
+    "labels": {
+      "nodes": [
+        {
+          "id": "MDU6TGFiZWwxNjUxNDAyMzE0",
+          "name": "network"
+        }
+      ]
+    }
+  },
+  {
+    "id": "MDU6SXNzdWU2NzE3NTQ0NTE=",
+    "number": 382,
+    "title": "【Q377】在 js 中如何实现继承",
+    "body": "",
+    "comments": {
+      "nodes": []
+    },
+    "labels": {
+      "nodes": [
+        {
+          "id": "MDU6TGFiZWwxNjUxNDAyMzE4",
+          "name": "js"
+        }
+      ]
+    }
+  },
+  {
+    "id": "MDU6SXNzdWU2NzIwOTEzNDI=",
+    "number": 383,
+    "title": "【Q378】在 setState 时发生了什么",
+    "body": "",
+    "comments": {
+      "nodes": []
+    },
+    "labels": {
+      "nodes": [
+        {
+          "id": "MDU6TGFiZWwxNjU4MzQ3NDIy",
+          "name": "react"
+        }
+      ]
+    }
+  },
+  {
+    "id": "MDU6SXNzdWU2NzI3MzYwMTU=",
+    "number": 384,
+    "title": "【Q379】你们的后端项目的数据库索引做了哪些优化",
+    "body": "",
+    "comments": {
+      "nodes": []
+    },
+    "labels": {
+      "nodes": [
+        {
+          "id": "MDU6TGFiZWwxNjUxNDAyMzEz",
+          "name": "db"
+        },
+        {
+          "id": "MDU6TGFiZWwxNjUxNDAyMzIy",
+          "name": "server"
+        }
+      ]
+    }
+  },
+  {
+    "id": "MDU6SXNzdWU2NzI3MzcyNjM=",
+    "number": 385,
+    "title": "【Q380】如何设计一个UI组件库",
+    "body": "",
+    "comments": {
+      "nodes": []
+    },
+    "labels": {
+      "nodes": [
+        {
+          "id": "MDU6TGFiZWwxNjU4MzQ3NDIy",
+          "name": "react"
+        },
+        {
+          "id": "MDU6TGFiZWwxNjU4MzU0NDc5",
+          "name": "vue"
+        }
+      ]
+    }
+  },
+  {
+    "id": "MDU6SXNzdWU2NzI3Mzc3Njc=",
+    "number": 386,
+    "title": "【Q381】什么是覆盖索引",
+    "body": "",
+    "comments": {
+      "nodes": [
+        {
+          "id": "MDEyOklzc3VlQ29tbWVudDY2ODY3NjUxMw==",
+          "body": "假设一个用户表 `User(id primary, name unique, age)`，此时 name 为唯一索引。\r\n\r\n聚合索引: `select * from User where id in (1, 2, 3, 4, 5)`，由于 id 都在 `B+ tree` 的叶子节点，不需要去磁盘进一步 IO，称作聚合索引\r\n\r\n假设有一个需求: 根据 name 查询该人对应的 age，在现有情况下是这样的：\r\n\r\n1. 根据 name 上的 `B+ tree` 快速找到该行对应的 id\r\n1. 根据 id 上的 `B+ tree` 快速找到该行对应的 age，此时需要通过主键 id 进一步 IO，称作回表\r\n\r\n**如果建立一个联合索引 (name, age)，直接在 name 上的 `B+ tree` 就可以找到它对应的 age，省了回表操作，称为覆盖索引**",
+          "star": {
+            "totalCount": 0
+          },
+          "author": {
+            "login": "shfshanyue",
+            "url": "https://github.com/shfshanyue"
+          }
+        }
+      ]
+    },
+    "labels": {
+      "nodes": [
+        {
+          "id": "MDU6TGFiZWwxNjUxNDAyMzEz",
+          "name": "db"
+        }
+      ]
+    }
+  },
+  {
+    "id": "MDU6SXNzdWU2NzI4MTg0Mzg=",
+    "number": 387,
+    "title": "【Q382】你有没有造过轮子",
+    "body": "",
+    "comments": {
+      "nodes": []
+    },
+    "labels": {
+      "nodes": [
+        {
+          "id": "MDU6TGFiZWwxNjUxNDAyMzEx",
+          "name": "open"
+        }
+      ]
+    }
+  },
+  {
+    "id": "MDU6SXNzdWU2NzI5MDExNDM=",
+    "number": 388,
+    "title": "【Q000】你最近学习了哪些新技术",
+    "body": "",
+    "comments": {
+      "nodes": [
+        {
+          "id": "MDEyOklzc3VlQ29tbWVudDY2OTA1NzU0OA==",
+          "body": "##  20200804\r\n\r\n今天看到了 `tailwindcss`，感觉贼好用，很喜欢。基本上是 `class 即 style`，相比 `css modules`，`style-jsx`，可以说是更高层的抽象。虽然从 `bootstrap` 既可以看到这种雏形，但是 `tailwindcss` 做的更彻底，与现代框架集成的也更好\r\n\r\n<https://tailwindcss.com/docs/installation/>\r\n\r\n## 20200805\r\n\r\n`next.js` 最近升级到了 `v9.5.0`，已正式支持了 `custom-routes` 的配置文件写法，详情可以参考文档 [Next.js rewrites](https://nextjs.org/docs/api-reference/next.config.js/rewrites)。而在以前，只能在 `server.js` 中使用 `koa/express` 进行路由拦截来达成目的。\r\n\r\n有时原理虽说比较重要，但此时往往忽略了 API Design 的重要性，假设你要设计一个 Route 的 rewrite/redirect，你会怎么设计 API？可以参考 `nginx`、`koa-routes`、`react-routes` 等\r\n\r\n由于 `next.js` 升级，因为也升级了我的 `next app` 的模板: <https://github.com/shfshanyue/next-app>\r\n\r\n<https://github.com/vercel/next.js/releases/tag/v9.5.0>",
+          "star": {
+            "totalCount": 0
+          },
+          "author": {
+            "login": "shfshanyue",
+            "url": "https://github.com/shfshanyue"
+          }
+        }
+      ]
+    },
+    "labels": {
+      "nodes": [
+        {
+          "id": "MDU6TGFiZWwxNjUxNDAyMzEx",
+          "name": "open"
+        }
+      ]
+    }
+  },
+  {
+    "id": "MDU6SXNzdWU2NzI5MDM3MTE=",
+    "number": 389,
+    "title": "【Q384】python 中的 self 与 javascript 中的 this 有何不同",
+    "body": "",
+    "comments": {
+      "nodes": []
+    },
+    "labels": {
+      "nodes": [
+        {
+          "id": "MDU6TGFiZWwxNjUxNDAyMzE4",
+          "name": "js"
+        }
+      ]
+    }
+  },
+  {
+    "id": "MDU6SXNzdWU2NzQzNzUzNzU=",
+    "number": 390,
+    "title": "【Q385】什么是缓存穿透，如何解决",
+    "body": "",
+    "comments": {
+      "nodes": [
+        {
+          "id": "MDEyOklzc3VlQ29tbWVudDY3MDgzNDY3NQ==",
+          "body": "**当访问数据库中不存在的数据时，此时由于不恰当的缓存策略，每次查询都会穿透缓存打在数据库上，这样在高并发下可能造成缓存穿透**，此时的解决方案：\r\n\r\n1. 当应用访问缓存不存在时，应用继续去访问数据库，即便数据库中不存在数据，此时应用再在缓存中把该值设为空，过期时间以短时间为主\r\n1. 使用过滤器做进一步的过滤，如redis 中的 bitmap 或 set，当不存在该值时，直接返回",
+          "star": {
+            "totalCount": 0
+          },
+          "author": {
+            "login": "shfshanyue",
+            "url": "https://github.com/shfshanyue"
+          }
+        },
+        {
+          "id": "MDEyOklzc3VlQ29tbWVudDY3MTEyOTY5NA==",
+          "body": "缓存穿透是指 在 redis缓存中 不存在, 同时数据库也不存在的情况,\r\n一旦被黑客利用了, 通过频繁请求 击垮数据库\r\n做法是加 redis和mysql之间加过滤器\r\n在应用启动的时候 用布隆过滤器 将数据库中的值(如id)加载起来放在布隆过滤器中\r\n布隆过滤器 有一定的误差  能判断出这个数据 一定在数据库中, 不能 判断这个数据一定不在数据库中,\r\n他比set好处是 节约更多内存 以为他不是将数据完整的存下, 而是通过多次hash 标志某个位为1,有更高的效率",
+          "star": {
+            "totalCount": 0
+          },
+          "author": {
+            "login": "manondidi",
+            "url": "https://github.com/manondidi"
+          }
+        }
+      ]
+    },
+    "labels": {
+      "nodes": [
+        {
+          "id": "MDU6TGFiZWwxNjY2OTk3OTM5",
+          "name": "redis"
+        }
+      ]
+    }
+  },
+  {
+    "id": "MDU6SXNzdWU2NzQzNzYwMjk=",
+    "number": 391,
+    "title": "【Q386】什么是浏览器的关键渲染路径",
+    "body": "",
+    "comments": {
+      "nodes": [
+        {
+          "id": "MDEyOklzc3VlQ29tbWVudDY3MDAwNTAzMQ==",
+          "body": "## 01 DOM\r\n\r\n生成 DOM 会从远程下载 Byte，并根据相应的编码 (如 `utf8`) 转化为字符串，通过 AST 解析为 Token，生成 Node 及最后的 DOM。\r\n\r\n> 以下图片来自于 [构建 OM - Google Developers](https://developers.google.com/web/fundamentals/performance/critical-rendering-path/constructing-the-object-model)\r\n\r\nAST 解析过程可以查看 <https://astexplorer.net/>\r\n\r\n![image](https://user-images.githubusercontent.com/13389461/89550597-63124300-d83c-11ea-971d-fcdc0ed9fed2.png)\r\n\r\n可以通过 devtools 中查看该过程\r\n\r\n![image](https://user-images.githubusercontent.com/13389461/89658346-03ca3680-d901-11ea-9a49-9cf36cf651f0.png)\r\n\r\n## 02 CSSOM\r\n\r\n当解析 CSS 文件时，最终会生成 CSSOM\r\n\r\n![image](https://user-images.githubusercontent.com/13389461/89551525-a1f4c880-d83d-11ea-96f2-8b01366e7045.png)\r\n\r\n## 03 Render Tree\r\n\r\nDOM 与 CSSOM 会一起生成 Render Tree，只包含渲染网页所需的节点。\r\n\r\n![image](https://user-images.githubusercontent.com/13389461/89551568-ad47f400-d83d-11ea-9585-e24dd3c0ab3d.png)\r\n\r\n## 04 Layout\r\n\r\n计算每一个元素在设备视口内的确切位置和大小\r\n\r\n> 以下图片来自于 [关键渲染路径 - 掘金](https://juejin.im/post/6844903756820119560)\r\n\r\n![image](https://user-images.githubusercontent.com/13389461/89703579-9d83f900-d97e-11ea-82b2-7528c8426c8f.png)\r\n\r\n## 05 Paint\r\n\r\n将渲染树中的每个节点转换成屏幕上的实际像素，这一步通常称为绘制或栅格化\r\n\r\n![image](https://user-images.githubusercontent.com/13389461/89663916-ec8f4700-d908-11ea-8e6b-4083793cff1a.png)\r\n\r\n",
+          "star": {
+            "totalCount": 0
+          },
+          "author": {
+            "login": "shfshanyue",
+            "url": "https://github.com/shfshanyue"
+          }
+        }
+      ]
+    },
+    "labels": {
+      "nodes": [
+        {
+          "id": "MDU6TGFiZWwxNzA3OTU2MjIw",
+          "name": "前端工程化"
+        }
+      ]
+    }
+  },
+  {
+    "id": "MDU6SXNzdWU2NzQ0MDk5Nzk=",
+    "number": 392,
+    "title": "【Q387】http2 中 server push 与 websocket 有什么区别",
+    "body": "",
+    "comments": {
+      "nodes": []
+    },
+    "labels": {
+      "nodes": [
+        {
+          "id": "MDU6TGFiZWwxNjgwMDkyMDA5",
+          "name": "http"
+        }
+      ]
+    }
+  },
+  {
+    "id": "MDU6SXNzdWU2NzUxMjY1NTU=",
+    "number": 393,
+    "title": "【Q388】简述下 TLS 握手过程",
+    "body": "",
+    "comments": {
+      "nodes": [
+        {
+          "id": "MDEyOklzc3VlQ29tbWVudDY3MjkxMTU1OQ==",
+          "body": "TLS 握手的详细过程可参考下图：\r\n\r\n![TLS handshake](https://www.oreilly.com/library/view/high-performance-browser/9781449344757/images/hpbn_0402.png)\r\n\r\n> 以上图片来自 [high-performance-browser](https://www.oreilly.com/library/view/high-performance-browser/9781449344757/ch04.html)\r\n\r\n从 `wireshark` 抓包，也可以看到握手的详细流程，建议抓包加强理解，以下是抓包 `https://q.shanyue.tech` 时的握手流程\r\n\r\n通过 `curl -vvv --head` 来查看握手信息:\r\n\r\n``` bash\r\n$ curl -vvv --head  https://q.shanyue.tech\r\n*   Trying 111.6.180.235...\r\n* TCP_NODELAY set\r\n* Connected to q.shanyue.tech (111.6.180.235) port 443 (#0)\r\n* ALPN, offering h2\r\n* ALPN, offering http/1.1\r\n* successfully set certificate verify locations:\r\n*   CAfile: /etc/ssl/cert.pem\r\n  CApath: none\r\n* TLSv1.2 (OUT), TLS handshake, Client hello (1):\r\n* TLSv1.2 (IN), TLS handshake, Server hello (2):\r\n* TLSv1.2 (IN), TLS handshake, Certificate (11):\r\n* TLSv1.2 (IN), TLS handshake, Server key exchange (12):\r\n* TLSv1.2 (IN), TLS handshake, Server finished (14):\r\n* TLSv1.2 (OUT), TLS handshake, Client key exchange (16):\r\n* TLSv1.2 (OUT), TLS change cipher, Change cipher spec (1):\r\n* TLSv1.2 (OUT), TLS handshake, Finished (20):\r\n* TLSv1.2 (IN), TLS change cipher, Change cipher spec (1):\r\n* TLSv1.2 (IN), TLS handshake, Finished (20):\r\n* SSL connection using TLSv1.2 / ECDHE-RSA-AES128-GCM-SHA256\r\n* ALPN, server accepted to use h2\r\n* Server certificate:\r\n*  subject: CN=q.shanyue.tech\r\n*  start date: Dec  2 00:00:00 2019 GMT\r\n*  expire date: Dec  1 12:00:00 2020 GMT\r\n*  subjectAltName: host \"q.shanyue.tech\" matched cert's \"q.shanyue.tech\"\r\n*  issuer: C=US; O=DigiCert Inc; OU=www.digicert.com; CN=Encryption Everywhere DV TLS CA - G1\r\n*  SSL certificate verify ok.\r\n* Using HTTP2, server supports multi-use\r\n* Connection state changed (HTTP/2 confirmed)\r\n* Copying HTTP/2 data in stream buffer to connection buffer after upgrade: len=0\r\n* Using Stream ID: 1 (easy handle 0x7f95ba80dc00)\r\n\r\n``` \r\n\r\n## 握手过程\r\n\r\n在 TLS 1.2 中，握手协议过程需要耗费两个 RTT，过程如下\r\n\r\n1. [OUT] Client Hello，客户端选出自身支持的 TLS 版本号、`cipher suites`、一个随机数、SessionId 传送给服务器端 (有可能可服用 Session)\r\n1. [IN] Server Hello，服务器端选出双方都支持的 TLS 版本，`cipher suite` 、一个随机数、SeesionId 给客户端\r\n1. [IN] Certificate，服务器端给客户端发送证书，用以身份验证及提供公钥\r\n1. [IN] Server Key Exchange，服务器端给客户端发送秘钥交换算法的一些参数\r\n1. [IN] Server Finished\r\n1. [OUT] Client Key Exchange，客户端给服务器端发送秘钥交换算法的一些参数，计算出预备主密钥 (pre master key)，作为随机数传递给服务器端 (这个随机数是安全的)。双方根据三个随机数生成对称加密中的秘钥\r\n1. [OUT] Change Cipher Spec，告知对方以后的消息将要使用TLS记录层协议进行加密\r\n1. [OUT] Finished，发送第一条加密的消息并完整性验证\r\n1. [IN] Change Cipher Spec，告知以后的消息将要使用TLS记录层协议进行加密\r\n1. [IN] Finished，发送第一条加密的消息并完整性验证\r\n\r\n## 相关链接\r\n\r\n+ [https握手流程详解](https://juejin.im/post/6844904135230390279#heading-10)\r\n+ [Chapter 4. Transport Layer Security (TLS)](https://www.oreilly.com/library/view/high-performance-browser/9781449344757/ch04.html)",
+          "star": {
+            "totalCount": 0
+          },
+          "author": {
+            "login": "shfshanyue",
+            "url": "https://github.com/shfshanyue"
+          }
+        }
+      ]
+    },
+    "labels": {
+      "nodes": [
+        {
+          "id": "MDU6TGFiZWwxNjgwMDkyMDA5",
+          "name": "http"
+        }
+      ]
+    }
+  },
+  {
+    "id": "MDU6SXNzdWU2NzU5NTIyMTk=",
+    "number": 396,
+    "title": "【Q389】以下输出顺序多少 (setTimeout 与 promise 顺序)",
+    "body": "``` js\r\nsetTimeout(() => console.log(0))\r\nnew Promise((resolve) => {\r\n  console.log(1)\r\n  resolve(2)\r\n  console.log(3)\r\n}).then(o => console.log(o))\r\n\r\nnew Promise(resolve => {\r\n  console.log(4)\r\n  resolve(5)\r\n}).then(o => console.log(o)).then(() => console.log(6))\r\n```",
+    "comments": {
+      "nodes": [
+        {
+          "id": "MDEyOklzc3VlQ29tbWVudDY3MTQxNTAyMw==",
+          "body": "1 => 3 => 4 => 2 => 5 => 6 => 0",
+          "star": {
+            "totalCount": 1
+          },
+          "author": {
+            "login": "iceytea",
+            "url": "https://github.com/iceytea"
+          }
+        }
+      ]
+    },
+    "labels": {
+      "nodes": [
+        {
+          "id": "MDU6TGFiZWwxNjUxNDAyMzE4",
+          "name": "js"
+        }
+      ]
+    }
+  },
+  {
+    "id": "MDU6SXNzdWU2Nzc4MDY4MTU=",
+    "number": 397,
+    "title": "【Q390】简单介绍一下 RSA 算法",
+    "body": "",
+    "comments": {
+      "nodes": []
+    },
+    "labels": {
+      "nodes": [
+        {
+          "id": "MDU6TGFiZWwxNjgwMDkyMDA5",
+          "name": "http"
+        },
+        {
+          "id": "MDU6TGFiZWwxNjUxNDAyMzE0",
+          "name": "network"
+        }
+      ]
+    }
+  },
+  {
+    "id": "MDU6SXNzdWU2Nzg1NDE4NDE=",
+    "number": 398,
+    "title": "【Q391】https 层可以做哪些性能优化",
+    "body": "",
+    "comments": {
+      "nodes": [
+        {
+          "id": "MDEyOklzc3VlQ29tbWVudDY3MzU2MzE1Mg==",
+          "body": "<https://time.geekbang.org/column/article/111287>",
+          "star": {
+            "totalCount": 0
+          },
+          "author": {
+            "login": "shfshanyue",
+            "url": "https://github.com/shfshanyue"
+          }
+        }
+      ]
+    },
+    "labels": {
+      "nodes": [
+        {
+          "id": "MDU6TGFiZWwxNjgwMDkyMDA5",
+          "name": "http"
+        }
+      ]
+    }
+  },
+  {
+    "id": "MDU6SXNzdWU2Nzg1NTEzMjM=",
+    "number": 399,
+    "title": "【Q392】ECDHE 与 RSA 有何区别",
+    "body": "",
+    "comments": {
+      "nodes": []
+    },
+    "labels": {
+      "nodes": [
+        {
+          "id": "MDU6TGFiZWwxNjgwMDkyMDA5",
+          "name": "http"
+        }
+      ]
+    }
+  },
+  {
+    "id": "MDU6SXNzdWU2NzkxOTc4NDI=",
+    "number": 400,
+    "title": "【Q393】作为 TL 如何管理团队",
+    "body": "",
+    "comments": {
+      "nodes": []
+    },
+    "labels": {
+      "nodes": [
+        {
+          "id": "MDU6TGFiZWwxNjUxNDAyMzEx",
+          "name": "open"
+        }
+      ]
+    }
+  },
+  {
+    "id": "MDU6SXNzdWU2NzkyMzk1Njc=",
+    "number": 401,
+    "title": "【Q394】https 中证书的格式化信息有哪些",
+    "body": "",
+    "comments": {
+      "nodes": [
+        {
+          "id": "MDEyOklzc3VlQ29tbWVudDY3ODY0OTQ3Ng==",
+          "body": "在 TLS 握手过程中，服务器端需要给客户端提供证书，**X.509 就是证书的标准格式。**\r\n\r\n![image](https://user-images.githubusercontent.com/13389461/90958724-cbae2080-e4c8-11ea-996e-3257721c89fc.png)\r\n\r\n以下是 github 的证书在 Mac 上显示的内容，可见：\r\n\r\n1. 序列号\r\n1. Subject Name\r\n1. Issuer Name\r\n1. 电子签名\r\n1. 签名算法\r\n1. 公钥\r\n1. 扩展\r\n\r\n\r\n\r\n## 相关链接\r\n\r\n+ [What Is an X.509 Certificate?](https://www.ssl.com/faqs/what-is-an-x-509-certificate/)",
+          "star": {
+            "totalCount": 0
+          },
+          "author": {
+            "login": "shfshanyue",
+            "url": "https://github.com/shfshanyue"
+          }
+        }
+      ]
+    },
+    "labels": {
+      "nodes": [
+        {
+          "id": "MDU6TGFiZWwxNjgwMDkyMDA5",
+          "name": "http"
+        }
+      ]
+    }
+  },
+  {
+    "id": "MDU6SXNzdWU2Nzk0ODQ5NTg=",
+    "number": 402,
+    "title": "【Q395】https 连接时如何保证证书没被废弃掉",
+    "body": "",
+    "comments": {
+      "nodes": [
+        {
+          "id": "MDEyOklzc3VlQ29tbWVudDY3NDQxNDI4OQ==",
+          "body": "两种方式：\r\n\r\n1. CRL（Certificate Revocation List，证书撤销名单）。PKI 体系中由 CA 维护的一个被撤销证书的列表，浏览器会定时拉取这个文件。但这个文件的实时性及性能都可能有问题\r\n1. OCSP（Online Certificate Status Protocol，在线证书状态协议）。客户端通过 OSCP 服务请求接口来判断某个证书是否有效",
+          "star": {
+            "totalCount": 0
+          },
+          "author": {
+            "login": "shfshanyue",
+            "url": "https://github.com/shfshanyue"
+          }
+        }
+      ]
+    },
+    "labels": {
+      "nodes": [
+        {
+          "id": "MDU6TGFiZWwxNjgwMDkyMDA5",
+          "name": "http"
+        }
+      ]
+    }
+  },
+  {
+    "id": "MDU6SXNzdWU2Nzk0ODcxNjU=",
+    "number": 403,
+    "title": "【Q396】TLS1.3 相比 TLS1.2 有何不同",
+    "body": "",
+    "comments": {
+      "nodes": [
+        {
+          "id": "MDEyOklzc3VlQ29tbWVudDY3NTIxNDAwMQ==",
+          "body": "以下摘自 [RFC 5246: TLS 1.2](https://tools.ietf.org/html/rfc5246#section-7.3)\r\n\r\n``` txt\r\n      Client                                               Server\r\n\r\n      ClientHello                  -------->\r\n                                                      ServerHello\r\n                                                     Certificate*\r\n                                               ServerKeyExchange*\r\n                                              CertificateRequest*\r\n                                   <--------      ServerHelloDone\r\n      Certificate*\r\n      ClientKeyExchange\r\n      CertificateVerify*\r\n      [ChangeCipherSpec]\r\n      Finished                     -------->\r\n                                               [ChangeCipherSpec]\r\n                                   <--------             Finished\r\n      Application Data             <------->     Application Data\r\n\r\n             Figure 1.  Message flow for a full handshake\r\n\r\n   * Indicates optional or situation-dependent messages that are not\r\n   always sent.\r\n```\r\n\r\n以下摘自 [RFC 8446: TLS 1.3](https://tools.ietf.org/html/rfc8446)\r\n\r\n``` txt\r\n       Client                                           Server\r\n\r\nKey  ^ ClientHello\r\nExch | + key_share*\r\n     | + signature_algorithms*\r\n     | + psk_key_exchange_modes*\r\n     v + pre_shared_key*       -------->\r\n                                                  ServerHello  ^ Key\r\n                                                 + key_share*  | Exch\r\n                                            + pre_shared_key*  v\r\n                                        {EncryptedExtensions}  ^  Server\r\n                                        {CertificateRequest*}  v  Params\r\n                                               {Certificate*}  ^\r\n                                         {CertificateVerify*}  | Auth\r\n                                                   {Finished}  v\r\n                               <--------  [Application Data*]\r\n     ^ {Certificate*}\r\nAuth | {CertificateVerify*}\r\n     v {Finished}              -------->\r\n       [Application Data]      <------->  [Application Data]\r\n\r\n              +  Indicates noteworthy extensions sent in the\r\n                 previously noted message.\r\n\r\n              *  Indicates optional or situation-dependent\r\n                 messages/extensions that are not always sent.\r\n\r\n              {} Indicates messages protected using keys\r\n                 derived from a [sender]_handshake_traffic_secret.\r\n\r\n              [] Indicates messages protected using keys\r\n                 derived from [sender]_application_traffic_secret_N.\r\n\r\n               Figure 1: Message Flow for Full TLS Handshake\r\n\r\n```\r\n\r\n1. 握手时间从以前的 2RTT 缩短到 1RTT，通过 `Pre shared-key` 减少了单独的 ServerKeyExchange 与 ClientKeyExchange 消耗的一个 RTT\r\n1. 0-RTT Resumption",
+          "star": {
+            "totalCount": 0
+          },
+          "author": {
+            "login": "shfshanyue",
+            "url": "https://github.com/shfshanyue"
+          }
+        }
+      ]
+    },
+    "labels": {
+      "nodes": [
+        {
+          "id": "MDU6TGFiZWwxNjgwMDkyMDA5",
+          "name": "http"
+        }
+      ]
+    }
+  },
+  {
+    "id": "MDU6SXNzdWU2Nzk3NTMzNjY=",
+    "number": 404,
+    "title": "【Q397】什么是 oauth2，它解决了什么问题",
+    "body": "",
+    "comments": {
+      "nodes": []
+    },
+    "labels": {
+      "nodes": [
+        {
+          "id": "MDU6TGFiZWwxNjUxNDAyMzIy",
+          "name": "server"
+        }
+      ]
+    }
+  },
+  {
+    "id": "MDU6SXNzdWU2Nzk3NTQwMTk=",
+    "number": 405,
+    "title": "【Q398】在 wireshark 中如何抓包 https ",
+    "body": "",
+    "comments": {
+      "nodes": []
+    },
+    "labels": {
+      "nodes": [
+        {
+          "id": "MDU6TGFiZWwxNjgwMDkyMDA5",
+          "name": "http"
+        }
+      ]
+    }
+  },
+  {
+    "id": "MDU6SXNzdWU2ODA2NTIzODA=",
+    "number": 406,
+    "title": "【Q399】实现一个 once 函数，记忆返回结果只执行一次",
+    "body": "",
+    "comments": {
+      "nodes": [
+        {
+          "id": "MDEyOklzc3VlQ29tbWVudDY3NTUxOTA0NQ==",
+          "body": "简单实现如下：\r\n\r\n``` js\r\nfunction once (f) {\r\n  let result\r\n  let revoked = false\r\n  \r\n  return (...args) => {\r\n    if (revoked) return result\r\n    const r = f(...args)\r\n    revoked = true\r\n    result = r\r\n    return r\r\n  }\r\n}\r\n```\r\n\r\n``` js\r\n> const f = () => {console.log('call'); return 3;}\r\n< undefined\r\n\r\n> once_f = once(f)\r\n< (...args) => {\r\n    if (revoked) return result\r\n    const r = f(...args)\r\n    revoked = true\r\n    result = r\r\n  }\r\n\r\n// 第一次调用\r\n> once_f()\r\n< call\r\n< 3\r\n\r\n// 第二次调用，没有打印 call\r\n> once_f()\r\n< 3\r\n```",
+          "star": {
+            "totalCount": 0
+          },
+          "author": {
+            "login": "shfshanyue",
+            "url": "https://github.com/shfshanyue"
+          }
+        }
+      ]
+    },
+    "labels": {
+      "nodes": [
+        {
+          "id": "MDU6TGFiZWwxNjUxNDAyMzE4",
+          "name": "js"
+        }
+      ]
+    }
+  },
+  {
+    "id": "MDU6SXNzdWU2ODA2NjM1NDg=",
+    "number": 407,
+    "title": "【Q400】如何评估一台服务器的 CPU 性能",
+    "body": "",
+    "comments": {
+      "nodes": [
+        {
+          "id": "MDEyOklzc3VlQ29tbWVudDY3ODcxNzQxMg==",
+          "body": "## sysbench\r\n\r\n``` bash\r\n$ sysbench --threads=4 --time=30 cpu run\r\n\r\nsysbench 1.0.17 (using system LuaJIT 2.1.0-beta3)\r\n\r\nRunning the test with following options:\r\nNumber of threads: 4\r\nInitializing random number generator from current time\r\n\r\n\r\nPrime numbers limit: 10000\r\n\r\nInitializing worker threads...\r\n\r\nThreads started!\r\n\r\nCPU speed:\r\n    events per second:  3651.16\r\n\r\nGeneral statistics:\r\n    total time:                          30.0010s\r\n    total number of events:              109545\r\n\r\nLatency (ms):\r\n         min:                                    1.08\r\n         avg:                                    1.10\r\n         max:                                    5.78\r\n         95th percentile:                        1.12\r\n         sum:                               119955.35\r\n\r\nThreads fairness:\r\n    events (avg/stddev):           27386.2500/91.56\r\n    execution time (avg/stddev):   29.9888/0.00\r\n```\r\n\r\n## stress",
+          "star": {
+            "totalCount": 0
+          },
+          "author": {
+            "login": "shfshanyue",
+            "url": "https://github.com/shfshanyue"
+          }
+        }
+      ]
+    },
+    "labels": {
+      "nodes": [
+        {
+          "id": "MDU6TGFiZWwxNjU2MTA0NTgx",
+          "name": "devops"
+        }
+      ]
+    }
+  },
+  {
+    "id": "MDU6SXNzdWU2ODEwNjA3NjY=",
+    "number": 408,
+    "title": "【Q401】在 TLS 层如何优化网站性能",
+    "body": "",
+    "comments": {
+      "nodes": [
+        {
+          "id": "MDEyOklzc3VlQ29tbWVudDY3OTk0MzYzNg==",
+          "body": "1. OSCP Stapling\r\n1. TLS 1.3",
+          "star": {
+            "totalCount": 0
+          },
+          "author": {
+            "login": "shfshanyue",
+            "url": "https://github.com/shfshanyue"
+          }
+        }
+      ]
+    },
+    "labels": {
+      "nodes": [
+        {
+          "id": "MDU6TGFiZWwxNjgwMDkyMDA5",
+          "name": "http"
+        }
+      ]
+    }
+  },
+  {
+    "id": "MDU6SXNzdWU2ODE1OTE1NDk=",
+    "number": 409,
+    "title": "【Q402】如何实现一个函数 isPlainObject 判断是否为纯对象",
+    "body": "",
+    "comments": {
+      "nodes": [
+        {
+          "id": "MDEyOklzc3VlQ29tbWVudDY3NTk1MTQzOA==",
+          "body": "``` js\r\nfunction isPlainObject(obj: any): boolean {\r\n  if (typeof obj !== 'object' || obj === null) return false\r\n\r\n  let proto = obj\r\n  while (Object.getPrototypeOf(proto) !== null) {\r\n    proto = Object.getPrototypeOf(proto)\r\n  }\r\n\r\n  return Object.getPrototypeOf(obj) === proto                                                  } \r\n}\r\n```",
+          "star": {
+            "totalCount": 0
+          },
+          "author": {
+            "login": "shfshanyue",
+            "url": "https://github.com/shfshanyue"
+          }
+        },
+        {
+          "id": "MDEyOklzc3VlQ29tbWVudDY3NzQ4MjkxNQ==",
+          "body": "纯对象 如何定义？",
+          "star": {
+            "totalCount": 0
+          },
+          "author": {
+            "login": "Lstoryc",
+            "url": "https://github.com/Lstoryc"
+          }
+        }
+      ]
+    },
+    "labels": {
+      "nodes": [
+        {
+          "id": "MDU6TGFiZWwxNjUxNDAyMzE4",
+          "name": "js"
+        }
+      ]
+    }
+  },
+  {
+    "id": "MDU6SXNzdWU2ODE3MzAzOTM=",
+    "number": 410,
+    "title": "【Q403】React 中的 dom diff 算法如何从 O(n3) 优化到 O(n) 的",
+    "body": "",
+    "comments": {
+      "nodes": []
+    },
+    "labels": {
+      "nodes": [
+        {
+          "id": "MDU6TGFiZWwxNjU4MzQ3NDIy",
+          "name": "react"
+        }
+      ]
+    }
+  },
+  {
+    "id": "MDU6SXNzdWU2ODI2MTk1MDM=",
+    "number": 411,
+    "title": "【Q404】在 React 应用中如何排查性能问题",
+    "body": "",
+    "comments": {
+      "nodes": []
+    },
+    "labels": {
+      "nodes": [
+        {
+          "id": "MDU6TGFiZWwxNjU4MzQ3NDIy",
+          "name": "react"
+        }
+      ]
+    }
+  },
+  {
+    "id": "MDU6SXNzdWU2ODI4NTI0NDc=",
+    "number": 412,
+    "title": "【Q405】你使用过哪些前端性能分析工具",
+    "body": "",
+    "comments": {
+      "nodes": [
+        {
+          "id": "MDEyOklzc3VlQ29tbWVudDY3ODEyMDQ1OA==",
+          "body": "chrome 自带的灯箱",
+          "star": {
+            "totalCount": 0
+          },
+          "author": {
+            "login": "zxhycxq",
+            "url": "https://github.com/zxhycxq"
+          }
+        },
+        {
+          "id": "MDEyOklzc3VlQ29tbWVudDY3ODMzNDc0Mg==",
+          "body": "最常见且实用的性能工具有两个：\r\n\r\n1. `lighthouse`: 可在 chrome devtools 直接使用，根据个人设备及网络对目标网站进行分析，并提供各种建议\r\n1. `webpagetest`: 分布式的性能分析工具，可在全球多个区域的服务器资源为你的网站进行分析，并生成相应的报告",
+          "star": {
+            "totalCount": 0
+          },
+          "author": {
+            "login": "shfshanyue",
+            "url": "https://github.com/shfshanyue"
+          }
+        }
+      ]
+    },
+    "labels": {
+      "nodes": [
+        {
+          "id": "MDU6TGFiZWwxNzA3OTU2MjIw",
+          "name": "前端工程化"
+        }
+      ]
+    }
+  },
+  {
+    "id": "MDU6SXNzdWU2ODMyMTk5NzM=",
+    "number": 413,
+    "title": "【Q406】在你们的后端应用中，redis 用在哪些场景",
+    "body": "",
+    "comments": {
+      "nodes": [
+        {
+          "id": "MDEyOklzc3VlQ29tbWVudDY3ODcxNDk3NA==",
+          "body": "1. 缓存\r\n1. 限流\r\n1. 队列\r\n1. 分布式锁\r\n1. 并发数控制\r\n1. bitmap\r\n",
+          "star": {
+            "totalCount": 0
+          },
+          "author": {
+            "login": "shfshanyue",
+            "url": "https://github.com/shfshanyue"
+          }
+        }
+      ]
+    },
+    "labels": {
+      "nodes": [
+        {
+          "id": "MDU6TGFiZWwxNjY2OTk3OTM5",
+          "name": "redis"
+        }
+      ]
+    }
+  },
+  {
+    "id": "MDU6SXNzdWU2ODQxMTQ1ODU=",
+    "number": 414,
+    "title": "【Q407】什么是 CPU 缓存，如何查看缓存命中率",
+    "body": "",
+    "comments": {
+      "nodes": []
+    },
+    "labels": {
+      "nodes": [
+        {
+          "id": "MDU6TGFiZWwxNjU2MTA0NTgx",
+          "name": "devops"
+        },
+        {
+          "id": "MDU6TGFiZWwxNjU0NzI4NDM2",
+          "name": "linux"
+        }
+      ]
+    }
+  },
+  {
+    "id": "MDU6SXNzdWU2ODQxODc1NjA=",
+    "number": 415,
+    "title": "【Q408】React 17.0 有什么变化",
+    "body": "",
+    "comments": {
+      "nodes": []
+    },
+    "labels": {
+      "nodes": [
+        {
+          "id": "MDU6TGFiZWwxNjU4MzQ3NDIy",
+          "name": "react"
+        }
+      ]
+    }
+  },
+  {
+    "id": "MDU6SXNzdWU2ODQxOTQxNDE=",
+    "number": 416,
+    "title": "【Q409】什么是 BNF 与 ABNF",
+    "body": "",
+    "comments": {
+      "nodes": []
+    },
+    "labels": {
+      "nodes": [
+        {
+          "id": "MDU6TGFiZWwxNjU2MTA0NTgx",
+          "name": "devops"
+        }
+      ]
+    }
+  },
+  {
+    "id": "MDU6SXNzdWU2ODQ1MDY3OTI=",
+    "number": 417,
+    "title": "【Q410】你最近看的三本书是什么",
+    "body": "",
+    "comments": {
+      "nodes": []
+    },
+    "labels": {
+      "nodes": [
+        {
+          "id": "MDU6TGFiZWwxNjUxNDAyMzEx",
+          "name": "open"
+        }
+      ]
+    }
+  },
+  {
+    "id": "MDU6SXNzdWU2ODUwNzY3MDM=",
+    "number": 418,
+    "title": "【Q411】如何找到当前页面中出现次数最多的HTML标签",
+    "body": "",
+    "comments": {
+      "nodes": [
+        {
+          "id": "MDEyOklzc3VlQ29tbWVudDY4MDQxNjkxNw==",
+          "body": "这是一道前端基础与编程功底具备的面试题：如果你前端基础强会了解 `document.querySelector(*)` 能够列出页面内所有标签，如果你编程能力强能够用递归快速实现同等的效果\r\n\r\n``` js\r\n> document.querySelectorAll('*')\r\n< NodeList(593) [html, head, meta, meta, meta, meta, meta, meta, meta, title, link#favicon, link, link#MainCss, link#mobile-style, link, link, link, script, script, script, script, script, script, script, link, script, link, link, script, input#_w_brink, body, a, div#home, div#header, div#blogTitle, a#lnkBlogLogo, img#blogLogo, h1, a#Header1_HeaderTitle.headermaintitle.HeaderMainTitle, h2, div#navigator, ul#navList, li, a#blog_nav_sitehome.menu, li, a#blog_nav_myhome.menu, li, a#blog_nav_newpost.menu, li, a#blog_nav_contact.menu, li, a#blog_nav_rss.menu, li, a#blog_nav_admin.menu, div.blogStats, span#stats_post_count, span#stats_article_count, span#stats-comment_count, div#main, div#mainContent, div.forFlow, div#post_detail, div#topics, div.post, h1.postTitle, a#cb_post_title_url.postTitle2.vertical-middle, span, div.clear, div.postBody, div#cnblogs_post_body.blogpost-body, p, p, strong, p, p, p, strong, div.cnblogs_code, pre, span, span, span, span, span, p, span, strong, pre, strong, span, strong, br, br, br, div.cnblogs_code, pre, span, span, p, p, …]\r\n[0 … 99]\r\n[100 … 199]\r\n[200 … 299]\r\n[300 … 399]\r\n[400 … 499]\r\n[500 … 592]\r\n__proto__: NodeList\r\n```\r\n\r\n使用 `document.querySelectorAll` 实现如下\r\n\r\n``` js\r\nconst maxBy = (list, keyBy) => list.reduce((x, y) => keyBy(x) > keyBy(y) ? x : y)\r\n\r\nfunction getFrequentTag () {\r\n  const tags = [...document.querySelectorAll('*')].map(x => x.tagName).reduce((o, tag) => { \r\n    o[tag] = o[tag] ? o[tag] + 1 : 1;\r\n    return o\r\n  }, {})\r\n  return maxBy(Object.entries(tags), tag => tag[1])\r\n}\r\n```\r\n\r\n使用 `element.children` 递归迭代如下 (最终结果多一个 document)\r\n\r\n``` js\r\nfunction getAllTags(el = document) {\r\n  const children = Array.from(el.children).reduce((x, y) => [...x, ...getAllTags(y)], [])\r\n  return children\r\n}\r\n\r\n// 或者通过 flatMap 实现\r\nfunction getAllTags(el = document) {\r\n  const children = Array.prototype.flatMap.call(el.children, x => getAllTags(x))\r\n  return [el, ...children]\r\n}\r\n```",
+          "star": {
+            "totalCount": 0
+          },
+          "author": {
+            "login": "shfshanyue",
+            "url": "https://github.com/shfshanyue"
+          }
+        }
+      ]
+    },
+    "labels": {
+      "nodes": [
+        {
+          "id": "MDU6TGFiZWwxNjUxNDAyMzE2",
+          "name": "html"
+        }
+      ]
+    }
+  },
+  {
+    "id": "MDU6SXNzdWU2ODUwNzg4ODk=",
+    "number": 419,
+    "title": "【Q412】对以下字符进行压缩编码",
+    "body": "Input: 'aaaabbbccd'\r\nOutput: 'a4b3c2d1'",
+    "comments": {
+      "nodes": [
+        {
+          "id": "MDEyOklzc3VlQ29tbWVudDY3OTYyNjgzMw==",
+          "body": "``` js\r\nfunction encode (str) {\r\n  const l = []\r\n  let i = 0\r\n  for (const s of str) {\r\n    const len = l.length\r\n    const lastChar = len > 0 ? l[len - 1][0] : undefined\r\n    if (lastChar === s) {\r\n      l[len - 1][1]++\r\n    } else {\r\n      l.push([s, 1])\r\n    }\r\n  }\r\n  return l.map(x => x.join('')).join('')\r\n}\r\n```",
+          "star": {
+            "totalCount": 0
+          },
+          "author": {
+            "login": "shfshanyue",
+            "url": "https://github.com/shfshanyue"
+          }
+        }
+      ]
+    },
+    "labels": {
+      "nodes": [
+        {
+          "id": "MDU6TGFiZWwxNjkwMDg5OTM2",
+          "name": "algorithm"
+        },
+        {
+          "id": "MDU6TGFiZWwxNjUxNDAyMzE4",
+          "name": "js"
+        }
+      ]
+    }
+  },
+  {
+    "id": "MDU6SXNzdWU2ODUwODAzMjA=",
+    "number": 420,
+    "title": "【Q413】如何在生产环境部署一个 Node 应用",
+    "body": "",
+    "comments": {
+      "nodes": []
+    },
+    "labels": {
+      "nodes": [
+        {
+          "id": "MDU6TGFiZWwxNjU2MTA0NTgx",
+          "name": "devops"
+        },
+        {
+          "id": "MDU6TGFiZWwxNzI2MDg3MTMx",
+          "name": "node"
+        }
+      ]
+    }
+  },
+  {
+    "id": "MDU6SXNzdWU2ODUxMDM5Njg=",
+    "number": 421,
+    "title": "【Q414】git 如何添加与删除一个 submodule",
+    "body": "",
+    "comments": {
+      "nodes": [
+        {
+          "id": "MDEyOklzc3VlQ29tbWVudDY3OTYxOTEwMQ==",
+          "body": "**添加 submodule**\r\n\r\n``` bash\r\n$ git submodule add :git-url dep\r\n```\r\n\r\n**删除 submodule**\r\n\r\n+ `vim .gitmodules`，找到该模块位置，删掉\r\n+ `vim .git/config`，找到该模块位置，删除\r\n+ `rm -rf .git/module/dep` \r\n+ `git rm --cached dep`",
+          "star": {
+            "totalCount": 0
+          },
+          "author": {
+            "login": "shfshanyue",
+            "url": "https://github.com/shfshanyue"
+          }
+        }
+      ]
+    },
+    "labels": {
+      "nodes": [
+        {
+          "id": "MDU6TGFiZWwxNzE2ODAxMDI2",
+          "name": "git"
+        }
+      ]
+    }
+  },
+  {
+    "id": "MDU6SXNzdWU2ODUxNjQwNTU=",
+    "number": 422,
+    "title": "【Q415】你有没有重客户端状态前端应用的经验",
+    "body": "",
+    "comments": {
+      "nodes": []
+    },
+    "labels": {
+      "nodes": [
+        {
+          "id": "MDU6TGFiZWwxNzA3OTU2MjIw",
+          "name": "前端工程化"
+        }
+      ]
+    }
+  },
+  {
+    "id": "MDU6SXNzdWU2ODUxNjczMjc=",
+    "number": 423,
+    "title": "【Q416】apollo-client 与 react-apollo 在前端应用中扮演什么角色",
+    "body": "",
+    "comments": {
+      "nodes": []
+    },
+    "labels": {
+      "nodes": [
+        {
+          "id": "MDU6TGFiZWwxNjkyOTk0Mjk2",
+          "name": "graphql"
+        }
+      ]
+    }
+  },
+  {
+    "id": "MDU6SXNzdWU2ODUyNjE0MzA=",
+    "number": 424,
+    "title": "【Q417】什么是 exit code",
+    "body": "",
+    "comments": {
+      "nodes": []
+    },
+    "labels": {
+      "nodes": [
+        {
+          "id": "MDU6TGFiZWwxNjU0NzI4NDM2",
+          "name": "linux"
+        },
+        {
+          "id": "MDU6TGFiZWwxNjkxMDQ3MDQ2",
+          "name": "os"
+        }
+      ]
+    }
+  },
+  {
+    "id": "MDU6SXNzdWU2ODUzMjM3ODQ=",
+    "number": 425,
+    "title": "【Q418】什么是 coredump，如何配置与分析",
+    "body": "",
+    "comments": {
+      "nodes": []
+    },
+    "labels": {
+      "nodes": [
+        {
+          "id": "MDU6TGFiZWwxNjU0NzI4NDM2",
+          "name": "linux"
+        },
+        {
+          "id": "MDU6TGFiZWwxNjkxMDQ3MDQ2",
+          "name": "os"
+        }
+      ]
+    }
+  },
+  {
+    "id": "MDU6SXNzdWU2ODU0Mzc2Nzk=",
+    "number": 426,
+    "title": "【Q419】DV、OV、EV 类的证书有何区别",
+    "body": "",
+    "comments": {
+      "nodes": []
+    },
+    "labels": {
+      "nodes": [
+        {
+          "id": "MDU6TGFiZWwxNjgwMDkyMDA5",
+          "name": "http"
+        }
+      ]
+    }
+  },
+  {
+    "id": "MDU6SXNzdWU2ODU0ODMzOTE=",
+    "number": 427,
+    "title": "【Q420】https 中是如何进行身份认证的",
+    "body": "",
+    "comments": {
+      "nodes": []
+    },
+    "labels": {
+      "nodes": [
+        {
+          "id": "MDU6TGFiZWwxNjgwMDkyMDA5",
+          "name": "http"
         }
       ]
     }

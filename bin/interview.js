@@ -36,7 +36,7 @@ function getComment (question) {
 function getIssueMd (issue) {
   const title = `## ${issue.title}`
   const body = issue.body && `<blockquote> 更多描述: ${issue.body} </blockquote>`
-  const more = argv.issue ? `> 在 Issue 中交流与讨论: [Issue 地址](https://github.com/shfshanyue/Daily-Question/issues/${issue.number})` : ''
+  const more = argv.issue ? `> 在 Issue 中交流与讨论: [${issue.title}](https://github.com/shfshanyue/Daily-Question/issues/${issue.number})` : ''
   const comment = getComment(issue)
   const md = _.compact([title, body, more, comment]).join('\n\n')
   return md
