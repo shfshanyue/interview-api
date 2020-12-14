@@ -1,4 +1,5 @@
 const _ = require('lodash')
+const { labels } = require('../labes')
 
 const argv = require('yargs')
   .array('number')
@@ -22,6 +23,7 @@ const issuesById = _.keyBy(issues, 'number')
 const flatIssues = _.flatMap(issues, issue => _.map(issue.labels.nodes, label => _.omit({ ...issue, label }, '')))
 
 const issuesByLabel = _.groupBy(flatIssues, 'label.name')
+const labelsByName = _.keyBy(labels, 'name')
 
 function getComment (question) {
   const comment = question.comments.nodes.find(comment => {
@@ -35,8 +37,12 @@ function getComment (question) {
 
 function getIssueMd (issue) {
   const title = `## ${issue.title}`
-  const body = issue.body && `<blockquote> 更多描述: ${issue.body} </blockquote>`
-  const more = argv.issue ? `> 在 Issue 中交流与讨论: [${issue.title}](https://github.com/shfshanyue/Daily-Question/issues/${issue.number})` : ''
+  const label = issue.labels.nodes[0].name
+  const category = labelsByName[label].group
+  const url = `https://q.shanyue.tech/${category}/${label}/${issue.number}`
+  const issueUrl = `https://github.com/shfshanyue/Daily-Question/issues/${issue.number}`
+  const body = issue.body && `<blockquote> \n 更多描述: ${issue.body} \n </blockquote>`
+  const more = argv.issue ? `> 在 [Issue](${issueUrl}) 或者[我的网站](https://q.shanyue.tech)中交流与讨论: [${issue.title}](${url})` : ''
   const comment = getComment(issue)
   const md = _.compact([title, body, more, comment]).join('\n\n')
   return md
@@ -57,13 +63,14 @@ function getIssuesMd (issues) {
 function main() {
   if (argv.number) {
     const ids = argv.number
-    const md = getIssuesMd(_.map(ids, id => _.get(issuesById, id)).filter(Boolean))
+    const issues = _.sortBy(_.map(ids, id => _.get(issuesById, id)), x => x.labels.nodes[0].name).filter(Boolean)
+    const md = getIssuesMd(issues)
     console.log(md)
   } else if (argv.label) {
     const labels = argv.label
     const count = argv.count
-    const comment = count ? true : argv.comment
-    const issues = _.flatMap(labels, label => issuesByLabel[label]).filter(issue => comment ? issue.comment : true)
+    const comment = argv.comment
+    const issues = _.flatMap(labels, label => issuesByLabel[label]).filter(issue => comment ? getComment(issue) : true)
     const filterIssues = count ? Array.from(Array(count), x => _.random(issues.length-1)).map(x => _.get(issues, x)) : issues
     const md = getIssuesMd(_.sortBy(_.uniqBy(filterIssues, 'number'), 'number'))
     console.log(md)

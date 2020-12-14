@@ -2,6 +2,8 @@
 
 这是关于 [面试每日一题](https://github.com/shfshanyue/Daily-Question) 提供的 GraphQL 接口
 
+## Script
+
 ## Query
 
 ![Query](./assets/query.png)
