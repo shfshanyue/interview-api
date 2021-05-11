@@ -19,7 +19,7 @@
     "apollo-server": "^2.16.0",
     "apollo-server-express": "^2.16.0",
     "graphql": "^15.3.0",
-    "lodash": "^4.17.19",
+    "lodash": "^4.17.21",
     "npm-check-updates": "^7.0.2"
   },
   "devDependencies": {
