@@ -2858,9 +2858,9 @@
         },
         {
           "id": "IC_kwDODQzyOs44faCz",
-          "body": "HMR，Hot Module Replacement，热模块替换，见名思意，即无需刷新再内存环境中即可替换掉过旧模块。与 Live Reload 相对应。\r\n\r\n在 webpack 的运行时中 `__webpack__modules__` 用以维护所有的模块。而热模块替换的原理，即通过 `chunk` 的方式加载最新的 `modules`，找到 `__webpack__modules__` 中对应的模块逐一替换，并删除其上下缓存。\r\n\r\n其精简数据结构用以下代码表示:\r\n\r\n``` js\r\nconst __webpack_modules = [\r\n  (module, exports, __webpack_require__) => { __webpack_require__(0)  },\r\n  () => { console.log(这是一号模块) }\r\n]\r\n\r\n// JSONP 异步加载的所需要更新的 modules\r\nself[\"webpackHotUpdate\"](0, {\r\n  1: () => {\r\n     console.log('这是最新的三号模块')\r\n  }\r\n})\r\n```\r\n\r\n其下为更具体更完整的流程，每一步都涉及众多，有兴趣的可阅读 `webpack-dev-server` 及开发环境 webpack 运行时的源码。\r\n\r\n1. `webpack-dev-server` 将打包输出 bundle 使用内存型文件系统控制，而非真实的文件系统。此时使用的是 [memfs](https://github.com/streamich/memfs) 模拟 node.js `fs` API\r\n1.  每当文件发生变更时，`webpac` 将会重新编译，`webpack-dev-server` 将会监控到此时文件变更事件，并找到其对应的 `module`。此时使用的是 [chokidar](https://github.com/paulmillr/chokidar) 监控文件变更\r\n1.  `webpack-dev-server` 将会把变更模块通知到浏览器端，此时使用 `websocket` 与浏览器进行交流。此时使用的是 [ws](https://github.com/websockets/ws)\r\n1. 浏览器根据 `websocket` 接收到 hash，并通过 hash 以 JSONP 的方式请求更新模块的 chunk\r\n1. 浏览器加载 chunk，并使用新的模块对旧模块进行热替换，并删除其缓存",
+          "body": "HMR，Hot Module Replacement，热模块替换，见名思意，即无需刷新在内存环境中即可替换掉过旧模块。与 Live Reload 相对应。\r\n\r\n> PS: Live Reload，当代码进行更新后，在浏览器自动刷新以获取最新前端代码。\r\n\r\n在 webpack 的运行时中 `__webpack__modules__` 用以维护所有的模块。\r\n\r\n而热模块替换的原理，即通过 `chunk` 的方式加载最新的 `modules`，找到 `__webpack__modules__` 中对应的模块逐一替换，并删除其上下缓存。\r\n\r\n其精简数据结构用以下代码表示:\r\n\r\n``` js\r\n// webpack 运行时代码\r\nconst __webpack_modules = [\r\n  (module, exports, __webpack_require__) => { __webpack_require__(0)  },\r\n  () => { console.log(\"这是一号模块\") }\r\n]\r\n\r\n// HMR Chunk 代码\r\n// JSONP 异步加载的所需要更新的 modules，并在 __webpack_modules__ 中进行替换\r\nself[\"webpackHotUpdate\"](0, {\r\n  1: () => {\r\n     console.log('这是最新的一号模块')\r\n  }\r\n})\r\n```\r\n\r\n其下为更具体更完整的流程，每一步都涉及众多，有兴趣的可阅读 `webpack-dev-server` 及开发环境 webpack 运行时的源码。\r\n\r\n1. `webpack-dev-server` 将打包输出 bundle 使用内存型文件系统控制，而非真实的文件系统。此时使用的是 [memfs](https://github.com/streamich/memfs) 模拟 node.js `fs` API\r\n1.  每当文件发生变更时，`webpack` 将会重新编译，`webpack-dev-server` 将会监控到此时文件变更事件，并找到其对应的 `module`。此时使用的是 [chokidar](https://github.com/paulmillr/chokidar) 监控文件变更\r\n1.  `webpack-dev-server` 将会把变更模块通知到浏览器端，此时使用 `websocket` 与浏览器进行交流。此时使用的是 [ws](https://github.com/websockets/ws)\r\n1. 浏览器根据 `websocket` 接收到 hash，并通过 hash 以 JSONP 的方式请求更新模块的 chunk\r\n1. 浏览器加载 chunk，并使用新的模块对旧模块进行热替换，并删除其缓存",
           "star": {
-            "totalCount": 0
+            "totalCount": 1
           },
           "author": {
             "login": "shfshanyue",
@@ -2945,6 +2945,28 @@
           "author": {
             "login": "SageSanyue",
             "url": "https://github.com/SageSanyue"
+          }
+        },
+        {
+          "id": "IC_kwDODQzyOs46fIvg",
+          "body": "@SageSanyue 目前更推荐使用 `contenthash`，而不是 `chunkhash`",
+          "star": {
+            "totalCount": 0
+          },
+          "author": {
+            "login": "shfshanyue",
+            "url": "https://github.com/shfshanyue"
+          }
+        },
+        {
+          "id": "IC_kwDODQzyOs46fev4",
+          "body": "# Long Term Cache\r\n\r\n使用 `webpack` 等打包器进行打包时，每个资源都可生成一个带有 hash 的路径。如\r\n\r\n+ `build/main.071b73.js`\r\n+ `build/main.94474e.css`\r\n+ `build/logo.18bac8.png`\r\n\r\n此处对添加 `hash` 的资源设置永久缓存，可大幅度提高该网站的缓存能力，从而大幅度提高网站的二次加载性能。\r\n\r\n通过在服务器端/网关端对资源设置以下 Response Header，进行强缓存一年时间，称为永久缓存，即 `Long Term Cache`。\r\n\r\n``` bash\r\nCache-Control: public,max-age=31536000,immutable\r\n```\r\n\r\n**而当源文件内容发生变更时，资源的 `hash` 发生变化，生成新的可永久缓存的资源地址。**\r\n\r\n因此在实践中，可对打包处理后带有 hash 资源的所有文件设置永久缓存。\r\n\r\n如果前端通过 docker/k8s/helm 进行部署，可由团队人员自行在构建 nginx 镜像时进行添加响应头字段。此处可作为前端性能优化的 kpi/okr。\r\n\r\n可在浏览器控制台 Network 中查看响应头来验证所属项目是否已成功添加永久缓存。\r\n\r\n![](https://cdn.jsdelivr.net/gh/shfshanyue/assets/2021-11-29/clipboard-1625.748311.webp)\r\n\r\n## 一个问题与更强的永久缓存\r\n\r\n假设有两个文件: `index.js` 和 `lib.js`，且 index 依赖于 lib，其内容如下。\r\n\r\n**index.js**\r\n\r\n``` js\r\n// index.js\r\nimport('./lib').then(o => console.log(o))\r\n```\r\n\r\n**lib.js**\r\n\r\n``` js\r\nexport const a = 3\r\n```\r\n\r\n由 webpack 等打包器打包后将会生生两个 chunk (为了方便讲解，以下 aaaaaa 为 hash 值)\r\n\r\n+ `index.aaaaaa.js`\r\n+ `lib.aaaaaa.js`\r\n\r\n*问: 假设 lib.js 文件内容发生变更，index.js 由于引用了 lib.js，可能包含其文件名，那么它的 hash 是否会发生变动*\r\n\r\n答: 不一定。打包后的 `index.js` 中引用 lib 时并不会包含 `lib.aaaaaa.js`，而是采用 chunkId 的形式，如果 chunkId 是固定的话，则不会发生变更。\r\n\r\n``` js\r\n// 打包前\r\nimport('./lib')\r\n\r\n// 打包后，201 为固定的 chunkId (chunkIds = deterministic 时)\r\n__webpack_require__.e(/* import() | lib */ 201)\r\n```\r\n\r\n在 webpack 中，通过 `optimization.chunkIds` 可设置确定的 chunId，来增强 Long Term Cache 能力。\r\n\r\n``` bash\r\n{\r\n  optimization: {\r\n    chunkIds: 'deterministic'\r\n  }\r\n}\r\n```\r\n\r\n设置该选项且 `lib.js` 内容发生变更后，打包 chunk 如下，仅仅 `lib.js` 路径发生了变更。\r\n\r\n+ `index.aaaaaa.js`\r\n+ `lib.bbbbbb.js`",
+          "star": {
+            "totalCount": 1
+          },
+          "author": {
+            "login": "shfshanyue",
+            "url": "https://github.com/shfshanyue"
           }
         }
       ]
@@ -4969,7 +4991,7 @@
         },
         {
           "id": "IC_kwDODQzyOs438Zbw",
-          "body": "通过 AST 分析，根据一些策略，来生成一颗更小体积的 AST 并生成代码。目前前端工程化中使用 [terser](https://terser.org/docs/api-reference#compress-options) 进行 JS 代码压缩。\r\n\r\n常见用以压缩 AST 的几种方案如下:\r\n\r\n## 去除多余字符: 空格，换行及注释\r\n\r\n``` javascript\r\n// 对两个数求和\r\nfunction sum (a, b) {\r\n  return a + b;\r\n}\r\n```\r\n\r\n此时文件大小是 `62 Byte`， **一般来说中文会占用更大的空间。**\r\n\r\n多余的空白字符会占用大量的体积，如空格，换行符，另外注释也会占用文件体积。当我们把所有的空白符合注释都去掉之后，代码体积会得到减少。\r\n\r\n**去掉多余字符之后，文件大小已经变为 `30 Byte`。** 压缩后代码如下:\r\n\r\n``` javascript\r\nfunction sum(a,b){return a+b}\r\n```\r\n\r\n替换掉多余字符后会有什么问题产生呢？\r\n\r\n**有，比如多行代码压缩到一行时要注意行尾分号。** \r\n\r\n## 压缩变量名：变量名，函数名及属性名\r\n\r\n``` javascript\r\nfunction sum (first, second) {\r\n  return first + second;  \r\n}\r\n```\r\n\r\n如以上 `first` 与 `second` 在函数的作用域中，在作用域外不会引用它，此时可以让它们的变量名称更短。但是如果这是一个 `module` 中，`sum` 这个函数也不会被导出呢？那可以把这个函数名也缩短。\r\n\r\n``` javascript\r\n// 压缩: 缩短变量名\r\nfunction sum (x, y) {\r\n  return x + y;  \r\n}\r\n\r\n// 再压缩: 去除空余字符\r\nfunction s(x,y){return x+y}\r\n```\r\n\r\n在这个示例中，当完成代码压缩 (`compress`) 时，代码的混淆 (`mangle`) 也捎带完成。 **但此时缩短变量的命名也需要 AST 支持，不至于在作用域中造成命名冲突。**\r\n\r\n## 解析程序逻辑：合并声明以及布尔值简化\r\n\r\n通过分析代码逻辑，可对代码改写为更精简的形式。\r\n\r\n合并声明的示例如下：\r\n\r\n``` javascript\r\n// 压缩前\r\nconst a = 3;\r\nconst b = 4;\r\n\r\n// 压缩后\r\nconst a = 3, b = 4;\r\n```\r\n\r\n布尔值简化的示例如下：\r\n\r\n``` javascript\r\n// 压缩前\r\n!b && !c && !d && !e\r\n\r\n// 压缩后\r\n!(b||c||d||e)\r\n```\r\n\r\n## 解析程序逻辑: 编译预计算\r\n\r\n在编译期进行计算，减少运行时的计算量，如下示例:\r\n\r\n``` javascript\r\n// 压缩前\r\nconst ONE_YEAR = 365 * 24 * 60 * 60\r\n\r\n// 压缩后\r\nconst ONE_YAAR = 31536000\r\n```\r\n\r\n以及一个更复杂的例子，简直是杀手锏级别的优化。\r\n\r\n``` javascript\r\n// 压缩前\r\nfunction hello () {\r\n  console.log('hello, world')\r\n}\r\n\r\nhello()\r\n\r\n// 压缩后\r\nconsole.log('hello, world')\r\n```\r\n",
+          "body": "通过 AST 分析，根据选项配置一些策略，来生成一颗更小体积的 AST 并生成代码。\r\n\r\n目前前端工程化中使用 [terser](https://terser.org/docs/api-reference#compress-options) 和 [swc](https://swc.rs/docs/configuration/minification) 进行 JS 代码压缩，他们拥有相同的 API。\r\n\r\n常见用以压缩 AST 的几种方案如下:\r\n\r\n## 去除多余字符: 空格，换行及注释\r\n\r\n``` javascript\r\n// 对两个数求和\r\nfunction sum (a, b) {\r\n  return a + b;\r\n}\r\n```\r\n\r\n此时文件大小是 `62 Byte`， **一般来说中文会占用更大的空间。**\r\n\r\n多余的空白字符会占用大量的体积，如空格，换行符，另外注释也会占用文件体积。当我们把所有的空白符合注释都去掉之后，代码体积会得到减少。\r\n\r\n**去掉多余字符之后，文件大小已经变为 `30 Byte`。** 压缩后代码如下:\r\n\r\n``` javascript\r\nfunction sum(a,b){return a+b}\r\n```\r\n\r\n替换掉多余字符后会有什么问题产生呢？\r\n\r\n**有，比如多行代码压缩到一行时要注意行尾分号。** \r\n\r\n## 压缩变量名：变量名，函数名及属性名\r\n\r\n``` javascript\r\nfunction sum (first, second) {\r\n  return first + second;  \r\n}\r\n```\r\n\r\n如以上 `first` 与 `second` 在函数的作用域中，在作用域外不会引用它，此时可以让它们的变量名称更短。但是如果这是一个 `module` 中，`sum` 这个函数也不会被导出呢？那可以把这个函数名也缩短。\r\n\r\n``` javascript\r\n// 压缩: 缩短变量名\r\nfunction sum (x, y) {\r\n  return x + y;  \r\n}\r\n\r\n// 再压缩: 去除空余字符\r\nfunction s(x,y){return x+y}\r\n```\r\n\r\n在这个示例中，当完成代码压缩 (`compress`) 时，代码的混淆 (`mangle`) 也捎带完成。 **但此时缩短变量的命名也需要 AST 支持，不至于在作用域中造成命名冲突。**\r\n\r\n## 解析程序逻辑：合并声明以及布尔值简化\r\n\r\n通过分析代码逻辑，可对代码改写为更精简的形式。\r\n\r\n合并声明的示例如下：\r\n\r\n``` javascript\r\n// 压缩前\r\nconst a = 3;\r\nconst b = 4;\r\n\r\n// 压缩后\r\nconst a = 3, b = 4;\r\n```\r\n\r\n布尔值简化的示例如下：\r\n\r\n``` javascript\r\n// 压缩前\r\n!b && !c && !d && !e\r\n\r\n// 压缩后\r\n!(b||c||d||e)\r\n```\r\n\r\n## 解析程序逻辑: 编译预计算\r\n\r\n在编译期进行计算，减少运行时的计算量，如下示例:\r\n\r\n``` javascript\r\n// 压缩前\r\nconst ONE_YEAR = 365 * 24 * 60 * 60\r\n\r\n// 压缩后\r\nconst ONE_YAAR = 31536000\r\n```\r\n\r\n以及一个更复杂的例子，简直是杀手锏级别的优化。\r\n\r\n``` javascript\r\n// 压缩前\r\nfunction hello () {\r\n  console.log('hello, world')\r\n}\r\n\r\nhello()\r\n\r\n// 压缩后\r\nconsole.log('hello, world')\r\n```\r\n",
           "star": {
             "totalCount": 1
           },
@@ -15529,6 +15551,28 @@
             "login": "qiutian00",
             "url": "https://github.com/qiutian00"
           }
+        },
+        {
+          "id": "IC_kwDODQzyOs46c2J2",
+          "body": "> 页面布局元素如下，item 数量不固定\r\n> \r\n> ```\r\n> <div class=\"container\">\r\n>   <div class=\"item\"></div>\r\n>   <div class=\"item\"></div>\r\n>   <div class=\"item\"></div>\r\n>   <div class=\"item\"></div>\r\n>   <div class=\"item\"></div>\r\n>   <div class=\"item\"></div>\r\n> </div>\r\n> ```\r\n> \r\n> 使用 Grid 布局可以轻松解决这个问题，如若使用其它方案，控制好等分的同时再控制好间距也是一个十分头疼的问题:\r\n> \r\n> 1. `grid-template-columns`: 控制等分\r\n> 2. `gap`: 控制间隙\r\n> \r\n> 效果可见 [codepen](https://codepen.io/shanyue/pen/rNyLvBe)\r\n> \r\n> ```css\r\n> @media (min-width: 768px) {\r\n>   .container {\r\n>     grid-template-columns: repeat(2, minmax(0,1fr));\r\n>   }\r\n> }\r\n> \r\n> @media (min-width: 1024px) {\r\n>   .container {\r\n>     grid-template-columns: repeat(3, minmax(0, 1fr));\r\n>   }\r\n> }\r\n> \r\n> .container {\r\n>   display: grid;\r\n> }\r\n> \r\n> .conainer {\r\n>   gap: 1rem;\r\n> }\r\n> ```\r\n> \r\n> `TailwindCSS` 是一款非常方便的 CSS 原子类框架，只需要一行即可搞定\r\n> \r\n> ```\r\n> <div class=\"grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4\"></div>\r\n> ```\r\n> \r\n> 但是这就够了吗？\r\n> \r\n> 这远远不够，这也足够复杂！\r\n> \r\n> 1. 需要媒体查询\r\n> 2. 需要人为设置 breakpoint，设置大小屏幕的边界\r\n> \r\n> ## 终极解决方案\r\n> `Grid` 布局可以自动判断容器大小，无论大小屏幕自动撑满并均分，请看以下属性\r\n> \r\n> ```css\r\n> .container {\r\n>   grid-template-columns: repeat(auto-fill, minmax(300px, 1fr))\r\n> }\r\n> ```\r\n> \r\n> 1. `repeat`: 用以 N 整分\r\n> 2. `auto-fill`：表示自动填充\r\n> 3. `minmx`: 即书面意思，最小宽度为 `300px`\r\n> \r\n> [使用终极解决方案的在线页面](https://devtool.tech/fe-logo)\r\n\r\n链接跳过去是图标大全",
+          "star": {
+            "totalCount": 0
+          },
+          "author": {
+            "login": "nmsn",
+            "url": "https://github.com/nmsn"
+          }
+        },
+        {
+          "id": "IC_kwDODQzyOs46eVs1",
+          "body": "@nmsn 这是效果，查看源码即可",
+          "star": {
+            "totalCount": 0
+          },
+          "author": {
+            "login": "shfshanyue",
+            "url": "https://github.com/shfshanyue"
+          }
         }
       ]
     },
@@ -15601,13 +15645,35 @@
       "nodes": [
         {
           "id": "MDEyOklzc3VlQ29tbWVudDc5MTQwNDU5MA==",
-          "body": "\r\n## cjs (commonjs)\r\n\r\n`commonjs` 是 Node 中的模块规范，通过 `require` 及 `exports` 进行导入导出 (进一步延伸的话，`module.exports` 属于 `commonjs2`)\r\n\r\n同时，webpack 也对 `cjs` 模块得以解析，因此 `cjs` 模块可以运行在 node 环境及 webpack 环境下的，但不能在浏览器中*直接*使用。但如果你写前端项目在 webpack 中，也可以理解为它在浏览器和 Node 都支持。\r\n\r\n比如，著名的全球下载量前十10的模块 [ms](https://npm.devtool.tech/ms) 只支持 `commonjs`，但并不影响它在前端项目中使用(通过webpack)，但是你想通过 cdn 的方式直接在浏览器中引入，估计就会出问题了\r\n\r\n``` js\r\n// sum.js\r\nexports.sum = (x, y) => x + y\r\n\r\n// index.js\r\nconst { sum } = require('./sum.js')\r\n```\r\n\r\n由于 `cjs` 为动态加载，可直接 `require` 一个变量\r\n\r\n``` js\r\nrequire(`./${a}`)\r\n```\r\n\r\n## esm (es module)\r\n\r\n`esm` 是 tc39 对于 js 模块的规范，**在 Node 及 浏览器中均会支持**，使用 `export/import` 进行模块导入导出\r\n\r\n``` js\r\n// sum.js\r\nexport const sum = (x, y) => x + y\r\n\r\n// index.js\r\nimport { sum } from './sum'\r\n```\r\n\r\n由于 `esm` 为静态导入，正因如此，可在编译器进行 **Tree Shaking**，减少 js 体积。tc39 为动态加载模块定义了 API: `import(module)` 。\r\n\r\nesm 是未来的趋势，目前一些 CDN 厂商，前端构建工具均致力于 cjs 模块向 esm 的转化，比如 `skypack`、 `snowpack`、`vite` 等。\r\n\r\n目前，在浏览器与 node.js 中均原生支持 esm。\r\n\r\n+ cjs 模块输出的是一个值的拷贝，esm 输出的是值的引用\r\n+ cjs 模块是运行时加载，esm 是编译时加载\r\n\r\n示例: [array-uniq](https://cdn.jsdelivr.net/npm/array-uniq/index.js)\r\n\r\n## umd\r\n\r\n一种兼容 `cjs` 与 `amd` 的模块，既可以在 node/webpack 环境中被 `require`，也可以在浏览器中直接用 CDN 被 `script.src` 引入\r\n\r\n``` js\r\n(function (root, factory) {\r\n  if (typeof define === 'function' && define.amd) {\r\n    // AMD\r\n    define(['jquery'], factory);\r\n  } else if (typeof exports === 'object') {\r\n    // CommonJS\r\n    module.exports = factory(require('jquery'));\r\n  } else {\r\n    // 全局变量\r\n    root.returnExports = factory(root.jQuery);\r\n  }\r\n}(this, function ($) {\r\n  // ...\r\n}));\r\n```\r\n\r\n示例: [react-table](https://cdn.jsdelivr.net/npm/react-table@7.7.0/dist/react-table.development.js), [antd](https://npm.devtool.tech/react-table)\r\n\r\n这三种模块方案大致如此，但是部分 npm package 也会同时打包出 commonjs/esm/umd 三种模块化格式，供不同需求的业务使用\r\n",
+          "body": "## cjs (commonjs)\r\n\r\n`commonjs` 是 Node 中的模块规范，通过 `require` 及 `exports` 进行导入导出 (进一步延伸的话，`module.exports` 属于 `commonjs2`)\r\n\r\n同时，webpack 也对 `cjs` 模块得以解析，因此 `cjs` 模块可以运行在 node 环境及 webpack 环境下的，但不能在浏览器中*直接*使用。但如果你写前端项目在 webpack 中，也可以理解为它在浏览器和 Node 都支持。\r\n\r\n比如，著名的全球下载量前十10的模块 [ms](https://npm.devtool.tech/ms) 只支持 `commonjs`，但并不影响它在前端项目中使用(通过webpack)，但是你想通过 cdn 的方式直接在浏览器中引入，估计就会出问题了\r\n\r\n``` js\r\n// sum.js\r\nexports.sum = (x, y) => x + y\r\n\r\n// index.js\r\nconst { sum } = require('./sum.js')\r\n```\r\n\r\n由于 `cjs` 为动态加载，可直接 `require` 一个变量\r\n\r\n``` js\r\nrequire(`./${a}`)\r\n```\r\n\r\n## esm (es module)\r\n\r\n`esm` 是 tc39 对于 ESMAScript 的模块话规范，正因是语言层规范，**因此在 Node 及 浏览器中均会支持**。\r\n\r\n它使用 `import/export` 进行模块导入导出.\r\n\r\n``` js\r\n// sum.js\r\nexport const sum = (x, y) => x + y\r\n\r\n// index.js\r\nimport { sum } from './sum'\r\n```\r\n\r\n`esm` 为静态导入，正因如此，可在编译期进行 **Tree Shaking**，减少 js 体积。\r\n\r\n如果需要动态导入，tc39 为动态加载模块定义了 API: `import(module)` 。可将以下代码粘贴到控制台执行\r\n\r\n``` js\r\nconst ms = await import('https://cdn.skypack.dev/ms@latest')\r\n\r\nms.default(1000)\r\n```\r\n\r\nesm 是未来的趋势，目前一些 CDN 厂商，前端构建工具均致力于 cjs 模块向 esm 的转化，比如 `skypack`、 `snowpack`、`vite` 等。\r\n\r\n目前，在浏览器与 node.js 中均原生支持 esm。\r\n\r\n+ cjs 模块输出的是一个值的拷贝，esm 输出的是值的引用\r\n+ cjs 模块是运行时加载，esm 是编译时加载\r\n\r\n示例: [array-uniq](https://cdn.jsdelivr.net/npm/array-uniq/index.js)\r\n\r\n## umd\r\n\r\n一种兼容 `cjs` 与 `amd` 的模块，既可以在 node/webpack 环境中被 `require` 引用，也可以在浏览器中直接用 CDN 被 `script.src` 引入。\r\n\r\n``` js\r\n(function (root, factory) {\r\n  if (typeof define === 'function' && define.amd) {\r\n    // AMD\r\n    define(['jquery'], factory);\r\n  } else if (typeof exports === 'object') {\r\n    // CommonJS\r\n    module.exports = factory(require('jquery'));\r\n  } else {\r\n    // 全局变量\r\n    root.returnExports = factory(root.jQuery);\r\n  }\r\n}(this, function ($) {\r\n  // ...\r\n}));\r\n```\r\n\r\n示例: [react-table](https://cdn.jsdelivr.net/npm/react-table/), [antd](https://cdn.jsdelivr.net/npm/antd/)\r\n\r\n这三种模块方案大致如此，部分 npm package 也会同时打包出 commonjs/esm/umd 三种模块化格式，供不同需求的业务使用，比如 [antd](https://cdn.jsdelivr.net/npm/antd/)。\r\n\r\n+ [antd 的 cjs](https://cdn.jsdelivr.net/npm/antd@4.17.2/lib/index.js)\r\n+ [antd 的 umd](https://cdn.jsdelivr.net/npm/antd@4.17.2/dist/antd.js)\r\n+ [antd 的 esm](https://cdn.jsdelivr.net/npm/antd@4.17.2/es/index.js)\r\n",
           "star": {
-            "totalCount": 0
+            "totalCount": 2
           },
           "author": {
             "login": "shfshanyue",
             "url": "https://github.com/shfshanyue"
+          }
+        },
+        {
+          "id": "IC_kwDODQzyOs46348f",
+          "body": "webpack 打包使用的是 cjs， vite使用的是esm，这样理解对吗\r\nrollup使用的是啥模块化方案？\r\n\r\nwebpack也有tree-shaking吗和rollup的有啥不同",
+          "star": {
+            "totalCount": 0
+          },
+          "author": {
+            "login": "xiyuanyuan",
+            "url": "https://github.com/xiyuanyuan"
+          }
+        },
+        {
+          "id": "IC_kwDODQzyOs4635Bn",
+          "body": "已收到你的邮件，谢谢~~~",
+          "star": {
+            "totalCount": 0
+          },
+          "author": {
+            "login": "songcee",
+            "url": "https://github.com/songcee"
           }
         }
       ]
@@ -15919,7 +15985,19 @@
     "title": "【Q478】如何实现容器中子元素三个三列布局，子元素两个则两列布局",
     "body": "及容器中有三个及以上元素，则三列布局\r\n容器只有两个元素，两列布局平分\r\n容器只有一个元素，一列布局全占",
     "comments": {
-      "nodes": []
+      "nodes": [
+        {
+          "id": "IC_kwDODQzyOs46qkj-",
+          "body": "[代码演示](https://codepen.io/9527yl/pen/dyVyQJV)\r\n\r\ncss布局阔以使用`flex`，`grid`.\r\n\r\n关健在于如何判断有多少元素。我们只需要判断有1个，有2个的情况，其他都是三列布局\r\n\r\n```css\r\n\r\n/* 有1个元素 */\r\n.item:nth-last-child(1):first-child {\r\n  flex: 1;\r\n}\r\n\r\n.item:nth-last-child(1):first-child ~ .item {\r\n  flex: 1;\r\n}\r\n\r\n/* 有2个元素 */\r\n.item:nth-last-child(2):first-child {\r\n  flex: 1;\r\n}\r\n\r\n.item:nth-last-child(2):first-child ~ .item {\r\n  flex: 1;\r\n}\r\n\r\n```",
+          "star": {
+            "totalCount": 0
+          },
+          "author": {
+            "login": "9527YL",
+            "url": "https://github.com/9527YL"
+          }
+        }
+      ]
     },
     "labels": {
       "nodes": [
@@ -18121,6 +18199,17 @@
             "login": "qiutian00",
             "url": "https://github.com/qiutian00"
           }
+        },
+        {
+          "id": "IC_kwDODQzyOs46epaG",
+          "body": "[event.currentTarget](https://developer.mozilla.org/zh-CN/docs/Web/API/Event/currentTarget)\r\n\r\n> Event 接口的只读属性 currentTarget 表示的，标识是当事件沿着 DOM 触发时事件的当前目标。它总是指向事件绑定的元素，而 Event.target 则是事件触发的元素。\r\n\r\n",
+          "star": {
+            "totalCount": 0
+          },
+          "author": {
+            "login": "nmsn",
+            "url": "https://github.com/nmsn"
+          }
         }
       ]
     },
@@ -18252,7 +18341,7 @@
           "id": "IC_kwDODQzyOs400a_E",
           "body": "[浅析Node与Element的区别\r\n](https://zhuanlan.zhihu.com/p/165422508)",
           "star": {
-            "totalCount": 0
+            "totalCount": 1
           },
           "author": {
             "login": "haotie1990",
@@ -20231,7 +20320,7 @@
           "id": "MDEyOklzc3VlQ29tbWVudDg3MTA2ODM4NQ==",
           "body": "为了方便说明执行思路，把箭头函数换成了普通函数，起了名字，然后加上默认返回值 return  undefined\r\n```js\r\nPromise.resolve(console.log(0))\r\n    .then(function F1() {\r\n      console.log(1);\r\n      Promise.resolve(console.log(5))\r\n        .then(function F3() {\r\n          console.log(3)\r\n          return undefined\r\n        })\r\n        .then(function F4() {\r\n          console.log(4)\r\n          return undefined\r\n        })\r\n        .then(function F6() {\r\n          console.log(6)\r\n          return undefined\r\n        })\r\n\r\n      return undefined\r\n    })\r\n    .then(function F2() {\r\n      console.log(2)\r\n      return undefined\r\n    })\r\n    .then(function F7() {\r\n      console.log(7)\r\n      return undefined\r\n    })\r\n```\r\n\r\n执行过程：\r\n打印 0, **F1 放入 microtask**\r\n调用栈空了, 从 microtask 拿 F1 执行 \r\n打印 1, 遇到 Promise.resolve\r\n打印 5, 遇到 then, **F3 放入 microtask**\r\n继续执行同步的代码 也就是 return undefined, 然后看到 then\r\n**然后把 F2 放入 microtask**\r\n调用栈空了, 从 microtask 按顺序拿 F3 执行\r\n打印 3, 再遇到 return undefined, 然后看到 then, **再把 F4 放入 microtask**\r\n从 microtask 按顺序拿 F2 执行\r\n打印 2, 再遇到 return undefined, 然后看到 then, **再把 F7 放入 microtask**\r\n从 microtask 按顺序拿 F4 执行\r\n打印 4, 再遇到 return undefined, 然后看到 then, **再把 F6 放入 microtask**\r\n从 microtask 按顺序拿 F7 执行\r\n 打印 7 再遇到 return undefined, 没有 then 了\r\n从 microtask 按顺序拿 F6 执行\r\n打印 6\r\n\r\n\r\n画个图大概是这样：\r\n![image](https://user-images.githubusercontent.com/50768544/123897414-ecbb8980-d995-11eb-8293-01e274dd876f.png)\r\n",
           "star": {
-            "totalCount": 3
+            "totalCount": 4
           },
           "author": {
             "login": "xjxujing",
@@ -20849,6 +20938,17 @@
             "login": "shfshanyue",
             "url": "https://github.com/shfshanyue"
           }
+        },
+        {
+          "id": "IC_kwDODQzyOs46oLCK",
+          "body": "> ```js\r\n> Number.isNaN(NaN)\r\n> isNaN(NaN)\r\n> \r\n> Number.isNaN('NaN')\r\n> isNaN('NaN')\r\n> ```\r\n\r\n试了下 `Number.isNaN('NaN')` 是 `false`，其他都是 `true`\r\n\r\n",
+          "star": {
+            "totalCount": 0
+          },
+          "author": {
+            "login": "nmsn",
+            "url": "https://github.com/nmsn"
+          }
         }
       ]
     },
@@ -21453,6 +21553,17 @@
           "author": {
             "login": "wangjiayan",
             "url": "https://github.com/wangjiayan"
+          }
+        },
+        {
+          "id": "IC_kwDODQzyOs46gIgK",
+          "body": "var pattern1 = /[\\u4e00-\\u9fa5]+/g;\r\nvar contents = \"[微笑][撇嘴][发呆][得意][流泪]\";\r\nvar content = contents.match(pattern1);",
+          "star": {
+            "totalCount": 0
+          },
+          "author": {
+            "login": "jkLennon",
+            "url": "https://github.com/jkLennon"
           }
         }
       ]
@@ -23012,7 +23123,7 @@
           "id": "IC_kwDODQzyOs40z5k-",
           "body": "不支持iframe 而且有一个理念问题 大屏是为了更大更清晰还是为了承载更多内容 \r\n\r\n其实这也是现在很多舍弃rem的原因  1:1还原之后 你希望pad也和手机一样？ 大屏手机也和普通手机一样？ 这个我觉得你体验过其实会发现这里其实不是一个好的展示逻辑\r\n\r\n还有一个找到的 但是没有实际踩过得坑 就是在很高的高倍屏上rem会有展示问题 但是我没遇到过...",
           "star": {
-            "totalCount": 1
+            "totalCount": 2
           },
           "author": {
             "login": "heretic-G",
@@ -24302,7 +24413,7 @@
     "id": "MDU6SXNzdWU5ODE2Njc4MzE=",
     "number": 724,
     "title": "【Q702】return promise 与 return await promise 有何区别",
-    "body": "",
+    "body": "如\r\n\r\n``` js\r\nasync function p1 () {\r\n  return 3\r\n}\r\n\r\nasync function p2 () {\r\n  return Promise.resolve(3)\r\n}\r\n\r\nasync function p3 () {\r\n  return await Promise.resolve(3)\r\n}\r\n```",
     "comments": {
       "nodes": [
         {
@@ -24314,6 +24425,17 @@
           "author": {
             "login": "liweinanone",
             "url": "https://github.com/liweinanone"
+          }
+        },
+        {
+          "id": "IC_kwDODQzyOs46eX51",
+          "body": "``` js\r\nasync function p1 () {\r\n  return 3\r\n}\r\n\r\nasync function p2 () {\r\n  return Promise.resolve(3)\r\n}\r\n\r\nasync function p3 () {\r\n  return await Promise.resolve(3)\r\n}\r\n\r\n// Output: p1、p3、p2\r\np3().then(o => console.log(o, 'p3'))\r\np2().then(o => console.log(o, 'p2'))\r\np1().then(o => console.log(o, 'p1'))\r\n```\r\n\r\n@liweinanone 最终返回得到的结果是相同的，但是有些顺序的变化，可看此例",
+          "star": {
+            "totalCount": 0
+          },
+          "author": {
+            "login": "shfshanyue",
+            "url": "https://github.com/shfshanyue"
           }
         }
       ]
@@ -24395,6 +24517,17 @@
             "login": "liweinanone",
             "url": "https://github.com/liweinanone"
           }
+        },
+        {
+          "id": "IC_kwDODQzyOs46vHCX",
+          "body": "0142356",
+          "star": {
+            "totalCount": 0
+          },
+          "author": {
+            "login": "mengliren666",
+            "url": "https://github.com/mengliren666"
+          }
         }
       ]
     },
@@ -24416,7 +24549,7 @@
       "nodes": [
         {
           "id": "IC_kwDODQzyOs43RFL_",
-          "body": "`webpack` 的 runtime，也就是 webpack 最后生成的代码，做了以下三件事:\r\n\r\n1. `__webpack_modules__`: 维护一个所有模块的数组。将入口模块解析为 AST，根据 AST 深度优先搜索所有的模块，并构建出这个模块数组。每个模块都由一个包裹函数 `(module, module.exports, __webpack_require__)` 对模块进行包裹构成。\r\n2. `__webpack_require__(moduleId)`: 手动实现加载一个模块。对已加载过的模块进行缓存，对胃加载过的模块，执行 id 定位到 `__webpack_modules__` 中的包裹函数，执行并返回 `module.exports`，并缓存\r\n3. `__webpack_require__(0)`: 运行第一个模块，即运行入口模块\r\n\r\n另外，当涉及到多个 chunk 的打包方式中，比如 `code spliting`，webpack 中会有 `jsonp` 加载 chunk 的运行时代码。\r\n\r\n以下是 `webpack runtime` 的最简代码，配置示例可见 [node-examples](https://github.com/shfshanyue/node-examples/blob/master/webpack/cjs/build.js)\r\n\r\n``` js\r\n/******/ var __webpack_modules__ = ([\r\n/* 0 */,\r\n/* 1 */\r\n/***/ ((module) => {\r\n\r\nmodule.exports = (...args) => args.reduce((x, y) => x + y, 0)\r\n\r\n/***/ })\r\n/******/ ]);\r\n/************************************************************************/\r\n/******/ // The module cache\r\n/******/ var __webpack_module_cache__ = {};\r\n/******/ \r\n/******/ // The require function\r\n/******/ function __webpack_require__(moduleId) {\r\n/******/ \t// Check if module is in cache\r\n/******/ \tvar cachedModule = __webpack_module_cache__[moduleId];\r\n/******/ \tif (cachedModule !== undefined) {\r\n/******/ \t\treturn cachedModule.exports;\r\n/******/ \t}\r\n/******/ \t// Create a new module (and put it into the cache)\r\n/******/ \tvar module = __webpack_module_cache__[moduleId] = {\r\n/******/ \t\t// no module.id needed\r\n/******/ \t\t// no module.loaded needed\r\n/******/ \t\texports: {}\r\n/******/ \t};\r\n/******/ \r\n/******/ \t// Execute the module function\r\n/******/ \t__webpack_modules__[moduleId](module, module.exports, __webpack_require__);\r\n/******/ \r\n/******/ \t// Return the exports of the module\r\n/******/ \treturn module.exports;\r\n/******/ }\r\n/******/ \r\n/************************************************************************/\r\nvar __webpack_exports__ = {};\r\n// This entry need to be wrapped in an IIFE because it need to be isolated against other modules in the chunk.\r\n(() => {\r\nconst sum = __webpack_require__(1)\r\n\r\nsum(3, 8)\r\n\r\n})();\r\n```\r\n\r\n对 `webpack runtime` 做进一步的精简，代码如下\r\n\r\n``` js\r\nconst __webpack_modules__ = [() => {}]\r\nconst __webpack_require = id => {\r\n  const module = { exports: {} }\r\n  const m = __webpack_modules__[id](module)\r\n  return module.exports\r\n}\r\n\r\n__webpack_require__(0)\r\n```",
+          "body": "`webpack` 的 runtime，也就是 webpack 最后生成的代码，做了以下三件事:\r\n\r\n1. `__webpack_modules__`: 维护一个所有模块的数组。将入口模块解析为 AST，根据 AST 深度优先搜索所有的模块，并构建出这个模块数组。每个模块都由一个包裹函数 `(module, module.exports, __webpack_require__)` 对模块进行包裹构成。\r\n2. `__webpack_require__(moduleId)`: 手动实现加载一个模块。对已加载过的模块进行缓存，对胃加载过的模块，执行 id 定位到 `__webpack_modules__` 中的包裹函数，执行并返回 `module.exports`，并缓存\r\n3. `__webpack_require__(0)`: 运行第一个模块，即运行入口模块\r\n\r\n另外，当涉及到多个 chunk 的打包方式中，比如 `code spliting`，webpack 中会有 `jsonp` 加载 chunk 的运行时代码。\r\n\r\n以下是 `webpack runtime` 的最简代码，配置示例可见 [node-examples](https://github.com/shfshanyue/node-examples/blob/master/engineering/webpack/cjs/example/main.js)\r\n\r\n``` js\r\n/******/ var __webpack_modules__ = ([\r\n/* 0 */,\r\n/* 1 */\r\n/***/ ((module) => {\r\n\r\nmodule.exports = (...args) => args.reduce((x, y) => x + y, 0)\r\n\r\n/***/ })\r\n/******/ ]);\r\n/************************************************************************/\r\n/******/ // The module cache\r\n/******/ var __webpack_module_cache__ = {};\r\n/******/ \r\n/******/ // The require function\r\n/******/ function __webpack_require__(moduleId) {\r\n/******/ \t// Check if module is in cache\r\n/******/ \tvar cachedModule = __webpack_module_cache__[moduleId];\r\n/******/ \tif (cachedModule !== undefined) {\r\n/******/ \t\treturn cachedModule.exports;\r\n/******/ \t}\r\n/******/ \t// Create a new module (and put it into the cache)\r\n/******/ \tvar module = __webpack_module_cache__[moduleId] = {\r\n/******/ \t\t// no module.id needed\r\n/******/ \t\t// no module.loaded needed\r\n/******/ \t\texports: {}\r\n/******/ \t};\r\n/******/ \r\n/******/ \t// Execute the module function\r\n/******/ \t__webpack_modules__[moduleId](module, module.exports, __webpack_require__);\r\n/******/ \r\n/******/ \t// Return the exports of the module\r\n/******/ \treturn module.exports;\r\n/******/ }\r\n/******/ \r\n/************************************************************************/\r\nvar __webpack_exports__ = {};\r\n// This entry need to be wrapped in an IIFE because it need to be isolated against other modules in the chunk.\r\n(() => {\r\nconst sum = __webpack_require__(1)\r\n\r\nsum(3, 8)\r\n\r\n})();\r\n```\r\n\r\n对 `webpack runtime` 做进一步的精简，代码如下\r\n\r\n``` js\r\nconst __webpack_modules__ = [() => {}]\r\nconst __webpack_require = id => {\r\n  const module = { exports: {} }\r\n  const m = __webpack_modules__[id](module)\r\n  return module.exports\r\n}\r\n\r\n__webpack_require__(0)\r\n```",
           "star": {
             "totalCount": 0
           },
@@ -24514,7 +24647,7 @@
       "nodes": [
         {
           "id": "IC_kwDODQzyOs437rs-",
-          "body": "一个 `webpack` 中运行时，包括最重要的两个数据结构：\r\n\r\n1. `__webpack_modules__`: 维护一个所有模块的数组。将入口模块解析为 AST，根据 AST 深度优先搜索所有的模块，并构建出这个模块数组。每个模块都由一个包裹函数 `(module, module.exports, __webpack_require__)` 对模块进行包裹构成。\r\n2. `__webpack_require__(moduleId)`: 手动实现加载一个模块。对已加载过的模块进行缓存，对未加载过的模块，根据 id 定位到 `__webpack_modules__` 中的包裹函数，执行并返回 `module.exports`，并缓存。\r\n\r\n在 webpack 中，通过 `import()` 可实现 code spliting.\r\n\r\n``` js\r\nimport('./sum').then(m => {\r\n  m.default(3, 4)\r\n})\r\n\r\n// 以下为 sum.js 内容\r\nconst sum = (x, y) => x + y\r\nexport default sum\r\n```\r\n\r\n使用 `import()` 加载数据时，以上代码将被 `webpack`  编译为以下代码\r\n\r\n``` js\r\n__webpack_require__.e(/* import() | sum */ 644).then(__webpack_require__.bind(__webpack_require__, 709)).then(m => {\r\n  m.default(3, 4)\r\n})\r\n```\r\n\r\n每一个 `chunk` 的代码如下，以下为 `sum` 函数所构建而成的 chunk:\r\n\r\n``` js\r\n\"use strict\";\r\n(self[\"webpackChunk\"] = self[\"webpackChunk\"] || []).push([[644],{\r\n\r\n/***/ 709:\r\n/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {\r\n\r\n        __webpack_require__.r(__webpack_exports__);\r\n        /* harmony export */ __webpack_require__.d(__webpack_exports__, {\r\n        /* harmony export */   \"default\": () => (__WEBPACK_DEFAULT_EXPORT__)\r\n        /* harmony export */ });\r\n        const sum = (x, y) => x + y\r\n\r\n/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (sum);\r\n\r\n\r\n/***/ })\r\n\r\n}]);\r\n```\r\n\r\n以下两个数据结构是加载 `chunk` 的关键:\r\n\r\n1. `__webpack_require__.e`: 加载 chunk，如 644 为 chunkId。该函数将使用 JSONP (`document.createElement('script')`)异步加载 chunk 并封装为 Promise。\r\n1. `self[\"webpackChunk\"].push`: JSONP cllaback，收集 modules，如 709 为 sum 模块的 id。该函数将 709 置入  `__webpack_modules__` 中。\r\n\r\n实际上，在 `webpack` 中可配置 `output.chunkLoading` 来选择加载 chunk 的方式\r\n\r\n``` js\r\nwebpack({\r\n    entry: './index.js',\r\n    mode: 'none',\r\n    output: {\r\n      filename: 'main.[contenthash].js',\r\n      chunkFilename: '[name].chunk.[chunkhash].js',\r\n      path: path.resolve(__dirname, 'dist/import'),\r\n      clean: true,\r\n      // 默认为 `jsonp`\r\n      chunkLoading: 'import'\r\n    }\r\n  })\r\n```\r\n\r\n可参考示例 [webpack 运行时代码](https://github.com/shfshanyue/node-examples/blob/master/engineering/webpack/code-spliting/example/runtime.js) 中查看加载一个 chunk 的实现。\r\n",
+          "body": "一个 `webpack` 的运行时，包括最重要的两个数据结构：\r\n\r\n1. `__webpack_modules__`: 维护一个所有模块的数组。将入口模块解析为 AST，根据 AST 深度优先搜索所有的模块，并构建出这个模块数组。每个模块都由一个包裹函数 `(module, module.exports, __webpack_require__)` 对模块进行包裹构成。\r\n2. `__webpack_require__(moduleId)`: 手动实现加载一个模块。对已加载过的模块进行缓存，对未加载过的模块，根据 id 定位到 `__webpack_modules__` 中的包裹函数，执行并返回 `module.exports`，并缓存。\r\n\r\n## code spliting\r\n\r\n在 webpack 中，通过 `import()` 可实现 code spliting。假设我们有以下文件:\r\n\r\n``` js\r\n// 以下为 index.js 内容\r\nimport('./sum').then(m => {\r\n  m.default(3, 4)\r\n})\r\n\r\n// 以下为 sum.js 内容\r\nconst sum = (x, y) => x + y\r\nexport default sum\r\n```\r\n\r\n我们将使用以下简单的 `webpack` 配置进行打包，具体示例可参考 [node-examples:code-spliting](https://github.com/shfshanyue/node-examples/blob/master/engineering/webpack/code-spliting/build.js)\r\n\r\n``` js\r\n{\r\n  entry: './index.js',\r\n  mode: 'none',\r\n  output: {\r\n    filename: '[name].[contenthash].js',\r\n    chunkFilename: 'chunk.[name].[id].[contenthash].js',\r\n    path: path.resolve(__dirname, 'dist/deterministic'),\r\n    clean: true\r\n  },\r\n  optimization: {\r\n    moduleIds: 'deterministic',\r\n    chunkIds: 'deterministic'\r\n  }\r\n}\r\n```\r\n\r\n## 运行时解析\r\n\r\n通过观察打包后的文件 `dist/deterministic/main.xxxxxx.js`，可以发现: 使用 `import()` 加载数据时，以上代码将被 `webpack`  编译为以下代码\r\n\r\n``` js\r\n__webpack_require__.e(/* import() | sum */ 644)\r\n.then(__webpack_require__.bind(__webpack_require__, 709))\r\n.then(m => {\r\n  m.default(3, 4)\r\n})\r\n```\r\n\r\n此时 `644` 为 chunkId，观察 `chunk.sum.xxxx.js` 文件，以下为 `sum` 函数所构建而成的 chunk:\r\n\r\n``` js\r\n\"use strict\";\r\n(self[\"webpackChunk\"] = self[\"webpackChunk\"] || []).push([[644],{\r\n\r\n/***/ 709:\r\n/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {\r\n\r\n        __webpack_require__.r(__webpack_exports__);\r\n        /* harmony export */ __webpack_require__.d(__webpack_exports__, {\r\n        /* harmony export */   \"default\": () => (__WEBPACK_DEFAULT_EXPORT__)\r\n        /* harmony export */ });\r\n        const sum = (x, y) => x + y\r\n\r\n/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (sum);\r\n\r\n\r\n/***/ })\r\n\r\n}]);\r\n```\r\n\r\n以下两个数据结构是加载 `chunk` 的关键:\r\n\r\n1. `__webpack_require__.e`: 加载 chunk。该函数将使用 `document.createElement('script')` 异步加载 chunk 并封装为 Promise。\r\n1. `self[\"webpackChunk\"].push`: JSONP cllaback，收集 modules 至 `__webpack_modules__`，并将 `__webpack_require__.e` 的 Promise 进行 resolve。\r\n\r\n实际上，在 `webpack` 中可配置 `output.chunkLoading` 来选择加载 chunk 的方式，比如选择通过 `import()` 的方式进行加载。(由于在生产环境需要考虑 import 的兼容性，目前还是 JSONP 方式较多)\r\n\r\n``` js\r\n{\r\n  entry: './index.js',\r\n  mode: 'none',\r\n  output: {\r\n    filename: 'main.[contenthash].js',\r\n    chunkFilename: '[name].chunk.[chunkhash].js',\r\n    path: path.resolve(__dirname, 'dist/import'),\r\n    clean: true,\r\n    // 默认为 `jsonp`\r\n    chunkLoading: 'import'\r\n  }\r\n})\r\n```\r\n\r\n可参考示例 [webpack 运行时代码](https://github.com/shfshanyue/node-examples/blob/master/engineering/webpack/code-spliting/example/runtime.js) 中查看加载一个 chunk 的实现。\r\n",
           "star": {
             "totalCount": 0
           },
@@ -24649,6 +24782,28 @@
             "login": "okbug",
             "url": "https://github.com/okbug"
           }
+        },
+        {
+          "id": "IC_kwDODQzyOs460dV4",
+          "body": "在打包器，比如 webpack 中，需要借用 `loader` 将非 JS 资源转化成可识别为 Javascript 的 module。\r\n\r\n## 现状\r\n\r\n在 webpack 中，处理 css 稍微比较费劲，需要借用两个 loader 来做成这件事情:\r\n\r\n``` js\r\nmodule.exports = {\r\n  module: {\r\n    rules: [\r\n      {\r\n        test: /\\.css$/,\r\n        use: ['style-loader', 'css-loader']\r\n      }\r\n    ]\r\n  }\r\n}\r\n```\r\n\r\n1. [css-loader](https://github.com/webpack-contrib/css-loader): 处理 CSS 中的 `url` 与 `@import`，并将其视为模块引入，此处是通过 postcss 来解析处理，postcss 对于工程化中 css  处理的影响力可见一斑。\r\n1. [style-loader](https://github.com/webpack-contrib/style-loader): 将样式注入到 DOM 中\r\n\r\n``` css\r\n@import url(./basic.css);\r\n\r\n.bg {\r\n  background: url(./shanyue.png);\r\n}\r\n```\r\n\r\n## 原理\r\n\r\n如果说现代前端中 Javascript 与 CSS 是其中最重要的两种资源，那么 `Babel` 与 `PostCSS` 就是前端工程化中最有影响力的两个编译器。\r\n\r\n`css-loader` 的原理就是 postcss，借用 `postcss-value-parser` 解析 CSS 为 AST，并将 CSS 中的 `url()` 与 `@import` 解析为模块。\r\n\r\n`style-loader` 用以将 CSS 注入到 DOM 中，原理为使用 DOM API 手动构建 `style` 标签，并将 CSS 内容注入到 `style` 中。\r\n\r\n在其源码实现中，借用了许多运行时代码 [style loader runtime](https://github.com/webpack-contrib/style-loader/tree/master/src/runtime)，而最简单的实现仅仅需要几行代码:\r\n\r\n``` js\r\nmodule.exports = function(source) {\r\n  return `\r\nfunction injectCss(css) {\r\n  const style = document.createElement('style')\r\n  style.appendChild(document.createTextNode(css))\r\n  document.head.appendChild(style)\r\n}\r\n\r\ninjectCss(\\`${source}\\`)\r\n  `\r\n}\r\n```\r\n\r\n使用 DOM API 加载 CSS 资源，由于 CSS 需要在 JS 资源加载完后通过 DOM API 控制加载，容易出现页面抖动，在线上低效且性能低下。且对于 SSR 极度不友好。\r\n\r\n由于性能需要，在线上通常需要单独加载 CSS 资源，这要求打包器能够将 CSS 打包，此时需要借助于 [mini-css-extract-plugin](https://github.com/webpack-contrib/mini-css-extract-plugin) 将 CSS 单独抽离出来。\r\n\r\n深入 webpack 中如何抽离 CSS 的源码有助于加深对 webpack 的理解。",
+          "star": {
+            "totalCount": 0
+          },
+          "author": {
+            "login": "shfshanyue",
+            "url": "https://github.com/shfshanyue"
+          }
+        },
+        {
+          "id": "IC_kwDODQzyOs468LlS",
+          "body": "学习学习",
+          "star": {
+            "totalCount": 0
+          },
+          "author": {
+            "login": "qiutian00",
+            "url": "https://github.com/qiutian00"
+          }
         }
       ]
     },
@@ -24670,7 +24825,7 @@
       "nodes": [
         {
           "id": "IC_kwDODQzyOs44isNG",
-          "body": "使用 [speed-measure-webpack-plugin](https://github.com/stephencookdev/speed-measure-webpack-plugin) 可评估每个 loader/plugin 的执行耗时。\r\n\r\n## 持久化缓存: cache\r\n\r\n`webpack5` 内置了关于缓存的插件，可通过以下配置开启。它将 `Module`、`Chunk`、`ModuleChunk` 等信息序列化到磁盘中，二次构建避免重复编译计算，编译速度得到很大提升。\r\n\r\n``` js\r\n{\r\n  cache: {\r\n    type: 'filesystem'\r\n  }\r\n}\r\n```\r\n\r\n如对一个 JS 文件配置了 `eslint`、`typescript`、`babel` 等 `loader`，他将有可能执行五次编译，被五次解析为 AST\r\n\r\n1. `acorn`: 用以依赖分析，解析为 `acorn` 的 AST\r\n2. `eslint-parser`: 用以 lint，解析为 `espree` 的 AST\r\n3. `typescript`: 用以 ts，解析为 `typescript` 的 AST\r\n4. `babel`: 用以转化为低版本，解析为 `@babel/parser` 的 AST\r\n5. `terser`: 用以压缩混淆，解析为 `acorn` 的 AST\r\n\r\n而当开启了持久化缓存功能，最耗时的 AST 解析将能够从磁盘的缓存中获取，再次编译时无需再次进行解析 AST。\r\n\r\n**得益于持久化缓存，二次编译甚至可得到与 Unbundle 的 vite 等相近的开发体验**\r\n\r\n在 webpack4 中，可使用 [cache-loader](https://github.com/webpack-contrib/cache-loader) 仅仅对 `loader` 进行缓存。需要注意的是该 loader 目前已是 `@depcrated` 状态。\r\n\r\n``` js\r\nmodule.exports = {\r\n  module: {\r\n    rules: [\r\n      {\r\n        test: /\\.ext$/,\r\n        use: ['cache-loader', ...loaders],\r\n        include: path.resolve('src'),\r\n      },\r\n    ],\r\n  },\r\n};\r\n```\r\n\r\n![cache-loader](https://cdn.jsdelivr.net/gh/shfshanyue/assets@master/src/cache-loader.7hlpm1nh2z40.png)\r\n\r\n## 多进程: thread-loader\r\n\r\n`thread-loader` 为官方推荐的开启多进程的 `loader`，可对 babel 解析 AST 时开启多线程处理，提升编译的性能。\r\n\r\n``` js\r\nmodule.exports={\r\n  module:{\r\n    rules:[\r\n      {\r\n        test:/\\.js$/,\r\n        use:[\r\n          {\r\n            loader: 'thread-loader',\r\n            options: {\r\n              workers: 8\r\n            }\r\n          },\r\n          'babel-loader'\r\n        ]\r\n      }\r\n    ]\r\n  }\r\n}\r\n```\r\n\r\n在 `webpack4` 中，可使用 [happypack plugin](https://github.com/amireh/happypack)，但需要注意的是 `happypack` 已经久不维护了。",
+          "body": "使用 [speed-measure-webpack-plugin](https://github.com/stephencookdev/speed-measure-webpack-plugin) 可评估每个 loader/plugin 的执行耗时。\r\n\r\n## 更快的 loader: swc\r\n\r\n在 `webpack` 中耗时最久的当属负责 AST 转换的 loader。\r\n\r\n当 loader 进行编译时的 AST 操作均为 CPU 密集型任务，使用 Javascript 性能低下，此时可采用高性能语言 rust  编写的  `swc`。\r\n\r\n比如 Javascript 转化由 `babel` 转化为更快的 [swc](https://swc.rs/)。\r\n\r\n``` js\r\nmodule: {\r\n  rules: [\r\n    {\r\n      test: /\\.m?js$/,\r\n      exclude: /(node_modules)/,\r\n      use: {\r\n        loader: \"swc-loader\"\r\n      }\r\n    }\r\n  ];\r\n}\r\n```\r\n\r\n## 持久化缓存: cache\r\n\r\n`webpack5` 内置了关于缓存的插件，可通过 [cache 字段](https://webpack.js.org/configuration/cache/)配置开启。\r\n\r\n它将 `Module`、`Chunk`、`ModuleChunk` 等信息序列化到磁盘中，二次构建避免重复编译计算，编译速度得到很大提升。\r\n\r\n``` js\r\n{\r\n  cache: {\r\n    type: 'filesystem'\r\n  }\r\n}\r\n```\r\n\r\n如对一个 JS 文件配置了 `eslint`、`typescript`、`babel` 等 `loader`，他将有可能执行五次编译，被五次解析为 AST\r\n\r\n1. `acorn`: 用以依赖分析，解析为 `acorn` 的 AST\r\n2. `eslint-parser`: 用以 lint，解析为 `espree` 的 AST\r\n3. `typescript`: 用以 ts，解析为 `typescript` 的 AST\r\n4. `babel`: 用以转化为低版本，解析为 `@babel/parser` 的 AST\r\n5. `terser`: 用以压缩混淆，解析为 `acorn` 的 AST\r\n\r\n而当开启了持久化缓存功能，最耗时的 AST 解析将能够从磁盘的缓存中获取，再次编译时无需再次进行解析 AST。\r\n\r\n**得益于持久化缓存，二次编译甚至可得到与 Unbundle 的 vite 等相近的开发体验**\r\n\r\n在 webpack4 中，可使用 [cache-loader](https://github.com/webpack-contrib/cache-loader) 仅仅对 `loader` 进行缓存。需要注意的是该 loader 目前已是 `@depcrated` 状态。\r\n\r\n``` js\r\nmodule.exports = {\r\n  module: {\r\n    rules: [\r\n      {\r\n        test: /\\.ext$/,\r\n        use: ['cache-loader', ...loaders],\r\n        include: path.resolve('src'),\r\n      },\r\n    ],\r\n  },\r\n};\r\n```\r\n\r\n![cache-loader](https://cdn.jsdelivr.net/gh/shfshanyue/assets@master/src/cache-loader.7hlpm1nh2z40.png)\r\n\r\n## 多进程: thread-loader\r\n\r\n[thread-loader](https://github.com/webpack-contrib/thread-loader) 为官方推荐的开启多进程的 `loader`，可对 babel 解析 AST 时开启多线程处理，提升编译的性能。\r\n\r\n``` js\r\nmodule.exports={\r\n  module:{\r\n    rules:[\r\n      {\r\n        test:/\\.js$/,\r\n        use:[\r\n          {\r\n            loader: 'thread-loader',\r\n            options: {\r\n              workers: 8\r\n            }\r\n          },\r\n          'babel-loader'\r\n        ]\r\n      }\r\n    ]\r\n  }\r\n}\r\n```\r\n\r\n在 `webpack4` 中，可使用 [happypack plugin](https://github.com/amireh/happypack)，但需要注意的是 `happypack` 已经久不维护了。",
           "star": {
             "totalCount": 0
           },
@@ -24787,7 +24942,7 @@
           "id": "IC_kwDODQzyOs45Lqiz",
           "body": "如何确保所有 `npm install` 的依赖都是安全的？\r\n\r\n当有一个库偷偷在你的笔记本后台挖矿怎么办？\r\n\r\n比如，不久前一个周下载量超过八百万的库被侵入，它在你的笔记本运行时会偷偷挖矿。\r\n\r\n![](https://cdn.jsdelivr.net/gh/shfshanyue/assets/2021-11-03/clipboard-0833.d9da75.webp)\r\n\r\n## Audit\r\n\r\n`Audit`，审计，检测你的所有依赖是否安全。`npm audit`/`yarn audit` 均有效。\r\n\r\n通过审计，可看出有风险的 `package`、依赖库的依赖链、风险原因及其解决方案。\r\n\r\n``` bash\r\n$ npm audit\r\n┌───────────────┬──────────────────────────────────────────────────────────────┐\r\n│ high          │ Regular Expression Denial of Service in trim                 │\r\n├───────────────┼──────────────────────────────────────────────────────────────┤\r\n│ Package       │ trim                                                         │\r\n├───────────────┼──────────────────────────────────────────────────────────────┤\r\n│ Patched in    │ >=0.0.3                                                      │\r\n├───────────────┼──────────────────────────────────────────────────────────────┤\r\n│ Dependency of │ @mdx-js/loader                                               │\r\n├───────────────┼──────────────────────────────────────────────────────────────┤\r\n│ Path          │ @mdx-js/loader > @mdx-js/mdx > remark-mdx > remark-parse >   │\r\n│               │ trim                                                         │\r\n├───────────────┼──────────────────────────────────────────────────────────────┤\r\n│ More info     │ https://www.npmjs.com/advisories/1002775                     │\r\n└───────────────┴──────────────────────────────────────────────────────────────┘\r\n76 vulnerabilities found - Packages audited: 1076\r\nSeverity: 49 Moderate | 27 High\r\n✨  Done in 4.60s.\r\n```\r\n\r\n你可以在我的笔记本上挖矿，但绝不能在生产环境服务器下挖矿，此时可使用以下两条命令。\r\n\r\n``` bash\r\n$ npm audit production\r\n\r\n$ yarn audit dependencies\r\n```\r\n\r\n![Audit](https://cdn.jsdelivr.net/gh/shfshanyue/assets/2021-11-03/clipboard-1904.f4c916.webp)\r\n\r\n通过 `npm audit fix` 可以自动修复该库的风险，原理就是升级依赖库，升级至已修复了风险的版本号。\r\n\r\n``` bash\r\n$ npm audit fix\r\n```\r\n\r\n`yarn audit` 无法自动修复，需要手动更新版本号，不过不够智能。\r\n\r\n[synk](https://snyk.io/) 是一个高级版的 `npm audit`，可自动修复，且支持 CICD 集成与多种语言。\r\n\r\n\r\n``` bash\r\n$ npx snyk\r\n\r\n$ npx wizard\r\n```\r\n\r\n![](https://cdn.jsdelivr.net/gh/shfshanyue/assets/2021-11-03/clipboard-1409.96de76.webp)\r\n\r\n## CI 机器人\r\n\r\n可通过 CI/gitlab/github 中配置机器人，使他们每天轮询一次检查仓库的依赖中是否有风险。\r\n\r\n![Github 机器人](https://cdn.jsdelivr.net/gh/shfshanyue/assets/2021-11-03/clipboard-4186.0dac46.webp)\r\n\r\n在 Github 中，可单独设置 `dependabot` 机器人，在仓库设置中开启小机器人，当它检测到有问题时，会自动向该仓库提交 PR。\r\n\r\n![dependabot](https://cdn.jsdelivr.net/gh/shfshanyue/assets/2021-11-03/clipboard-6581.08f1c2.webp)\r\n\r\n而它的解决方案也是升级版本号。\r\n\r\n![Github Bot 提的 PR](https://cdn.jsdelivr.net/gh/shfshanyue/assets/2021-11-03/clipboard-8617.e80863.webp)\r\n",
           "star": {
-            "totalCount": 1
+            "totalCount": 2
           },
           "author": {
             "login": "shfshanyue",
@@ -24985,7 +25140,30 @@
     "title": "【Q724】软链接和硬链接有何区别",
     "body": "",
     "comments": {
-      "nodes": []
+      "nodes": [
+        {
+          "id": "IC_kwDODQzyOs46u1oq",
+          "body": "https://www.jianshu.com/p/dde6a01c4094\r\n\r\n这个解释满分",
+          "star": {
+            "totalCount": 0
+          },
+          "author": {
+            "login": "Gentlemancj",
+            "url": "https://github.com/Gentlemancj"
+          }
+        },
+        {
+          "id": "IC_kwDODQzyOs46xDkF",
+          "body": "> https://www.jianshu.com/p/dde6a01c4094\r\n> \r\n> 这个解释满分\r\n\r\n链接挂了",
+          "star": {
+            "totalCount": 0
+          },
+          "author": {
+            "login": "nmsn",
+            "url": "https://github.com/nmsn"
+          }
+        }
+      ]
     },
     "labels": {
       "nodes": [
@@ -25077,6 +25255,207 @@
           }
         }
       ]
+    },
+    "labels": {
+      "nodes": [
+        {
+          "id": "MDU6TGFiZWwxNzA3OTU2MjIw",
+          "name": "前端工程化"
+        }
+      ]
+    }
+  },
+  {
+    "id": "I_kwDODQzyOs4_efCE",
+    "number": 754,
+    "title": "【Q728】如何对 npm package 进行发包",
+    "body": "",
+    "comments": {
+      "nodes": [
+        {
+          "id": "IC_kwDODQzyOs46ceEF",
+          "body": "## 准备工作：一个账号\r\n\r\n在发布公共 package 之前，需要在 [npm 官网](https://www.npmjs.com/)进行注册一个账号。\r\n\r\n随后，在本地(需要发包的地方)执行命令 `npm login`，进行交互式操作并且登录。\r\n\r\n``` bash\r\n$ npm login\r\n```\r\n\r\n## 发包\r\n\r\n发布一个 npm 包之前，填写 `package.json` 中以下三项最重要的字段。假设此时包的名称为 `@shanyue/just-demo`\r\n\r\n``` js\r\n{\r\n  name: '@shanyue/just-demo',\r\n  version: '1.0.0',\r\n  main: './index.js',\r\n}\r\n```\r\n\r\n之后执行 `npm publish` 发包即可。\r\n\r\n``` bash\r\n$ npm publish\r\n```\r\n\r\n一旦发布完成，在任意地方通过 `npm i` 均可依赖该包。\r\n\r\n``` js\r\nconst x = require('@shanyue/just-demo')\r\n\r\nconsole.log(x)\r\n```\r\n\r\n如若该包进行更新后，需要再次发包，可 `npm version` 控制该版本进行升级，记住需要遵守 [Semver 规范](https://github.com/shfshanyue/Daily-Question/issues/534)\r\n\r\n``` bash\r\n# 增加一个修复版本号: 1.0.1 -> 1.0.2 (自动更改 package.json 中的 version 字段)\r\n$ npm version patch\r\n\r\n# 增加一个小的版本号: 1.0.1 -> 1.1.0 (自动更改 package.json 中的 version 字段)\r\n$ npm version minor\r\n\r\n# 将更新后的包发布到 npm 中\r\n$ npm publish\r\n```\r\n\r\n## 实际发包的内容\r\n\r\n在 npm 发包时，实际发包内容为 `package.json` 中 `files` 字段，一般只需将构建后资源(如果需要构建)进行发包，源文件可发可不发。\r\n\r\n``` js\r\n{\r\n  files: ['dist']\r\n}\r\n```\r\n\r\n若需要查看一个 package 的发包内容，可直接在 `node_modules/${package}` 进行查看，将会发现它和源码有很大不同。也可以在 CDN 中进行查看，以 React 为例\r\n\r\n1. jsdelivr: <https://cdn.jsdelivr.net/npm/react/>\r\n1. unpkg: <https://unpkg.com/browse/react/>\r\n\r\n![UNPKG](https://cdn.jsdelivr.net/gh/shfshanyue/assets/2021-11-27/clipboard-7248.4f8241.webp)\r\n\r\n## 发包的实际流程\r\n\r\n`npm publish` 将自动走过以下生命周期\r\n\r\n+ prepublishOnly: 如果发包之前需要构建，可以放在这里执行\r\n+ prepack\r\n+ prepare: 如果发包之前需要构建，可以放在这里执行 (该周期也会在 npm i 后自动执行)\r\n+ postpack\r\n+ publish\r\n+ postpublish\r\n\r\n发包实际上是将本地 package 中的所有资源进行打包，并上传到 npm 的一个过程。你可以通过 `npm pack` 命令查看详情\r\n\r\n``` bash\r\n$ npm pack\r\nnpm notice\r\nnpm notice 📦  midash@0.2.6\r\nnpm notice === Tarball Contents ===\r\nnpm notice 1.1kB  LICENSE\r\nnpm notice 812B   README.md\r\nnpm notice 5.7kB  dist/midash.cjs.development.js\r\nnpm notice 13.4kB dist/midash.cjs.development.js.map\r\nnpm notice 3.2kB  dist/midash.cjs.production.min.js\r\nnpm notice 10.5kB dist/midash.cjs.production.min.js.map\r\nnpm notice 5.3kB  dist/midash.esm.js\r\nnpm notice 13.4kB dist/midash.esm.js.map\r\nnpm notice 176B   dist/omit.d.ts\r\n......\r\nnpm notice === Tarball Details ===\r\nnpm notice name:          midash\r\nnpm notice version:       0.2.6\r\nnpm notice filename:      midash-0.2.6.tgz\r\nnpm notice package size:  11.5 kB\r\nnpm notice unpacked size: 67.8 kB\r\nnpm notice shasum:        c89d8c1aa96f78ce8b1dcf8f0f058fa7a6936a6a\r\nnpm notice integrity:     sha512-lyx8khPVkCHvH[...]kBL6K6VqOG6dQ==\r\nnpm notice total files:   46\r\nnpm notice\r\nmidash-0.2.6.tgz\r\n```\r\n\r\n当你发包成功后，也可以前往 [npm devtool](https://npm.devtool.tech/react) 查看各项数据。\r\n\r\n![](https://cdn.jsdelivr.net/gh/shfshanyue/assets/2021-11-27/clipboard-8735.9e7628.webp)",
+          "star": {
+            "totalCount": 0
+          },
+          "author": {
+            "login": "shfshanyue",
+            "url": "https://github.com/shfshanyue"
+          }
+        }
+      ]
+    },
+    "labels": {
+      "nodes": [
+        {
+          "id": "MDU6TGFiZWwxNzA3OTU2MjIw",
+          "name": "前端工程化"
+        }
+      ]
+    }
+  },
+  {
+    "id": "I_kwDODQzyOs4_faBr",
+    "number": 755,
+    "title": "【Q729】如何分析前端打包体积",
+    "body": "",
+    "comments": {
+      "nodes": []
+    },
+    "labels": {
+      "nodes": [
+        {
+          "id": "MDU6TGFiZWwxNzA2NzQ0ODEz",
+          "name": "webpack"
+        }
+      ]
+    }
+  },
+  {
+    "id": "I_kwDODQzyOs4_fcHA",
+    "number": 756,
+    "title": "【Q730】什么是 AST，及其应用",
+    "body": "",
+    "comments": {
+      "nodes": [
+        {
+          "id": "IC_kwDODQzyOs46dox2",
+          "body": "`AST` 是 `Abstract Syntax Tree` 的简称，是前端工程化绕不过的一个名词。它涉及到工程化诸多环节的应用，比如:\r\n\r\n1. 如何将 Typescript 转化为 Javascript (typescript)\r\n1. 如何将 SASS/LESS 转化为 CSS (sass/less)\r\n1. 如何将 ES6+ 转化为 ES5 (babel)\r\n1. 如何将 Javascript 代码进行格式化 (eslint/prettier)\r\n1. 如何识别 React 项目中的 JSX (babel)\r\n1. GraphQL、MDX、Vue SFC 等等\r\n\r\n而在语言转换的过程中，实质上就是对其 AST 的操作，核心步骤就是 AST 三步走\r\n\r\n1. Code -> AST (Parse)\r\n1. AST -> AST (Transform)\r\n1. AST -> Code (Generate)\r\n\r\n![](https://cdn.jsdelivr.net/gh/shfshanyue/assets/2021-12-13/AST.37256a.webp)\r\n\r\n以下是一段代码，及其对应的 AST\r\n\r\n```js\r\n// Code\r\nconst a = 4\r\n\r\n// AST\r\n{\r\n  \"type\": \"Program\",\r\n  \"start\": 0,\r\n  \"end\": 11,\r\n  \"body\": [\r\n    {\r\n      \"type\": \"VariableDeclaration\",\r\n      \"start\": 0,\r\n      \"end\": 11,\r\n      \"declarations\": [\r\n        {\r\n          \"type\": \"VariableDeclarator\",\r\n          \"start\": 6,\r\n          \"end\": 11,\r\n          \"id\": {\r\n            \"type\": \"Identifier\",\r\n            \"start\": 6,\r\n            \"end\": 7,\r\n            \"name\": \"a\"\r\n          },\r\n          \"init\": {\r\n            \"type\": \"Literal\",\r\n            \"start\": 10,\r\n            \"end\": 11,\r\n            \"value\": 4,\r\n            \"raw\": \"4\"\r\n          }\r\n        }\r\n      ],\r\n      \"kind\": \"const\"\r\n    }\r\n  ],\r\n  \"sourceType\": \"module\"\r\n}\r\n```\r\n\r\n不同的语言拥有不同的解析器，比如 Javascript 的解析器和 CSS 的解析器就完全不同。\r\n\r\n对相同的语言，也存在诸多的解析器，也就会生成多种 AST，如 `babel` 与 `espree`。\r\n\r\n在 [AST Explorer](https://astexplorer.net/) 中，列举了诸多语言的解析器(Parser)，及转化器(Transformer)。\r\n\r\n![](https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/96e2f4eba4e5475faab8068d7c06c43c~tplv-k3u1fbpfcp-zoom-1.image)\r\n\r\n## AST 的生成\r\n\r\nAST 的生成这一步骤被称为**解析(Parser)**，而该步骤也有两个阶段: 词法分析(Lexical Analysis)和语法分析(Syntactic Analysis)\r\n\r\n### 词法分析 (Lexical Analysis)\r\n\r\n词法分析用以将代码转化为 `Token` 流，维护一个关于 Token 的数组\r\n\r\n![](https://cdn.jsdelivr.net/gh/shfshanyue/assets/2021-12-13/Parse.050e33.webp)\r\n\r\n```js\r\n// Code\r\na = 3\r\n\r\n// Token\r\n[\r\n  { type: { ... }, value: \"a\", start: 0, end: 1, loc: { ... } },\r\n  { type: { ... }, value: \"=\", start: 2, end: 3, loc: { ... } },\r\n  { type: { ... }, value: \"3\", start: 4, end: 5, loc: { ... } },\r\n  ...\r\n]\r\n```\r\n\r\n词法分析后的 Token 流也有诸多应用，如:\r\n\r\n1. 代码检查，如 eslint 判断是否以分号结尾，判断是否含有分号的 token\r\n1. 语法高亮，如 highlight/prism 使之代码高亮\r\n1. 模板语法，如 ejs 等模板也离不开\r\n\r\n### 语法分析 (Syntactic Analysis)\r\n\r\n语法分析将 Token 流转化为结构化的 AST，方便操作\r\n\r\n```js\r\n{\r\n  \"type\": \"Program\",\r\n  \"start\": 0,\r\n  \"end\": 5,\r\n  \"body\": [\r\n    {\r\n      \"type\": \"ExpressionStatement\",\r\n      \"start\": 0,\r\n      \"end\": 5,\r\n      \"expression\": {\r\n        \"type\": \"AssignmentExpression\",\r\n        \"start\": 0,\r\n        \"end\": 5,\r\n        \"operator\": \"=\",\r\n        \"left\": {\r\n          \"type\": \"Identifier\",\r\n          \"start\": 0,\r\n          \"end\": 1,\r\n          \"name\": \"a\"\r\n        },\r\n        \"right\": {\r\n          \"type\": \"Literal\",\r\n          \"start\": 4,\r\n          \"end\": 5,\r\n          \"value\": 3,\r\n          \"raw\": \"3\"\r\n        }\r\n      }\r\n    }\r\n  ],\r\n  \"sourceType\": \"module\"\r\n}\r\n```\r\n\r\n## 实践\r\n\r\n可通过自己写一个解析器，将语言 (DSL) 解析为 AST 进行练手，以下两个示例是不错的选择\r\n\r\n1. 解析简单的 HTML 为 AST\r\n1. 解析 Marktodwn List 为 AST\r\n\r\n或可参考一个最简编译器的实现 [the super tiny compiler](https://github.com/jamiebuilds/the-super-tiny-compiler)\r\n",
+          "star": {
+            "totalCount": 0
+          },
+          "author": {
+            "login": "shfshanyue",
+            "url": "https://github.com/shfshanyue"
+          }
+        }
+      ]
+    },
+    "labels": {
+      "nodes": [
+        {
+          "id": "MDU6TGFiZWwxNzA3OTU2MjIw",
+          "name": "前端工程化"
+        }
+      ]
+    }
+  },
+  {
+    "id": "I_kwDODQzyOs4_fhCs",
+    "number": 757,
+    "title": "【Q731】简述 browserslist 的意义",
+    "body": "",
+    "comments": {
+      "nodes": []
+    },
+    "labels": {
+      "nodes": [
+        {
+          "id": "MDU6TGFiZWwxNzA3OTU2MjIw",
+          "name": "前端工程化"
+        }
+      ]
+    }
+  },
+  {
+    "id": "I_kwDODQzyOs4_fimd",
+    "number": 758,
+    "title": "【Q732】简述 bundless 的优势与不足",
+    "body": "",
+    "comments": {
+      "nodes": []
+    },
+    "labels": {
+      "nodes": [
+        {
+          "id": "MDU6TGFiZWwxNzA3OTU2MjIw",
+          "name": "前端工程化"
+        }
+      ]
+    }
+  },
+  {
+    "id": "I_kwDODQzyOs4_fi8x",
+    "number": 759,
+    "title": "【Q733】简述 npm cache",
+    "body": "",
+    "comments": {
+      "nodes": []
+    },
+    "labels": {
+      "nodes": [
+        {
+          "id": "MDU6TGFiZWwxNzA3OTU2MjIw",
+          "name": "前端工程化"
+        }
+      ]
+    }
+  },
+  {
+    "id": "I_kwDODQzyOs4_foP6",
+    "number": 760,
+    "title": "【Q734】如何修复某个 npm 包的紧急 bug",
+    "body": "",
+    "comments": {
+      "nodes": [
+        {
+          "id": "IC_kwDODQzyOs46eink",
+          "body": "假设 `lodash` 有一个 Bug，影响线上开发，应该怎么办？\r\n\r\n![把大象扔进冰箱里需要几步](https://cdn.jsdelivr.net/gh/shfshanyue/assets/2021-11-11/clipboard-5920.ee51bc.webp)\r\n\r\n答: 三步走。\r\n\r\n1. 在 Github 提交 Pull Request，修复 Bug，等待合并\r\n1. 合并 PR 后，等待新版本发包\r\n1. 升级项目中的 lodash 依赖\r\n\r\n很合理很规范的一个流程，但是它一个最大的问题就是，太慢了，三步走完黄花菜都凉了。\r\n\r\n此时可直接上手修改 `node_modules` 中 lodash 代码，并修复问题！\r\n\r\n新问题：`node_modules` 未纳入版本管理，在生产环境并没有用。请看流程\r\n\r\n1. 本地修改 `node_modules/lodash`，本地正常运行 ✅\r\n1. 线上 `npm i lodash`，lodash 未被修改，线上运行失败 ❌\r\n\r\n此时有一个简单的方案，临时将修复文件纳入工作目录，可以解决这个问题\r\n\r\n1. 本地修改 `node_modules/lodash`，本地正常运行 ✅\r\n2. 将修改文件复制到 `${work_dir}/patchs/lodash` 中，纳入版本管理 \r\n3. 线上 `npm i lodash`，并将修改文件再度复制到 `node_modules/lodash` 中，线上正常运行 ✅\r\n\r\n但此时并不是很智能，且略有小问题，演示如下:\r\n\r\n1. 本地修改 `node_modules/lodash`，本地正常运行 ✅\r\n2. 将修改文件复制到 `${work_dir}/patchs/lodash` 中，纳入版本管理 ✅\r\n3. 线上 `npm i lodash`，并将修改文件再度复制到 `node_modules/lodash` 中，线上正常运行 ✅\r\n4. 两个月后升级 `lodash`，该问题得以解决，而我们代码引用了 lodash 的新特性\r\n5. 线上 `npm i lodash`，并将修改文件再度复制到 `node_modules/lodash` 中，由于已更新了 lodash，并且依赖于新特性，线上运行失败 ❌\r\n\r\n此时有一个万能之策，那就是 [patch-package](https://github.com/ds300/patch-package)\r\n\r\n## patch-package\r\n\r\n想要知道 `patch-package` 如何解决上述问题，请先了解下它的用法，流程如下\r\n\r\n``` bash\r\n# 修改 lodash 的一个小问题\r\n$ vim node_modules/lodash/index.js\r\n\r\n# 对 lodash 的修复生成一个 patch 文件，位于 patches/lodash+4.17.21.patch\r\n$ npx patch-package lodash\r\n\r\n# 将修复文件提交到版本管理之中\r\n$ git add patches/lodash+4.17.21.patch\r\n$ git commit -m \"fix 一点儿小事 in lodash\"\r\n\r\n# 此后的命令在生产环境或 CI 中执行\r\n# 此后的命令在生产环境或 CI 中执行\r\n# 此后的命令在生产环境或 CI 中执行\r\n\r\n# 在生产环境装包\r\n$ npm i\r\n\r\n# 为生产环境的 lodash 进行小修复\r\n$ npx patch-package\r\n\r\n# 大功告成！\r\n```\r\n\r\n再次看下 `patch-package` 自动生成 patch 文件的本来面目吧:\r\n\r\n它实际上是一个 `diff` 文件，在生产环境中可自动根据 diff 文件与版本号 (根据patch文件名存取) 将修复场景复原！\r\n\r\n``` bash\r\n$ cat patches/lodash+4.17.21.patch\r\ndiff --git a/node_modules/lodash/index.js b/node_modules/lodash/index.js\r\nindex 5d063e2..fc6fa33 100644\r\n--- a/node_modules/lodash/index.js\r\n+++ b/node_modules/lodash/index.js\r\n@@ -1 +1,3 @@\r\n+console.log('DEBUG SOMETHING')\r\n+\r\n module.exports = require('./lodash');\r\n\\ No newline at end of file\r\n```",
+          "star": {
+            "totalCount": 0
+          },
+          "author": {
+            "login": "shfshanyue",
+            "url": "https://github.com/shfshanyue"
+          }
+        }
+      ]
+    },
+    "labels": {
+      "nodes": [
+        {
+          "id": "MDU6TGFiZWwxNzA3OTU2MjIw",
+          "name": "前端工程化"
+        }
+      ]
+    }
+  },
+  {
+    "id": "I_kwDODQzyOs4_fpMB",
+    "number": 761,
+    "title": "【Q735】前端如何进行高效的分包",
+    "body": "",
+    "comments": {
+      "nodes": [
+        {
+          "id": "IC_kwDODQzyOs46eie8",
+          "body": "# 如何正确地进行分包\r\n\r\n## 为什么需要分包？\r\n\r\n*为什么需要进行分包，一个大的 `bundle.js` 不好吗？*\r\n\r\n极其不建议，可从两方面进行考虑:\r\n\r\n1. 一行代码将导致整个 `bundle.js` 的缓存失效\r\n1. 一个页面仅仅需要 `bundle.js` 中 1/N 的代码，剩下代码属于其它页面，完全没有必要加载\r\n\r\n## 如何更好的分包？\r\n\r\n### 打包工具运行时\r\n\r\n> webpack(或其他构建工具) 运行时代码不容易变更，需要单独抽离出来，比如 `webpack.runtime.js`。由于其体积小，**必要时可注入 `index.html` 中**，减少 HTTP 请求数，优化关键请求路径\r\n\r\n### 前端框架运行时\r\n\r\n> React(Vue) 运行时代码不容易变更，且每个组件都会依赖它，可单独抽离出来 `framework.runtime.js`。请且注意，**务必将 React 及其所有依赖(react-dom/object-assign)共同抽离出来**，否则有可能造成性能损耗，见下示例\r\n\r\n*假设仅仅抽离 React 运行时(不包含其依赖)为单独 Chunk*，且每个路由页面为单独 Chunk。*某页面不依赖任何第三方库*，则该页面会加载以下 Chunk\r\n\r\n1. `webpack.runtime.js`    5KB  ✅\r\n2. `framework.runtime.js`  30KB ✅\r\n3. `page-a.chunk.js`       50KB ✅\r\n4. `vendor.chunk.js`       50KB ❌ (因 webpack 依赖其 `object-assign`，而 `object-assign` 将被打入共同依赖 `vendor.chunk.js`，因此此时它必回加载，但是该页面并不依赖任何第三方库，完全没有必要全部加载 `vendor.chunk.js`)\r\n\r\n将 React 运行时及其所有依赖，共同打包，修复结果如下，拥有了更完美的打包方案。\r\n\r\n1. `webpack.runtime.js`    5KB  ✅\r\n2. `framework.runtime.js`  40KB ✅  (+10KB)\r\n3. `page-a.chunk.js`       50KB ✅\r\n\r\n### 高频库\r\n\r\n一个模块被 N(2个以上) 个 Chunk 引用，可称为公共模块，可把公共模块给抽离出来，形成 `vendor.js`。\r\n\r\n问：那如果一个模块被用了多次 (2次以上)，但是该模块体积过大(1MB)，每个页面都会加载它(但是无必要，因为不是每个页面都依赖它)，导致性能变差，此时如何分包？\r\n\r\n答：如果一个模块虽是公共模块，但是该模块体积过大，可直接 `import()` 引入，异步加载，单独分包，比如 `echarts` 等\r\n\r\n问：如果公共模块数量多，导致 vendor.js 体积过大(1MB)，每个页面都会加载它，导致性能变差，此时如何分包\r\n\r\n答：有以下两个思路\r\n\r\n1. 思路一: 可对 vendor.js 改变策略，比如被引用了十次以上，被当做公共模块抽离成 verdor-A.js，五次的抽离为 vendor-B.js，两次的抽离为 vendor-C.js\r\n1. 思路二: 控制 vendor.js 的体积，当大于 100KB 时，再次进行分包，多分几个 vendor-XXX.js，但每个 vendor.js 都不超过 100KB\r\n\r\n## 使用 webpack 分包\r\n\r\n在 webpack 中可以使用 [SplitChunksPlugin](https://webpack.js.org/plugins/split-chunks-plugin) 进行分包，它需要满足三个条件:\r\n\r\n1. minChunks: 一个模块是否最少被 minChunks 个 chunk 所引用\r\n1. maxInitialRequests/maxAsyncRequests: 最多只能有 maxInitialRequests/maxAsyncRequests 个 chunk 需要同时加载 (如一个 Chunk 依赖 VendorChunk 才可正常工作，此时同时加载chunk数为 2)\r\n1. minSize/maxSize: chunk 的体积必须介于 (minSize, maxSize) 之间\r\n\r\n以下是 `next.js` 的默认配置，可视作最佳实践\r\n\r\n> [源码位置: next/build/webpack-config.ts](https://github.com/vercel/next.js/blob/v12.0.5-canary.10/packages/next/build/webpack-config.ts#L728)\r\n\r\n``` js\r\n{\r\n  // Keep main and _app chunks unsplitted in webpack 5\r\n  // as we don't need a separate vendor chunk from that\r\n  // and all other chunk depend on them so there is no\r\n  // duplication that need to be pulled out.\r\n  chunks: (chunk) =>\r\n    !/^(polyfills|main|pages\\/_app)$/.test(chunk.name) &&\r\n    !MIDDLEWARE_ROUTE.test(chunk.name),\r\n  cacheGroups: {\r\n    framework: {\r\n      chunks: (chunk: webpack.compilation.Chunk) =>\r\n        !chunk.name?.match(MIDDLEWARE_ROUTE),\r\n      name: 'framework',\r\n      test(module) {\r\n        const resource =\r\n          module.nameForCondition && module.nameForCondition()\r\n        if (!resource) {\r\n          return false\r\n        }\r\n        return topLevelFrameworkPaths.some((packagePath) =>\r\n          resource.startsWith(packagePath)\r\n        )\r\n      },\r\n      priority: 40,\r\n      // Don't let webpack eliminate this chunk (prevents this chunk from\r\n      // becoming a part of the commons chunk)\r\n      enforce: true,\r\n    },\r\n    lib: {\r\n      test(module: {\r\n        size: Function\r\n        nameForCondition: Function\r\n      }): boolean {\r\n        return (\r\n          module.size() > 160000 &&\r\n          /node_modules[/\\\\]/.test(module.nameForCondition() || '')\r\n        )\r\n      },\r\n      name(module: {\r\n        type: string\r\n        libIdent?: Function\r\n        updateHash: (hash: crypto.Hash) => void\r\n      }): string {\r\n        const hash = crypto.createHash('sha1')\r\n        if (isModuleCSS(module)) {\r\n          module.updateHash(hash)\r\n        } else {\r\n          if (!module.libIdent) {\r\n            throw new Error(\r\n              `Encountered unknown module type: ${module.type}. Please open an issue.`\r\n            )\r\n          }\r\n\r\n          hash.update(module.libIdent({ context: dir }))\r\n        }\r\n\r\n        return hash.digest('hex').substring(0, 8)\r\n      },\r\n      priority: 30,\r\n      minChunks: 1,\r\n      reuseExistingChunk: true,\r\n    },\r\n    commons: {\r\n      name: 'commons',\r\n      minChunks: totalPages,\r\n      priority: 20,\r\n    },\r\n    middleware: {\r\n      chunks: (chunk: webpack.compilation.Chunk) =>\r\n        chunk.name?.match(MIDDLEWARE_ROUTE),\r\n      filename: 'server/middleware-chunks/[name].js',\r\n      minChunks: 2,\r\n      enforce: true,\r\n    },\r\n  },\r\n  maxInitialRequests: 25,\r\n  minSize: 20000,\r\n}\r\n```",
+          "star": {
+            "totalCount": 0
+          },
+          "author": {
+            "login": "shfshanyue",
+            "url": "https://github.com/shfshanyue"
+          }
+        }
+      ]
+    },
+    "labels": {
+      "nodes": [
+        {
+          "id": "MDU6TGFiZWwxNzA3OTU2MjIw",
+          "name": "前端工程化"
+        }
+      ]
+    }
+  },
+  {
+    "id": "I_kwDODQzyOs4_fpOm",
+    "number": 762,
+    "title": "【Q736】前端如何对分支环境进行部署",
+    "body": "",
+    "comments": {
+      "nodes": []
     },
     "labels": {
       "nodes": [
