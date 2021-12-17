@@ -65,7 +65,7 @@
           "id": "IC_kwDODQzyOs42MkyK",
           "body": "方案二的简单Demo:\r\n```html\r\n<!DOCTYPE html>\r\n<html lang=\"en\">\r\n<head>\r\n    <meta charset=\"UTF-8\">\r\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\r\n    <title>图片懒加载</title>\r\n    <style>\r\n        img {\r\n            width: 100%;\r\n            height: 600px;\r\n        }\r\n    </style>\r\n</head>\r\n<body>\r\n    <img src=\"https://cdn.pixabay.com/photo/2021/08/24/15/38/sand-6570980_960_720.jpg\" alt=\"1\">\r\n    <img src=\"https://cdn.pixabay.com/photo/2013/02/21/19/06/drink-84533_960_720.jpg\" alt=\"2\">\r\n    <img data-src=\"https://cdn.pixabay.com/photo/2014/12/15/17/16/boardwalk-569314_960_720.jpg\" alt=\"3\">\r\n    <img data-src=\"https://cdn.pixabay.com/photo/2013/07/18/20/26/sea-164989_960_720.jpg\" alt=\"4\">\r\n    <img data-src=\"https://cdn.pixabay.com/photo/2015/04/23/22/00/tree-736885_960_720.jpg\" alt=\"5\">\r\n    <img data-src=\"https://cdn.pixabay.com/photo/2017/03/26/21/54/yoga-2176668_960_720.jpg\" alt=\"6\">\r\n    <img data-src=\"https://cdn.pixabay.com/photo/2015/03/17/14/05/sparkler-677774_960_720.jpg\" alt=\"7\">\r\n    <script src=\"https://cdn.bootcdn.net/ajax/libs/lodash.js/4.17.20/lodash.js\"></script>\r\n    <script>\r\n        const images = document.querySelectorAll('img');\r\n        const lazyLoad = () => {\r\n            images.forEach((item) => {\r\n                // 触发条件为img元素的CSSOM对象到视口顶部的距离 < 100px + 视口高度，+100px为了提前触发图片加载\r\n                if (item.getBoundingClientRect().top < document.documentElement.clientHeight + 100) {\r\n                    if ('src' in item.dataset) {\r\n                        item.src = item.dataset.src;\r\n                    }\r\n                }\r\n            })\r\n        }\r\n        document.addEventListener('scroll', _.throttle(lazyLoad, 200));\r\n    </script>\r\n</body>\r\n</html>\r\n```",
           "star": {
-            "totalCount": 2
+            "totalCount": 3
           },
           "author": {
             "login": "hwb2017",
@@ -104,6 +104,28 @@
             "login": "Ha0ran2001",
             "url": "https://github.com/Ha0ran2001"
           }
+        },
+        {
+          "id": "IC_kwDODQzyOs4-OrJP",
+          "body": "方案一的实现[demo](https://codesandbox.io/s/manual-image-lazy-6zzhr?file=/index.html)，ScrollListener类用于监听和处理滚动，在Controller（实现onEnterViewport方法）元素出现在视窗内时调用controller.onEnterViewport()，最后移除controller。\r\n```html\r\n<!DOCTYPE html>\r\n<html lang=\"zh-CN\">\r\n  <head>\r\n    <meta charset=\"UTF-8\" />\r\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\" />\r\n    <meta http-equiv=\"X-UA-Compatible\" content=\"ie=edge\" />\r\n    <title>offsetTop计算实现图片懒加载</title>\r\n    <style>\r\n      body {\r\n        margin: 0;\r\n      }\r\n      .img {\r\n        width: 100%;\r\n        height: 100%;\r\n        object-fit: cover;\r\n        object-position: center;\r\n      }\r\n\r\n      .wrap {\r\n        margin: 10px;\r\n        display: inline-block;\r\n        width: 480px;\r\n        height: 270px;\r\n      }\r\n\r\n      .container {\r\n        width: 100vw;\r\n        height: 100vh;\r\n        overflow: auto;\r\n      }\r\n\r\n      h1 {\r\n        text-align: center;\r\n      }\r\n\r\n      .main {\r\n        margin: 0;\r\n        width: 2000px;\r\n      }\r\n    </style>\r\n  </head>\r\n\r\n  <body>\r\n    <section class=\"container\">\r\n      <h1>请滚动页面查看效果</h1>\r\n      <div class=\"main\"></div>\r\n    </section>\r\n  </body>\r\n  <script defer>\r\n    \"use strict\";\r\n\r\n    // 图片url列表\r\n    const images = [\r\n      \"https://h2.ioliu.cn/bing/Latern2022_ZH-CN0112710917_640x480.jpg?imageslim\",\r\n      \"https://h2.ioliu.cn/bing/MaldivesHeart_ZH-CN0032539727_640x480.jpg?imageslim\",\r\n      \"https://h2.ioliu.cn/bing/FaceOff_ZH-CN9969100257_640x480.jpg?imageslim\",\r\n      \"https://h2.ioliu.cn/bing/DarwinsArch_ZH-CN9740478501_640x480.jpg?imageslim\",\r\n      \"https://h2.ioliu.cn/bing/TeaGardensMunnar_ZH-CN9587720369_640x480.jpg?imageslim\",\r\n      \"https://h2.ioliu.cn/bing/SnowyBern_ZH-CN5472524801_640x480.jpg?imageslim\",\r\n      \"https://h2.ioliu.cn/bing/SevenSistersCliffs_ZH-CN5362127173_640x480.jpg?imageslim\",\r\n      \"https://h2.ioliu.cn/bing/SpeloncatoSnow_ZH-CN8115437163_640x480.jpg?imageslim\",\r\n      \"https://h2.ioliu.cn/bing/WinterludeIce_ZH-CN7868524911_640x480.jpg?imageslim\",\r\n      \"https://h2.ioliu.cn/bing/Oymyakon_ZH-CN7758768574_640x480.jpg?imageslim\",\r\n      \"https://h2.ioliu.cn/bing/MexicoMonarchs_ZH-CN7526758236_640x480.jpg?imageslim\",\r\n      \"https://h2.ioliu.cn/bing/WinterOlymics_ZH-CN7384614076_640x480.jpg?imageslim\",\r\n      \"233\"\r\n    ];\r\n\r\n    // 未加载时默认url\r\n    const defaultUrl =\r\n      \"data:image/svg+xml;base64,PHN2ZyB0PSIxNjQ0ODk5MzI0NDgwIiBjbGFzcz0iaWNvbiIgdmlld0JveD0iMCAwIDEwMjQgMTAyNCIgdmVyc2lvbj0iMS4xIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHAtaWQ9IjIwOTMiIHdpZHRoPSIyMDAiIGhlaWdodD0iMjAwIj48cGF0aCBkPSJNODc0LjEgODEzLjc1SDE0OS45Yy0yMi4yMiAwLTQwLjIzLTE4LjAxLTQwLjIzLTQwLjIzVjI1MC40OWMwLTIyLjIyIDE4LjAxLTQwLjIzIDQwLjIzLTQwLjIzaDcyNC4yYzIyLjIyIDAgNDAuMjMgMTguMDEgNDAuMjMgNDAuMjN2NTIzLjAzYzAgMjIuMjEtMTguMDIgNDAuMjMtNDAuMjMgNDAuMjN6TTI4MC42NiAzMTAuODRjLTM4Ljg5IDAtNzAuNDEgMzEuNTItNzAuNDEgNzAuNDFzMzEuNTIgNzAuNDEgNzAuNDEgNzAuNDEgNzAuNDEtMzEuNTIgNzAuNDEtNzAuNDEtMzEuNTItNzAuNDEtNzAuNDEtNzAuNDF6IG01MTIuOTcgMTAwLjU4YzAtMjIuMjItMTguMDEtNDAuMjMtNDAuMjMtNDAuMjNoLTQwLjIzYy02Ni42NiAwLTEyMC43IDU0LjA0LTEyMC43IDEyMC43djQwLjIzYzAgMzMuMzMtMjcuMDIgNjAuMzUtNjAuMzUgNjAuMzUtMTguMjkgMC0zNC40Ny04LjMxLTQ1LjU0LTIxLjE1LTAuMDUtMC4wNi0wLjI1LTAuMjgtMC4yOS0wLjMzLTIyLjA5LTI0LjA1LTU5Ljc3LTM4Ljg2LTk0Ljk4LTM4Ljg2LTAuNDQgMC0wLjg0IDAuMTItMS4yOCAwLjEzbC0wLjA2LTAuMDZjLTg4LjI2IDAuNzMtMTU5LjU5IDcyLjQ0LTE1OS41OSAxNjAuODYgMCAyMi4yMiAxOC4wMSA0MC4yMyA0MC4yMyA0MC4yM0g3NTMuNGMyMi4yMiAwIDQwLjIzLTE4LjAxIDQwLjIzLTQwLjIzVjQxMS40MnoiIHAtaWQ9IjIwOTQiIGZpbGw9IiNjZGNkY2QiPjwvcGF0aD48L3N2Zz4=\";\r\n\r\n    // 加载错误时代替\r\n    const errorUrl =\r\n      \"data:image/svg+xml;base64,PHN2ZyB0PSIxNjQ0ODk5ODEzMDQ1IiBjbGFzcz0iaWNvbiIgdmlld0JveD0iMCAwIDEwMjQgMTAyNCIgdmVyc2lvbj0iMS4xIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHAtaWQ9IjQ0OTEiIHdpZHRoPSIyMDAiIGhlaWdodD0iMjAwIj48cGF0aCBkPSJNNjQuMzgzMjM0IDUxMkM2NC4zODMyMzQgMjY0Ljc4NzgyOSAyNjQuNzg3ODI5IDY0LjM4MzIzNCA1MTIgNjQuMzgzMjM0IDc1OS4yMTIxNzEgNjQuMzgzMjM0IDk1OS42MTY3NjYgMjY0Ljc4NzgyOSA5NTkuNjE2NzY2IDUxMiA5NTkuNjE2NzY2IDc1OS4yMTIxNzEgNzU5LjIxMjE3MSA5NTkuNjE2NzY2IDUxMiA5NTkuNjE2NzY2IDI2NC43ODc4MjkgOTU5LjYxNjc2NiA2NC4zODMyMzQgNzU5LjIxMjE3MSA2NC4zODMyMzQgNTEyWk00NzQuMjMyMzc5IDc3MS4yNDUxMjRDNDc2LjQwODcxOCA3OTcuMzU1NTEyIDQ5MC41NTEzNzIgODEwLjQxMjEyMyA1MTYuNjYzMTc2IDgxMC40MTIxMjMgNTQyLjc3MzU2NCA4MTAuNDEyMTIzIDU1Ni45MTc2MzUgNzk3LjM1NTUxMiA1NTkuMDkyNTU2IDc3MS4yNDUxMjQgNTU2LjkxNzYzNSA3NDUuMTMzMzE5IDU0Mi43NzM1NjQgNzMwLjk5MDY2NiA1MTYuNjYzMTc2IDcyOC44MTQzMjcgNDkwLjU1MTM3MiA3MzAuOTkwNjY2IDQ3Ni40MDg3MTggNzQ1LjEzMzMxOSA0NzQuMjMyMzc5IDc3MS4yNDUxMjRaTTQ4MC43NTk5NzcgNjExLjMxNDc0OEM0ODAuNzU5OTc3IDYzNy40MjY1NTQgNDkyLjcyNzcxIDY1MC40ODE3NDcgNTE2LjY2MzE3NiA2NTAuNDgxNzQ3IDU0MC41OTcyMjYgNjUwLjQ4MTc0NyA1NTIuNTY0OTYgNjM3LjQyNjU1NCA1NTIuNTY0OTYgNjExLjMxNDc0OEw1NTIuNTY0OTYgMjQ5LjAyNDYxOEM1NTIuNTY0OTYgMjIyLjkxNDIzMSA1NDAuNTk3MjI2IDIwOS44NTc2MTkgNTE2LjY2MzE3NiAyMDkuODU3NjE5IDQ5Mi43Mjc3MSAyMDkuODU3NjE5IDQ4MC43NTk5NzcgMjIyLjkxNDIzMSA0ODAuNzU5OTc3IDI0OS4wMjQ2MThMNDgwLjc1OTk3NyA2MTEuMzE0NzQ4WiIgcC1pZD0iNDQ5MiIgZmlsbD0iI2NkY2RjZCI+PC9wYXRoPjwvc3ZnPg==\";\r\n\r\n    // 滚动监听和防抖\r\n    class ScrollListener {\r\n      entries = [];\r\n      taskId = 0;\r\n\r\n      constructor() {\r\n        document.addEventListener(\"scroll\", this.scrollDebounce.bind(this), {\r\n          capture: true,\r\n          passive: true\r\n        });\r\n      }\r\n\r\n      isInViewport(controller) {\r\n        let offsetTop = 0,\r\n          offsetLeft = 0,\r\n          el = controller.el,\r\n          scrollTop = 0,\r\n          scrollLeft = 0,\r\n          html = document.documentElement;\r\n        while (el && el !== html) {\r\n          offsetTop = offsetTop + el.offsetTop;\r\n          offsetLeft = offsetLeft + el.offsetLeft;\r\n          el = el.offsetParent;\r\n        }\r\n\r\n        el = controller.el;\r\n        while (el) {\r\n          scrollTop += el.scrollTop;\r\n          scrollLeft += el.scrollLeft;\r\n          el = el.parentElement;\r\n        }\r\n        offsetTop -= scrollTop;\r\n        offsetLeft -= scrollLeft;\r\n\r\n        el = controller.el;\r\n        return (\r\n          offsetTop < html.scrollTop + innerHeight &&\r\n          offsetTop + el.clientHeight > html.scrollTop &&\r\n          offsetLeft < html.scrollLeft + innerWidth &&\r\n          offsetLeft + el.clientWidth > html.scrollLeft\r\n        );\r\n      }\r\n\r\n      scrollDebounce() {\r\n        if (this.taskId) {\r\n          clearTimeout(this.taskId);\r\n        }\r\n        this.taskId = setTimeout(this.handleScroll.bind(this), 200);\r\n      }\r\n\r\n      addController(controller) {\r\n        this.entries.push(controller);\r\n        this.scrollDebounce();\r\n      }\r\n\r\n      handleScroll() {\r\n        this.entries = this.entries.filter((controller) => {\r\n          return !controller.blob;\r\n        });\r\n        this.entries.forEach((controller) => {\r\n          if (this.isInViewport(controller)) {\r\n            controller.onEnterViewport();\r\n          }\r\n        });\r\n      }\r\n    }\r\n\r\n    // 图片控制对象\r\n    class ImageController {\r\n      img = \"\";\r\n      blob = null;\r\n      el = null;\r\n      wrap = null;\r\n      constructor(\r\n        url = \"\",\r\n        parent = document.body,\r\n        className = \"wrap\",\r\n        el = document.createElement(\"img\")\r\n      ) {\r\n        el.src = defaultUrl;\r\n        el.classList.add(\"img\");\r\n\r\n        this.el = el;\r\n        this.img = url;\r\n\r\n        this.wrap = document.createElement(\"div\");\r\n        this.wrap.classList.add(className);\r\n        this.wrap.append(el);\r\n        parent.append(this.wrap);\r\n      }\r\n\r\n      showImage() {\r\n        const target = this;\r\n        this.fetchImage().then(() => {\r\n          target.el.src = this.blob;\r\n        });\r\n      }\r\n\r\n      showLoading() {\r\n        this.el.src = defaultUrl;\r\n      }\r\n\r\n      showError() {\r\n        this.el.src = errorUrl;\r\n      }\r\n\r\n      onEnterViewport() {\r\n        this.showImage();\r\n      }\r\n\r\n      async fetchImage() {\r\n        if (typeof fetch !== \"function\") {\r\n          this.thowError();\r\n          throw new Error(\"浏览器不支持fetch接口\");\r\n        }\r\n\r\n        // 如果已经加载过，直接返回\r\n        if (!this.blob) {\r\n          const target = this;\r\n          return fetch(this.img)\r\n            .then((res) => {\r\n              if (res.status > 199 && res.status < 300) return res.blob();\r\n              else return Promise.reject();\r\n            })\r\n            .then((blob) => {\r\n              if (/image/.test(blob.type)) return URL.createObjectURL(blob);\r\n              else return Promise.reject();\r\n            })\r\n            .then((url) => {\r\n              target.blob = url;\r\n            })\r\n            .catch(() => {\r\n              target.showError();\r\n              throw new Error(\"URL不正确或MIME类型不正确\");\r\n            });\r\n        }\r\n      }\r\n    }\r\n\r\n    const scrollListener = new ScrollListener(),\r\n      main = document.getElementsByClassName(\"main\")[0],\r\n      imageControllers = images.map((url) => {\r\n        const controller = new ImageController(url, main);\r\n        scrollListener.addController(controller);\r\n      });\r\n  </script>\r\n</html>\r\n```\r\n",
+          "star": {
+            "totalCount": 0
+          },
+          "author": {
+            "login": "liucan233",
+            "url": "https://github.com/liucan233"
+          }
+        },
+        {
+          "id": "IC_kwDODQzyOs4-WDRr",
+          "body": "方案二有那么一点点抖动，这里重新实现了一下\r\n```html\r\n<!DOCTYPE html>\r\n<html lang=\"en\">\r\n\r\n<head>\r\n  <meta charset=\"UTF-8\">\r\n  <meta http-equiv=\"X-UA-Compatible\" content=\"IE=edge\">\r\n  <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\r\n  <title>Document</title>\r\n  <style>\r\n    * {\r\n      margin: 0px;\r\n      padding: 0px;\r\n    }\r\n\r\n    body {\r\n      margin: 0px;\r\n      padding: 0px;\r\n    }\r\n\r\n    img {\r\n      display: block;\r\n    }\r\n  </style>\r\n</head>\r\n\r\n<body>\r\n  <div class=\"demo\">\r\n    <img data-src=\"https://cdn.pixabay.com/photo/2021/08/24/15/38/sand-6570980_960_720.jpg\" alt=\"1\" />\r\n    <img data-src=\"https://cdn.pixabay.com/photo/2013/02/21/19/06/drink-84533_960_720.jpg\" alt=\"2\" />\r\n    <img data-src=\"https://cdn.pixabay.com/photo/2013/07/18/20/26/sea-164989_960_720.jpg\" alt=\"3\" />\r\n    <img data-src=\"https://cdn.pixabay.com/photo/2015/04/23/22/00/tree-736885_960_720.jpg\" alt=\"4\" />\r\n    <img data-src=\"https://cdn.pixabay.com/photo/2017/03/26/21/54/yoga-2176668_960_720.jpg\" alt=\"5\" />\r\n  </div>\r\n</body>\r\n<script>\r\n  const demo = document.querySelectorAll('img')\r\n  function lazy () {\r\n    for (let elem of demo) {\r\n      if (elem.getBoundingClientRect().top < document.documentElement.clientHeight) {\r\n        if (elem.dataset.src && elem.src == '') {\r\n          elem.src = elem.dataset.src\r\n        }\r\n      }\r\n    }\r\n  }\r\n  function throttle (t, fn) {\r\n    let time\r\n    return function () {\r\n      if (!time) {\r\n        time = setTimeout(() => {\r\n          time = null\r\n          fn()\r\n        }, t)\r\n      }\r\n    }\r\n  }\r\n  lazy()\r\n  window.addEventListener('scroll', throttle(500, lazy))\r\n</script>\r\n\r\n</html>\r\n```",
+          "star": {
+            "totalCount": 0
+          },
+          "author": {
+            "login": "LMW-lmw",
+            "url": "https://github.com/LMW-lmw"
+          }
         }
       ]
     },
@@ -131,7 +153,7 @@
           "id": "MDEyOklzc3VlQ29tbWVudDU0OTMzNjQ4Nw==",
           "body": "从 `ping` 的 `man` 手册就可以看出来，`ping` 实际上发送了 **`ICMP ECHO_REQUEST`** 的报文\r\n\r\n> ping -- send ICMP ECHO_REQUEST packets to network hosts\r\n\r\n通过让目标 IP 地址返回 **`ICMP ECHO_RESPONSE`** 报文来判断 IP 可不可达。\r\n\r\n`ICMP` 分为 `Query` 查询报文及 `Error Message` 报文，ping 为查询报文。",
           "star": {
-            "totalCount": 3
+            "totalCount": 4
           },
           "author": {
             "login": "shfshanyue",
@@ -171,11 +193,22 @@
           "id": "MDEyOklzc3VlQ29tbWVudDY1Mzg5OTIzNw==",
           "body": "## 防抖 (debounce)\r\n\r\n防抖，顾名思义，防止抖动，以免把一次事件误认为多次，敲键盘就是一个每天都会接触到的防抖操作。\r\n\r\n想要了解一个概念，必先了解概念所应用的场景。在 JS 这个世界中，有哪些防抖的场景呢\r\n\r\n1. 登录、发短信等按钮避免用户点击太快，以致于发送了多次请求，需要防抖\r\n1. 调整浏览器窗口大小时，resize 次数过于频繁，造成计算过多，此时需要一次到位，就用到了防抖\r\n1. 文本编辑器实时保存，当无任何更改操作一秒后进行保存\r\n\r\n代码如下，可以看出来**防抖重在清零 `clearTimeout(timer)`**\r\n\r\n``` js\r\nfunction debounce (f, wait) {\r\n  let timer\r\n  return (...args) => {\r\n    clearTimeout(timer)\r\n    timer = setTimeout(() => {\r\n      f(...args)\r\n    }, wait)\r\n  }\r\n}\r\n```\r\n\r\n## 节流 (throttle)\r\n\r\n节流，顾名思义，控制水的流量。控制事件发生的频率，如控制为1s发生一次，甚至1分钟发生一次。与服务端(server)及网关(gateway)控制的限流 (Rate Limit) 类似。\r\n\r\n1. `scroll` 事件，每隔一秒计算一次位置信息等\r\n1. 浏览器播放事件，每个一秒计算一次进度信息等\r\n1. input 框实时搜索并发送请求展示下拉列表，每隔一秒发送一次请求 (也可做防抖)\r\n\r\n代码如下，可以看出来**节流重在加锁 `timer=timeout`**\r\n\r\n``` js\r\nfunction throttle (f, wait) {\r\n  let timer\r\n  return (...args) => {\r\n    if (timer) { return }\r\n    timer = setTimeout(() => {\r\n      f(...args)\r\n      timer = null\r\n    }, wait)\r\n  }\r\n}\r\n```\r\n\r\n## 总结 (简要答案)\r\n\r\n+ 防抖：防止抖动，单位时间内事件触发会被重置，避免事件被误伤触发多次。**代码实现重在清零 `clearTimeout`**。防抖可以比作等电梯，只要有一个人进来，就需要再等一会儿。业务场景有避免登录按钮多次点击的重复提交。\r\n+ 节流：控制流量，单位时间内事件只能触发一次，与服务器端的限流 (Rate Limit) 类似。**代码实现重在开锁关锁 `timer=timeout; timer=null`**。节流可以比作过红绿灯，每等一个红灯时间就可以过一批。",
           "star": {
-            "totalCount": 8
+            "totalCount": 10
           },
           "author": {
             "login": "shfshanyue",
             "url": "https://github.com/shfshanyue"
+          }
+        },
+        {
+          "id": "IC_kwDODQzyOs48RR7m",
+          "body": "你好，向请问一下防抖函数的`let _this = this`的作用是什么，这里的`this`不是都指向window吗？小白求指教，谢谢！！！",
+          "star": {
+            "totalCount": 0
+          },
+          "author": {
+            "login": "Janezhang650",
+            "url": "https://github.com/Janezhang650"
           }
         }
       ]
@@ -347,6 +380,28 @@
           "author": {
             "login": "shfshanyue",
             "url": "https://github.com/shfshanyue"
+          }
+        },
+        {
+          "id": "IC_kwDODQzyOs47iwQL",
+          "body": "我的意见和楼上相反，应该先大概看一遍文档…… 文档中会描述本地环境的配置方法\r\n\r\n```\r\n查看是否有 CI/CD，如果有跟着 CI/CD 部署的脚本跑命令\r\n查看是否有 dockerfile，如果有跟着 dockerfile 跑命令\r\n查看 npm scripts 中是否有 dev/start，尝试 npm run dev/npm start\r\n```\r\n\r\n大部分公司的开发环境都是本地环境，所以什么 CI/CD、Docker 可以先放到一边\r\n\r\nnpm run dev/npm start 这个是一般的约定，但不是所有的项目都是这样。所以需要先看 package.json 中的 script 来确定\r\n\r\n### npm run dev 和 npm start 的区别？\r\n\r\n1. npm start 是 npm run start 的别名，支持 prestart 和 poststart 钩子",
+          "star": {
+            "totalCount": 0
+          },
+          "author": {
+            "login": "justyunhe",
+            "url": "https://github.com/justyunhe"
+          }
+        },
+        {
+          "id": "IC_kwDODQzyOs4-dZ2t",
+          "body": "> 我的意见和楼上相反，应该先大概看一遍文档…… 文档中会描述本地环境的配置方法\r\n> \r\n> ```\r\n> 查看是否有 CI/CD，如果有跟着 CI/CD 部署的脚本跑命令\r\n> 查看是否有 dockerfile，如果有跟着 dockerfile 跑命令\r\n> 查看 npm scripts 中是否有 dev/start，尝试 npm run dev/npm start\r\n> ```\r\n> \r\n> 大部分公司的开发环境都是本地环境，所以什么 CI/CD、Docker 可以先放到一边\r\n> \r\n> npm run dev/npm start 这个是一般的约定，但不是所有的项目都是这样。所以需要先看 package.json 中的 script 来确定\r\n> \r\n> ### npm run dev 和 npm start 的区别？\r\n> 1. npm start 是 npm run start 的别名，支持 prestart 和 poststart 钩子\r\n\r\n你是真没吃过文档的亏。。。管他什么公司，文档都有坑。",
+          "star": {
+            "totalCount": 0
+          },
+          "author": {
+            "login": "linlai163",
+            "url": "https://github.com/linlai163"
           }
         }
       ]
@@ -595,7 +650,7 @@
           "id": "MDEyOklzc3VlQ29tbWVudDczNDEyNTk0Mw==",
           "body": "1. Vue2.x通过给每个对象添加`getter setter`属性去改变对象,实现对数据的观测,Vue3.x通过Proxy代理目标对象,且一开始只代理最外层对象,嵌套对象`lazy by default` ,性能会更好\r\n2. 支持数组索引修改,对象属性的增加,删除\r\n",
           "star": {
-            "totalCount": 2
+            "totalCount": 3
           },
           "author": {
             "login": "hefeng1208",
@@ -975,7 +1030,7 @@
         },
         {
           "id": "MDEyOklzc3VlQ29tbWVudDU1Mjc3OTIwMg==",
-          "body": "多节点部署就会产生分布式问题，解决分布式问题就要找一个大家都能够访问到的中介，比如 `Redis`，`Consul`，`Zookeeper`\r\n\r\n以下是一个 `redis` 实现的操作\r\n\r\n`set User:10086 Random:shanyue EX 100 NX`\r\n",
+          "body": "多节点部署就会产生分布式问题，分布式锁由两个词组成，**分布式**和**锁**\r\n\r\n1. 分布式: 解决分布式问题就要找一个大家都能够访问到的中介，比如 `Redis`，`Consul`，`Zookeeper`\r\n2. 锁: 解决原子问题，当不存在时便加锁，**不存在** 和 **加锁** 要作为原子进行操作\r\n\r\n以下是一个 `redis` 实现的操作\r\n\r\n``` bash\r\n# EX 100：100s 的过期时间\r\n# NX: 如果不存在 User:10086，设置成功返回 OK，否则返回 nil，也就是说 100s 之内只有第一次操作返回 OK\r\nset User:10086 Random:shanyue EX 100 NX\r\n```",
           "star": {
             "totalCount": 0
           },
@@ -1932,7 +1987,30 @@
     "title": "【Q048】如何实现一个优先级队列",
     "body": "",
     "comments": {
-      "nodes": []
+      "nodes": [
+        {
+          "id": "IC_kwDODQzyOs48wSTf",
+          "body": "// 封装优先级队列\r\nfunction PriorityQueue() {\r\n    // 在PriorityQueue中重新创建一个类，和java中的内部类很相似\r\n    function QueueElement(element, priority) {\r\n     this.element = element;\r\n     this.priority = priority;\r\n    }\r\n    // 封装属性，用数组来存储队列\r\n    this.items = [];\r\n    \r\n    // 入队\r\n    PriorityQueue.prototype.enQueue = function (element, priority) {\r\n     // 1.创建对象\r\n     var queueElement = new QueueElement(element, priority);\r\n     // 2.判断队列是否为空\r\n     if(this.items.length == 0) \r\n       this.items.push(queueElement);\r\n     else {\r\n       var flag = false;\r\n       for(var i = 0; i< this.items.length; i++){\r\n         if(queueElement.priority < this.items[i].priority){\r\n           this.items.splice(i,0,queueElement);\r\n           flag = true;\r\n           break;\r\n         }\r\n       }\r\n       if(!flag) \r\n         this.items.push(queueElement);\r\n     }\r\n    }\r\n    \r\n    // 2.出队\r\n    PriorityQueue.prototype.deQueue = function () {\r\n     return this.items.shift();\r\n    }\r\n    \r\n    // 3.查看队头元素\r\n    PriorityQueue.prototype.front = function() {\r\n     return this.items[0];\r\n    }\r\n    \r\n    // 4.判断队列是否为空\r\n    PriorityQueue.prototype.isEmpty = function() {\r\n     return this.items.length == 0;\r\n    }\r\n    \r\n    // 5.查看队列中元素的个数\r\n    PriorityQueue.prototype.size = function() {\r\n     return this.items.length;\r\n    }\r\n    \r\n    // 6.将队列元素按字符串格式输出\r\n    PriorityQueue.prototype.toString = function() {\r\n     var result = \"\";\r\n     for(var i = 0; i < this.items.length; i++)\r\n       result += this.items[i].element + \"  \";\r\n     return result;\r\n    }\r\n    }\r\n    ",
+          "star": {
+            "totalCount": 0
+          },
+          "author": {
+            "login": "hx-code",
+            "url": "https://github.com/hx-code"
+          }
+        },
+        {
+          "id": "IC_kwDODQzyOs4-I_sd",
+          "body": "基于最大堆实现优先队列\r\n````js\r\nclass MaxHeap {\r\n  constructor(arr = []) {\r\n    this.heap = [] // 用数组表示堆结构\r\n    arr.forEach(item => this.add(item))\r\n  }\r\n\r\n  add(value) { // O(logK) 插入节点值: 放入数组末尾并上浮到合适位置\r\n    this.heap.push(value)\r\n    this.shiftUp(this.heap.length - 1)\r\n  }\r\n\r\n  pop() { // O(logK) 提取最大值/堆顶: 提取 heap[0] 并用 heap[-1] 进行代替，然后从顶部开始下沉到合适位置\r\n    const max = this.heap[0]\r\n    this.swap(0, this.size() - 1)\r\n    this.heap.pop()\r\n    this.shiftDown(0)\r\n    return max\r\n  }\r\n\r\n  peek() { // 获取最值/堆顶\r\n    return this.heap[0]\r\n  }\r\n\r\n  size() { // 获取当前堆大小\r\n    return this.heap.length\r\n  }\r\n\r\n  // ↓私有属性↓\r\n  swap(index1, index2) { // 交换节点位置\r\n    const temp = this.heap[index1]\r\n    this.heap[index1] = this.heap[index2]\r\n    this.heap[index2] = temp\r\n  }\r\n\r\n  parentIndex(index) { // 获取父节点的位置 (index - 1) / 2 向下取整\r\n    return (index - 1) >> 1\r\n  }\r\n\r\n  leftChildIndex(index) { // 获取左子节点\r\n    return index * 2 + 1\r\n  }\r\n\r\n  rightChildIndex(index) { // 获取右子节点\r\n    return index * 2 + 2\r\n  }\r\n\r\n  shiftUp(index) { // 上浮节点，当前值小于父节点值时停止，使当前堆保持最大堆的性质\r\n    let parentIndex = this.parentIndex(index)\r\n    while (index > 0 && this.heap[parentIndex] < this.heap[index]) {\r\n      this.swap(index, parentIndex)\r\n      parentIndex = this.parentIndex(index = parentIndex)\r\n    }\r\n  }\r\n\r\n  shiftDown(index) { // 下沉节点，当前值大于子节点值时停止，使当前堆保持最大堆的性质\r\n    const leftIndex = this.leftChildIndex(index)\r\n    const rightIndex = this.rightChildIndex(index)\r\n    //  先比较左子节点值，当前值小于左子节点，则交换,并递归进行下沉\r\n    if (this.heap[index] < this.heap[leftIndex]) {\r\n      this.swap(leftIndex, index)\r\n      this.shiftDown(leftIndex)\r\n    }\r\n    if (this.heap[index] < this.heap[rightIndex]) {\r\n      this.swap(rightIndex, index)\r\n      this.shiftDown(rightIndex)\r\n    }\r\n  }\r\n}\r\n\r\n// ==TEST==\r\nconst priorityQueue = new MaxHeap([2, 5, 3])\r\nconsole.log(priorityQueue.peek()) // 5\r\npriorityQueue.add(7)\r\nconsole.log(priorityQueue.peek()) // 7\r\npriorityQueue.pop()\r\npriorityQueue.add(1)\r\nconsole.log(priorityQueue.peek()) // 5\r\n\r\n````",
+          "star": {
+            "totalCount": 0
+          },
+          "author": {
+            "login": "someGenki",
+            "url": "https://github.com/someGenki"
+          }
+        }
+      ]
     },
     "labels": {
       "nodes": [
@@ -2074,7 +2152,7 @@
           "id": "MDEyOklzc3VlQ29tbWVudDU1OTcwNTkzMw==",
           "body": "我：你在吗？\r\n他： 我在的。\r\n我： 那开始聊天吧",
           "star": {
-            "totalCount": 0
+            "totalCount": 1
           },
           "author": {
             "login": "WenHaiYana",
@@ -2090,6 +2168,17 @@
           "author": {
             "login": "shfshanyue",
             "url": "https://github.com/shfshanyue"
+          }
+        },
+        {
+          "id": "IC_kwDODQzyOs4_QP54",
+          "body": "第一次：服务端知道客户端有发送能力\r\n第二次：客户端知道服务端有发送和接受的能力\r\n第三次：服务端知道客户端有接受能力",
+          "star": {
+            "totalCount": 0
+          },
+          "author": {
+            "login": "changshou83",
+            "url": "https://github.com/changshou83"
           }
         }
       ]
@@ -2138,7 +2227,19 @@
     "title": "【Q056】什么是服务降级",
     "body": "",
     "comments": {
-      "nodes": []
+      "nodes": [
+        {
+          "id": "IC_kwDODQzyOs4-Wu0x",
+          "body": "服务降级就是将某些服务停掉或者不进行业务处理，释放资源来维持主要服务的功能。",
+          "star": {
+            "totalCount": 0
+          },
+          "author": {
+            "login": "18820227745",
+            "url": "https://github.com/18820227745"
+          }
+        }
+      ]
     },
     "labels": {
       "nodes": [
@@ -2638,6 +2739,17 @@
             "login": "lf75152798",
             "url": "https://github.com/lf75152798"
           }
+        },
+        {
+          "id": "IC_kwDODQzyOs47U_ei",
+          "body": "感觉没有怎么说到原理的东西哇",
+          "star": {
+            "totalCount": 0
+          },
+          "author": {
+            "login": "spicylemonhaha",
+            "url": "https://github.com/spicylemonhaha"
+          }
         }
       ]
     },
@@ -2860,7 +2972,7 @@
           "id": "IC_kwDODQzyOs44faCz",
           "body": "HMR，Hot Module Replacement，热模块替换，见名思意，即无需刷新在内存环境中即可替换掉过旧模块。与 Live Reload 相对应。\r\n\r\n> PS: Live Reload，当代码进行更新后，在浏览器自动刷新以获取最新前端代码。\r\n\r\n在 webpack 的运行时中 `__webpack__modules__` 用以维护所有的模块。\r\n\r\n而热模块替换的原理，即通过 `chunk` 的方式加载最新的 `modules`，找到 `__webpack__modules__` 中对应的模块逐一替换，并删除其上下缓存。\r\n\r\n其精简数据结构用以下代码表示:\r\n\r\n``` js\r\n// webpack 运行时代码\r\nconst __webpack_modules = [\r\n  (module, exports, __webpack_require__) => { __webpack_require__(0)  },\r\n  () => { console.log(\"这是一号模块\") }\r\n]\r\n\r\n// HMR Chunk 代码\r\n// JSONP 异步加载的所需要更新的 modules，并在 __webpack_modules__ 中进行替换\r\nself[\"webpackHotUpdate\"](0, {\r\n  1: () => {\r\n     console.log('这是最新的一号模块')\r\n  }\r\n})\r\n```\r\n\r\n其下为更具体更完整的流程，每一步都涉及众多，有兴趣的可阅读 `webpack-dev-server` 及开发环境 webpack 运行时的源码。\r\n\r\n1. `webpack-dev-server` 将打包输出 bundle 使用内存型文件系统控制，而非真实的文件系统。此时使用的是 [memfs](https://github.com/streamich/memfs) 模拟 node.js `fs` API\r\n1.  每当文件发生变更时，`webpack` 将会重新编译，`webpack-dev-server` 将会监控到此时文件变更事件，并找到其对应的 `module`。此时使用的是 [chokidar](https://github.com/paulmillr/chokidar) 监控文件变更\r\n1.  `webpack-dev-server` 将会把变更模块通知到浏览器端，此时使用 `websocket` 与浏览器进行交流。此时使用的是 [ws](https://github.com/websockets/ws)\r\n1. 浏览器根据 `websocket` 接收到 hash，并通过 hash 以 JSONP 的方式请求更新模块的 chunk\r\n1. 浏览器加载 chunk，并使用新的模块对旧模块进行热替换，并删除其缓存",
           "star": {
-            "totalCount": 1
+            "totalCount": 2
           },
           "author": {
             "login": "shfshanyue",
@@ -2900,7 +3012,7 @@
           "id": "MDEyOklzc3VlQ29tbWVudDcyMDg4ODE1OA==",
           "body": "Http 缓存分为以下两种，两者都是通过 HTTP 响应头控制缓存\r\n\r\n1. 强制缓存\r\n1. 协商缓存\r\n\r\n## 强制缓存\r\n\r\n再次请求时无需再向服务器发送请求\r\n\r\n``` bash\r\n              client         server\r\nGET /a.ab389z.js ------->\r\n                      <------- 200 OK\r\n(再也不会发请求)\r\n```\r\n\r\n与之相关的 Response Headers 有以下几个\r\n\r\n+ `Expires`\r\n\r\n  这个头部也是丧心病狂：使用绝对时间，且有固定的格式 <https://tools.ietf.org/html/rfc822#section-5.1>\r\n\r\n  ``` bash\r\n  Expires: Mon, 25 Oct 2021 20:11:12 GMT\r\n  ```\r\n\r\n+ `Cache-Control`，具有强大的缓存控制能力\r\n\r\n  常用的有以下两个\r\n\r\n  + `no-cache`，每次请求需要校验服务器资源的新鲜度\r\n  + `max-age=31536000`，浏览器在一年内都不需要向服务器请求资源\r\n\r\n## 协商缓存\r\n\r\n再次请求时，需要向服务器校验新鲜度，如果资源是新鲜的，返回 304，从浏览器获取资源\r\n\r\n``` bash\r\n           client         server\r\nGET /a.js   ----------->\r\n                   <----------- 200 OK\r\nGET /a.js   ----------->\r\n                   <----------- 304 Not Modified\r\n```\r\n\r\n与之相关的 Request/Response Headers 有以下几个\r\n\r\n+ `Last-Modified`/`If-Modified-Since`\r\n+ `Etag`/`If-None-Match`",
           "star": {
-            "totalCount": 1
+            "totalCount": 2
           },
           "author": {
             "login": "shfshanyue",
@@ -2996,6 +3108,17 @@
           "author": {
             "login": "shfshanyue",
             "url": "https://github.com/shfshanyue"
+          }
+        },
+        {
+          "id": "IC_kwDODQzyOs49QRsw",
+          "body": "## HTTP代理的原理\r\n\r\n代理服务器会自动提取请求数据包中的`HTTP请求数据`发送给服务端，并服务端的`HTTP响应数据`转发给发送请求的客户端，HTTP代理服务器使用的端口通常是8080。\r\n\r\n-   对于Web客户端来说，代理扮演的服务器角色，接收请求（Request），返回响应（Response）。\r\n-   对于Web服务器来说，代理扮演的客户端角色，发送请求（Request），接收响应（Response）。\r\n\r\n### HTTP 代理步骤\r\n\r\n-   `客户端`向`代理`发起`TCP连接`；\r\n-   代理接收客户端的连接，双方`建立连接`；\r\n-   `客户端`向`代理`发送`HTTP请求`，请求内容和没有HTTP代理的内容完全相同；\r\n-   代理`解析HTTP请求`；\r\n-   `代理`向`服务器`发起`TCP连接`；\r\n-   `服务器`接收`代理`的连接；\r\n-   `代理`向`服务器`发送`HTTP`请求（这个HTTP请求是基于用户的HTTP请求，`可能会有修改`）\r\n-   `服务器`发送`响应`给`代理`；\r\n-   `代理`发送`响应`给发送请求的`客户端`；\r\n\r\n### 不同HTTP代理的区别：\r\n\r\n-   全匿名代理，不改变客户端的request fields（请求信息），使服务器端看来就像有个真正的客户浏览器在访问。客户端的真实IP是隐藏起来的。\r\n-   普通匿名代理，能隐藏客户端的真实IP，但会更改客户端的request fields（请求信息），服务器端有可能会被认为使用了代理。\r\n-   透明代理（简单代理），改变客户端的request fields（请求信息），并会传送真实IP地址。\r\n\r\n## HTTPS代理\r\n\r\nHTTPS代理有多种做法，通常使用`CONNECT method`，通过proxy建立一条隧道(隧道代理)，这样，`proxy无法解密数据`；此外，还有一种类似于中间人攻击的代理手法。\r\n\r\n### CONNECT方法代理步骤\r\n\r\n-   `客户端`向`代理`发起`CONNECT`请求；\r\n-   `代理`向`服务端`发起`TCP`连接请求；\r\n-  当TCP连接建立完成后， `代理`向`客户端`返回`HTTP/1.0 OK`，隧道建立完成；\r\n-   `代理`转发`客户端`的数据给`服务器`，转发`服务器`的数据给`客户端`，直到任何一方连接结束；\r\n\r\n> 内容参考[HTTP、HTTPS代理分析及原理](https://lilywei739.github.io/2017/01/25/principle_for_http_https.html)",
+          "star": {
+            "totalCount": 0
+          },
+          "author": {
+            "login": "Merlin218",
+            "url": "https://github.com/Merlin218"
           }
         }
       ]
@@ -3743,6 +3866,17 @@
             "login": "guanwanxiao",
             "url": "https://github.com/guanwanxiao"
           }
+        },
+        {
+          "id": "IC_kwDODQzyOs4-oCTz",
+          "body": "用createPortal会好点，符合createPortal的使用场景并且如果message复杂点createElement就用不了",
+          "star": {
+            "totalCount": 0
+          },
+          "author": {
+            "login": "Drowned-fish",
+            "url": "https://github.com/Drowned-fish"
+          }
         }
       ]
     },
@@ -4223,7 +4357,19 @@
     "title": "【Q113】如何看待 toB 与 toC",
     "body": "",
     "comments": {
-      "nodes": []
+      "nodes": [
+        {
+          "id": "IC_kwDODQzyOs47iswb",
+          "body": "从职业方向取舍的角度看，我认为纠结这两个点没必要，toB 的业务可能很简单，toC 的业务也可能很复杂，两个端的壁垒也没有那么大。\r\n\r\n从传统观点上看：\r\ntoB：业务复杂，表单和定制化需求较多，需要给出一整套解决方案，但对体验和交互要求没有那么重要\r\ntoC：偏向用户体验的内容稍多，移动端的内容稍多。对性能的要求略高，每个产品的功能不复杂，业务开始只需要满足用户的一个痛点\r\n\r\n但随着前端能力的增加，很多工具类软件都可以由前端承载，代码的复杂度也随之上升，前端从传统的辅助地位逐渐走向了客户端工程师的地位，内容也逐渐变得更有挑战性。\r\n\r\n但如果从公司的角度看，toB 的公司一般面向政府、企事业单位，以供应商的身份提供技术咨询、定制化开发、业务支持等服务，回款周期较长，如果外部环境不好，资金流不畅，很容易拖欠工资。\r\n但是，节奏没有那么快，一切都有较长的排期，相对更规范一些。\r\n\r\ntoC 的公司，一般都自负盈亏，现金流相对会快一些。但是现在的互联网企业都搞什么敏捷开发，基本上一周或者两周就一个版本，面向市场需要小步快跑\r\n\r\n",
+          "star": {
+            "totalCount": 0
+          },
+          "author": {
+            "login": "justyunhe",
+            "url": "https://github.com/justyunhe"
+          }
+        }
+      ]
     },
     "labels": {
       "nodes": [
@@ -4450,6 +4596,17 @@
           "author": {
             "login": "Carrie999",
             "url": "https://github.com/Carrie999"
+          }
+        },
+        {
+          "id": "IC_kwDODQzyOs4_QQOC",
+          "body": "@Carrie999 大佬细说",
+          "star": {
+            "totalCount": 0
+          },
+          "author": {
+            "login": "changshou83",
+            "url": "https://github.com/changshou83"
           }
         }
       ]
@@ -5754,7 +5911,7 @@
       "nodes": [
         {
           "id": "MDEyOklzc3VlQ29tbWVudDY2NDgxMjkzOQ==",
-          "body": "通过把该 `cookie` 的过期时间改为过去时即可删除成功，具体操作的话可以通过操作两个字段来完成\r\n\r\n1. `max-age`: 将要过期的最大秒数，设置为 `-1` 即可删除\r\n1. `expires`: 将要过期的绝对时间，存储到 `cookies` 中需要通过 `date.toUTCString()` 处理，设置为过期时间即可删除\r\n\r\n很明显，`max-age` 更为简单，以下代码可在命令行控制台中进行测试\r\n\r\n``` js\r\n// max-age 设置为 -1 即可成功\r\ndocument.cookie = 'a=3; max-age=-1'\r\n```\r\n\r\n``` js\r\n> document.cookie\r\n< \"\"\r\n\r\n> document.cookie = 'a=3'\r\n< \"a=3\"\r\n\r\n> document.cookie\r\n< \"a=3\"\r\n\r\n// 把该字段的 max-age 设置为 -1\r\n> document.cookie = 'a=3; max-age=-1'\r\n< \"a=3; max-age=-1\"\r\n\r\n// 删除成功\r\n> document.cookie\r\n< \"\"\r\n```\r\n\r\n同时，也可以使用最新关于 cookie 操作的 API: `CookieStorea API` 其中的 `cookieStore.delete(name)` 删除某个 cookie",
+          "body": "通过把该 `cookie` 的过期时间改为过去时即可删除成功，具体操作的话可以通过操作两个字段来完成\r\n\r\n1. `max-age`: 将要过期的最大秒数，设置为 `-1` 即可删除\r\n1. `expires`: 将要过期的绝对时间，存储到 `cookies` 中需要通过 `date.toUTCString()` 处理，设置为过期时间即可删除\r\n\r\n很明显，`max-age` 更为简单，以下代码可在命令行控制台中进行测试\r\n\r\n``` js\r\n// max-age 设置为 -1 即可成功\r\ndocument.cookie = 'a=3; max-age=-1'\r\n```\r\n\r\n``` js\r\n> document.cookie\r\n< \"\"\r\n\r\n> document.cookie = 'a=3'\r\n< \"a=3\"\r\n\r\n> document.cookie\r\n< \"a=3\"\r\n\r\n// 把该字段的 max-age 设置为 -1\r\n> document.cookie = 'a=3; max-age=-1'\r\n< \"a=3; max-age=-1\"\r\n\r\n// 删除成功\r\n> document.cookie\r\n< \"\"\r\n```\r\n\r\n同时，也可以使用最新关于 cookie 操作的 API: [CookieStore API](https://developer.mozilla.org/en-US/docs/Web/API/CookieStore) 其中的 `cookieStore.delete(name)` 删除某个 cookie",
           "star": {
             "totalCount": 0
           },
@@ -6161,7 +6318,19 @@
     "title": "【Q174】TCP 三次握手发生在 socket 建立的哪一步",
     "body": "",
     "comments": {
-      "nodes": []
+      "nodes": [
+        {
+          "id": "IC_kwDODQzyOs4_QQ-i",
+          "body": "TCP Client调用connec()请求建立连接时",
+          "star": {
+            "totalCount": 0
+          },
+          "author": {
+            "login": "changshou83",
+            "url": "https://github.com/changshou83"
+          }
+        }
+      ]
     },
     "labels": {
       "nodes": [
@@ -6182,7 +6351,19 @@
     "title": "【Q175】如何使用 css 写一个魔方",
     "body": "",
     "comments": {
-      "nodes": []
+      "nodes": [
+        {
+          "id": "IC_kwDODQzyOs49dcsq",
+          "body": "https://jsbin.com/xemaxovisa/edit?css,output",
+          "star": {
+            "totalCount": 1
+          },
+          "author": {
+            "login": "dsize1",
+            "url": "https://github.com/dsize1"
+          }
+        }
+      ]
     },
     "labels": {
       "nodes": [
@@ -6199,7 +6380,19 @@
     "title": "【Q176】如何在数组中找出三个数之和为N",
     "body": "",
     "comments": {
-      "nodes": []
+      "nodes": [
+        {
+          "id": "IC_kwDODQzyOs4-tl6K",
+          "body": "排序之后使用双指针\r\nlet ar = [5, 12, 6, 3, 9, 2, 1, 7];\r\n\r\nfunction getthreenum(arr, target, result = []) {\r\n    arr = arr.sort((a, b) => a - b)\r\n    const len = arr.length;\r\n    for (let i = 0; i < len; i++) {\r\n        let j = i + 1;\r\n        let k = len - 1;\r\n        while (j < k) {\r\n            if (arr[j] + arr[k] > target - arr[i]) {\r\n                k--;\r\n            } else if (arr[j] + arr[k] < target - arr[i]) {\r\n                j++;\r\n            } else {\r\n                result.push([arr[i], arr[j], arr[k]]);\r\n                j++;\r\n            }\r\n        }\r\n    }\r\n    return result;\r\n}\r\nconsole.log(getthreenum(ar, 13, []));",
+          "star": {
+            "totalCount": 0
+          },
+          "author": {
+            "login": "HNHED",
+            "url": "https://github.com/HNHED"
+          }
+        }
+      ]
     },
     "labels": {
       "nodes": [
@@ -6425,6 +6618,17 @@
             "login": "manondidi",
             "url": "https://github.com/manondidi"
           }
+        },
+        {
+          "id": "IC_kwDODQzyOs4_QSFK",
+          "body": "第一次：客户端通知服务端我要结束了\r\n第二次：服务端告诉客户端我知道了\r\n第三次：服务端通知客户端我准备好了\r\n第四次：客户端通知服务端表示我知道了",
+          "star": {
+            "totalCount": 0
+          },
+          "author": {
+            "login": "changshou83",
+            "url": "https://github.com/changshou83"
+          }
         }
       ]
     },
@@ -6443,7 +6647,19 @@
     "title": "【Q183】tcp 中 time_wait 堆积过多会有什么问题，为什么它超时时间这么长",
     "body": "",
     "comments": {
-      "nodes": []
+      "nodes": [
+        {
+          "id": "IC_kwDODQzyOs4_QTcq",
+          "body": "会占用大量网络资源(接口)，导致网络响应卡顿。超时时间长是为了有足够的时间确保客户端能接受到消息",
+          "star": {
+            "totalCount": 0
+          },
+          "author": {
+            "login": "changshou83",
+            "url": "https://github.com/changshou83"
+          }
+        }
+      ]
     },
     "labels": {
       "nodes": [
@@ -6465,7 +6681,7 @@
           "id": "MDEyOklzc3VlQ29tbWVudDU5NTY3ODE3MQ==",
           "body": "css变量减少样式重复定义，比如同一个颜色值要在多个地方重复使用，以前通过less和sass预处理做到，现在css变量也可以做到，方便维护，提高可读性\r\n```\r\n:root{\r\n  --bgcolor: blue;\r\n  --color: red;\r\n}\r\np {\r\n  color: var(--color);\r\n}\r\ndiv {\r\n  backgroung-color: var(--bgcolor);\r\n  color: var(--color)\r\n}\r\n```\r\n在媒体查询中使用，精简代码，减少冗余\r\n```\r\n.box {\r\n  --base-size: 10;\r\n  width: calc(var(--base-size)* 10px);\r\n  height: clac(var(--base-size)* 5px);\r\n  padding:calc(var(--base-size) * 1px);\r\n}\r\n@media screen and (min-width: 1480px) {\r\n  .box{\r\n    --base-size: 8;\r\n  }\r\n}\r\n```\r\n方便在js中使用\r\n```\r\n// 设置变量\r\ndocument.getElementById(\"box\").style.setPropertyValue('--color', 'pink')\r\n// 读取变量\r\ndoucment.getElementById('box').style.getPropertyValue('--color').trim()    //pink\r\n// 删除变量\r\ndocument.getElementById('box').style.removeProperty('--color')\r\n```",
           "star": {
-            "totalCount": 1
+            "totalCount": 2
           },
           "author": {
             "login": "Cicelychen",
@@ -6509,8 +6725,8 @@
             "totalCount": 0
           },
           "author": {
-            "login": "ssaylo",
-            "url": "https://github.com/ssaylo"
+            "login": "linlai163",
+            "url": "https://github.com/linlai163"
           }
         }
       ]
@@ -6540,6 +6756,17 @@
           "author": {
             "login": "shfshanyue",
             "url": "https://github.com/shfshanyue"
+          }
+        },
+        {
+          "id": "IC_kwDODQzyOs4-jZGf",
+          "body": "优点： 可维护性高， 易读性好， 可抽象， 可扩展性好。\r\n\r\n缺点： runtime   对性能有一定的影响。 不能直接用postcss\r\n\r\n生态: \r\n\r\ntwin.macos  tailwind\r\n\r\n[babel-plugin-styled-components](https://link.juejin.cn/?target=https%3A%2F%2Fstyled-components.com%2Fdocs%2Ftooling%23better-debugging)   解决 className是名随机字符串的问题\r\n\r\n[typescript-styled-components-px2rem](https://github.com/xuyuanxiang/typescript-styled-components-px2rem)",
+          "star": {
+            "totalCount": 0
+          },
+          "author": {
+            "login": "leeleoo",
+            "url": "https://github.com/leeleoo"
           }
         }
       ]
@@ -6729,6 +6956,17 @@
             "login": "Innocentw",
             "url": "https://github.com/Innocentw"
           }
+        },
+        {
+          "id": "IC_kwDODQzyOs4_AUqe",
+          "body": "```js\r\n .container{\r\nwidth:0;\r\nborder:100px solid transparent;\r\nborder-bottom-color:#000;\r\n}\r\n```",
+          "star": {
+            "totalCount": 0
+          },
+          "author": {
+            "login": "wangliang000",
+            "url": "https://github.com/wangliang000"
+          }
         }
       ]
     },
@@ -6902,7 +7140,7 @@
       "nodes": [
         {
           "id": "MDEyOklzc3VlQ29tbWVudDg0MjMzMzYyNg==",
-          "body": "`packagelock.json`/`yarn.lock` 用以锁定版本号，保证开发环境与生产环境的一致性，避免出现不兼容 API 导致生产环境报错\r\n\r\n在这个问题之前，需要了解下什么是 `semver`: [什么是 semver](https://github.com/shfshanyue/Daily-Question/issues/534)。\r\n\r\n当我们在 `npm i` 某个依赖时，默认的版本号是最新版本号 `^1.2.3`，以 `^` 开头可最大限度地使用新特性，但是某些库不遵循该依赖可能出现问题。\r\n\r\n> `^1.2.3` 指 *>=1.2.3 <2.0.0*，可查看 [semver checker](https://devtool.tech/semver)\r\n\r\n*一个问题: 当项目中没有 lock 文件时，生产环境的风险是如何产生的?*\r\n\r\n演示风险过程如下:\r\n\r\n1. `pkg 1.2.3`: 首次在开发环境安装 pkg 库，为此时最新版本 `1.2.3`，`dependencies` 依赖中显示 `^1.2.3`，实际安装版本为 `1.2.3`\r\n1. `pkg 1.19.0`: 在生产环境中上线项目，安装 pkg 库，此时最新版本为 `1.19.0`，满足 `dependencies` 中依赖 `^1.2.3` 范围，实际安装版本为 `1.19.0`，**但是 `pkg` 未遵从 semver 规范，在此过程中引入了 Breaking Change**，因此此时生产环境中的 `1.1.0` 导致了 bug，且难以调试\r\n\r\n而当有了 lock 文件时，每一个依赖的版本号都被锁死在了 lock 文件，每次依赖安装的版本号都从 lock 文件中进行获取，避免了不可测的依赖风险。\r\n\r\n1. `pkg 1.2.3`: 首次在开发环境安装 pkg 库，为此时最新版本 `1.2.3`，`dependencies` 依赖中显示 `^1.2.3`，实际安装版本为 `1.2.3`，**在 lock 中被锁定版本号**\r\n1. `pkg 1.2.3`: 在生产环境中上线项目，安装 pkg 库，此时 lock 文件中版本号为 `1.2.3`，符合 `dependencies` 中 `^1.2.3` 的范围，将在生产环境安装 `1.2.3`，完美上线。",
+          "body": "`packagelock.json`/`yarn.lock` 用以锁定版本号，保证开发环境与生产环境的一致性，避免出现不兼容 API 导致生产环境报错\r\n\r\n在这个问题之前，需要了解下什么是 `semver`: [什么是 semver](https://github.com/shfshanyue/Daily-Question/issues/534)。\r\n\r\n当我们在 `npm i` 某个依赖时，默认的版本号是最新版本号 `^1.2.3`，以 `^` 开头可最大限度地使用新特性，但是某些库不遵循该依赖可能出现问题。\r\n\r\n> `^1.2.3` 指 *>=1.2.3 <2.0.0*，可查看 [semver checker](https://devtool.tech/semver)\r\n\r\n*一个问题: 当项目中没有 lock 文件时，生产环境的风险是如何产生的?*\r\n\r\n演示风险过程如下:\r\n\r\n1. `pkg 1.2.3`: 首次在开发环境安装 pkg 库，为此时最新版本 `1.2.3`，`dependencies` 依赖中显示 `^1.2.3`，实际安装版本为 `1.2.3`\r\n1. `pkg 1.19.0`: 在生产环境中上线项目，安装 pkg 库，此时最新版本为 `1.19.0`，满足 `dependencies` 中依赖 `^1.2.3` 范围，实际安装版本为 `1.19.0`，**但是 `pkg` 未遵从 semver 规范，在此过程中引入了 Breaking Change，如何此时 `1.19.0` 有问题的话，那生产环境中的 `1.19.0` 将会导致 bug，且难以调试**\r\n\r\n而当有了 lock 文件时，每一个依赖的版本号都被锁死在了 lock 文件，每次依赖安装的版本号都从 lock 文件中进行获取，避免了不可测的依赖风险。\r\n\r\n1. `pkg 1.2.3`: 首次在开发环境安装 pkg 库，为此时最新版本 `1.2.3`，`dependencies` 依赖中显示 `^1.2.3`，实际安装版本为 `1.2.3`，**在 lock 中被锁定版本号**\r\n1. `pkg 1.2.3`: 在生产环境中上线项目，安装 pkg 库，此时 lock 文件中版本号为 `1.2.3`，符合 `dependencies` 中 `^1.2.3` 的范围，将在生产环境安装 `1.2.3`，完美上线。",
           "star": {
             "totalCount": 0
           },
@@ -7216,7 +7454,7 @@
           "id": "IC_kwDODQzyOs408XGZ",
           "body": "```js\r\n/**\r\n * 深拷贝关注点:\r\n * 1. JavaScript内置对象的复制: Set、Map、Date、Regex等\r\n * 2. 循环引用问题\r\n * @param {*} object \r\n * @returns \r\n */\r\nfunction deepClone(source, memory) {\r\n  const isPrimitive = (value) => {\r\n    return /Number|Boolean|String|Null|Undefined|Symbol|Function/.test(Object.prototype.toString.call(value));\r\n  }\r\n  let result = null;\r\n\r\n  memory || (memory = new WeakMap());\r\n  // 原始数据类型及函数\r\n  if (isPrimitive(source)) {\r\n    console.log('current copy is primitive', source);\r\n    result = source;\r\n  }\r\n  // 数组\r\n  else if (Array.isArray(source)) {\r\n    result = source.map(value => deepClone(value, memory));\r\n  }\r\n  // 内置对象Date、Regex\r\n  else if (Object.prototype.toString.call(source) === '[object Date]') {\r\n    result = new Date(source);\r\n  }\r\n  else if (Object.prototype.toString.call(source) === '[object Regex]') {\r\n    result = new RegExp(source);\r\n  }\r\n  // 内置对象Set、Map\r\n  else if (Object.prototype.toString.call(source) === '[object Set]') {\r\n    result = new Set();\r\n    for (const value of source) {\r\n      result.add(deepClone(value, memory));\r\n    }\r\n  }\r\n  else if (Object.prototype.toString.call(source) === '[object Map]') {\r\n    result = new Map();\r\n    for (const [key, value] of source.entries()) {\r\n      result.set(key, deepClone(value, memory));\r\n    }\r\n  }\r\n  // 引用类型\r\n  else {\r\n    if (memory.has(source)) {\r\n      result = memory.get(source);\r\n    } else {\r\n      result = Object.create(null);\r\n      memory.set(source, result);\r\n      Object.keys(source).forEach(key => {\r\n        const value = source[key];\r\n        result[key] = deepClone(value, memory);\r\n      });\r\n    }\r\n  }\r\n  return result;\r\n}\r\n```",
           "star": {
-            "totalCount": 1
+            "totalCount": 2
           },
           "author": {
             "login": "haotie1990",
@@ -7840,7 +8078,19 @@
     "title": "【Q219】工作中你有没有很佩服的人",
     "body": "",
     "comments": {
-      "nodes": []
+      "nodes": [
+        {
+          "id": "IC_kwDODQzyOs4--zZF",
+          "body": "月哥",
+          "star": {
+            "totalCount": 0
+          },
+          "author": {
+            "login": "maya1900",
+            "url": "https://github.com/maya1900"
+          }
+        }
+      ]
     },
     "labels": {
       "nodes": [
@@ -8104,6 +8354,17 @@
           "author": {
             "login": "haotie1990",
             "url": "https://github.com/haotie1990"
+          }
+        },
+        {
+          "id": "IC_kwDODQzyOs4_hnuF",
+          "body": "https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Array/flat",
+          "star": {
+            "totalCount": 0
+          },
+          "author": {
+            "login": "719676340",
+            "url": "https://github.com/719676340"
           }
         }
       ]
@@ -8602,6 +8863,17 @@
             "totalCount": 0
           },
           "author": null
+        },
+        {
+          "id": "IC_kwDODQzyOs47vwDP",
+          "body": "看了一篇这个，好像可以\r\nhttps://blog.csdn.net/github_38589282/article/details/79268484",
+          "star": {
+            "totalCount": 0
+          },
+          "author": {
+            "login": "jeff-wangzhen",
+            "url": "https://github.com/jeff-wangzhen"
+          }
         }
       ]
     },
@@ -9034,7 +9306,19 @@
     "title": "【Q259】爬虫如何实现一个去重器",
     "body": "",
     "comments": {
-      "nodes": []
+      "nodes": [
+        {
+          "id": "IC_kwDODQzyOs4939T4",
+          "body": "urlMap[url,hash(data)]\r\nurlSet[fullURL]\r\nurlMap存不包含查询字符串的url，data相同也不存储\r\nurlSet存完整url，即Map里没有查询到，则通过完整url去重",
+          "star": {
+            "totalCount": 0
+          },
+          "author": {
+            "login": "shay-an",
+            "url": "https://github.com/shay-an"
+          }
+        }
+      ]
     },
     "labels": {
       "nodes": [
@@ -9114,7 +9398,7 @@
           "id": "MDEyOklzc3VlQ29tbWVudDY2OTI0NDM2Mg==",
           "body": "1. 分析任务\r\n这个任务是活动页面开发？还是常规需求？\r\n如果是常规需求，可以考虑延期\r\n如果是活动页面，尤其是节假日、特殊纪念日的活动，可以考虑降低用户体验、砍需求等从而降低工作量，继而保证正常上线。因为运营活动的时效性较高\r\n2. 在排期阶段多估算时间，预计是常规工作时间的 1.5 倍\r\n3. 通过加班等方式弥补工期的缺失",
           "star": {
-            "totalCount": 0
+            "totalCount": 1
           },
           "author": null
         }
@@ -9733,8 +10017,8 @@
             "totalCount": 0
           },
           "author": {
-            "login": "ssaylo",
-            "url": "https://github.com/ssaylo"
+            "login": "linlai163",
+            "url": "https://github.com/linlai163"
           }
         },
         {
@@ -9755,8 +10039,8 @@
             "totalCount": 0
           },
           "author": {
-            "login": "ssaylo",
-            "url": "https://github.com/ssaylo"
+            "login": "linlai163",
+            "url": "https://github.com/linlai163"
           }
         },
         {
@@ -10055,6 +10339,17 @@
             "login": "shfshanyue",
             "url": "https://github.com/shfshanyue"
           }
+        },
+        {
+          "id": "IC_kwDODQzyOs49qGKI",
+          "body": "当一个函数执行结束之后，JavaScript 引擎会通过向下移动 ESP 来销毁该函数保存在栈中的执行上下文。\r\n要回收堆中的垃圾数据，就需要用到 JavaScript 中的垃圾回收器了。\r\n代际假说（The Generational Hypothesis），是垃圾回收领域中一个重要的术语，后续垃圾回收的策略都是建立在该假说的基础之上的，所以很是重要。\r\n代际假说有以下两个特点：\r\n1. 大部分对象在内存中存在的时间很短，简单来说，就是很多对象一经分配内存，很快就变得不可访问；\r\n2. 是不死的对象，会活得更久。\r\n在 V8 中会把堆分为新生代和老生代两个区域，新生代中存放的是生存时间短的对象，老生代中存放的生存时间久的对象。\r\n● 副垃圾回收器，主要负责新生代的垃圾回收。\r\n● 主垃圾回收器，主要负责老生代的垃圾回收。\r\n\r\n全停顿\r\n![1620974853612-a480b43e-b3bb-452f-a502-3a0162548a7f](https://user-images.githubusercontent.com/19986739/153329224-c2120a5d-4f25-4659-9347-d6217d5a5ce8.png)\r\n\r\n增量标记\r\n![1620975019709-efc33748-fbfc-4fb5-a19d-97abadbf8f97](https://user-images.githubusercontent.com/19986739/153329251-e6a21086-f646-48d5-a23c-c2e3351497ef.png)\r\n\r\n使用增量标记算法，可以把一个完整的垃圾回收任务拆分为很多小的任务，这些小的任务执行时间比较短，可以穿插在其他的 JavaScript 任务中间执行，增强用户体验。\r\n\r\n参考： [浏览器工作原理与实践](https://time.geekbang.org/column/article/131233)",
+          "star": {
+            "totalCount": 0
+          },
+          "author": {
+            "login": "wjw-gavin",
+            "url": "https://github.com/wjw-gavin"
+          }
         }
       ]
     },
@@ -10117,7 +10412,19 @@
     "title": "【Q293】semver 指什么，试图解释一下",
     "body": "",
     "comments": {
-      "nodes": []
+      "nodes": [
+        {
+          "id": "IC_kwDODQzyOs4-9_Wg",
+          "body": "语义化版本号。版本格式：主版本号.次版本号.修订号",
+          "star": {
+            "totalCount": 0
+          },
+          "author": {
+            "login": "maya1900",
+            "url": "https://github.com/maya1900"
+          }
+        }
+      ]
     },
     "labels": {
       "nodes": [
@@ -10357,8 +10664,8 @@
             "totalCount": 0
           },
           "author": {
-            "login": "sk-xie",
-            "url": "https://github.com/sk-xie"
+            "login": "vincent-sk",
+            "url": "https://github.com/vincent-sk"
           }
         }
       ]
@@ -10475,8 +10782,19 @@
             "totalCount": 0
           },
           "author": {
-            "login": "ssaylo",
-            "url": "https://github.com/ssaylo"
+            "login": "linlai163",
+            "url": "https://github.com/linlai163"
+          }
+        },
+        {
+          "id": "IC_kwDODQzyOs4_iLyo",
+          "body": "```\r\n <div class=\"container\">\r\n        <div class=\"left\"></div>\r\n        <div class=\"main\"></div>\r\n        <div class=\"right\"></div>\r\n  </div>\r\n```\r\n\r\n```\r\n<style>\r\n    /* grid布局 */\r\n    \r\n    .container {\r\n        height: 20rem;\r\n        margin: 2rem;\r\n        background-color: #eeeeee;\r\n        display: grid;\r\n        grid-template-columns: 300px 1fr 300px;\r\n    }\r\n   \r\n    .left {\r\n        height: 100%;\r\n        border: 1px solid black;\r\n    }\r\n    \r\n    .main {\r\n        height: 100%;\r\n    }\r\n    \r\n    .right {\r\n        height: 100%;\r\n        border: 1px solid;\r\n    }\r\n</style>\r\n```\r\n",
+          "star": {
+            "totalCount": 0
+          },
+          "author": {
+            "login": "WangKang1555",
+            "url": "https://github.com/WangKang1555"
           }
         }
       ]
@@ -10536,6 +10854,17 @@
             "login": "thundernet8",
             "url": "https://github.com/thundernet8"
           }
+        },
+        {
+          "id": "IC_kwDODQzyOs4-z7Aw",
+          "body": "dns.resolve为内核api，无需占用thread pool，优先级更高\r\ndns.lookup为thread pool api，占用thread pool，影响线程池方法（例如fs模块方法等）",
+          "star": {
+            "totalCount": 0
+          },
+          "author": {
+            "login": "paul-wj",
+            "url": "https://github.com/paul-wj"
+          }
         }
       ]
     },
@@ -10559,7 +10888,7 @@
           "id": "MDEyOklzc3VlQ29tbWVudDY2MDYxNjUyMA==",
           "body": "`css specificity` 即 css 中关于选择器的权重，以下三种类型的选择器依次下降\r\n\r\n1. `id` 选择器，如 `#app`\r\n1. `class`、`attribute` 与 `pseudo-classes` 选择器，如 `.header`、`[type=\"radio\"]` 与 `:hover`\r\n1. `type` 标签选择器和伪元素选择器，如 `h1`、`p` 和 `::before`\r\n\r\n其中通配符选择器 `*`，组合选择器 `+ ~ >`，否定伪类选择器 `:not()` 对优先级无影响\r\n\r\n另有内联样式 `<div class=\"foo\" style=\"color: red;\"></div>` 及 `!important`(最高) 具有更高的权重\r\n\r\n> [`:not` 的优先级影响 - codepen](https://codepen.io/shanyue/pen/dyGQqBe) 可以看出 `:not` 对选择器的优先级无任何影响\r\n\r\n> [CSS Specificity - codepen](https://codepen.io/shanyue/pen/XWMRQOw) 可以看出十几个 class 选择器也没有一个 id 选择器权重高",
           "star": {
-            "totalCount": 2
+            "totalCount": 3
           },
           "author": {
             "login": "shfshanyue",
@@ -11155,6 +11484,17 @@
           "author": {
             "login": "shfshanyue",
             "url": "https://github.com/shfshanyue"
+          }
+        },
+        {
+          "id": "IC_kwDODQzyOs4-f8qY",
+          "body": "MDN的解释：position: sticky 在正常文档流中仍然保有位置，然后会相对于它的最近的滚动祖先和最近的块级祖先根据 top, left, right, bottom 的值进行偏移。元素偏移不会影响其他任何元素的位置，因为会为该元素创建一个新的层叠上下文，从而不会影响到页面上的其他元素\r\n\r\ncss-tricks一篇文章的理解：在窗口的管轮向下滚动没有让该元素完全消失前，该元素的表现就与postion:relative的元素相同，之后该元素的表现就类似于position: fixed 的元素， 只不过该元素是相对于离他最近的滚轮祖先\r\n\r\nReference: \r\nDocs: https://developer.mozilla.org/zh-CN/docs/Web/CSS/position\r\nCode: https://css-tricks.com/almanac/properties/p/position/",
+          "star": {
+            "totalCount": 0
+          },
+          "author": {
+            "login": "CsongL",
+            "url": "https://github.com/CsongL"
           }
         }
       ]
@@ -12158,6 +12498,17 @@
             "login": "jkLennon",
             "url": "https://github.com/jkLennon"
           }
+        },
+        {
+          "id": "IC_kwDODQzyOs47nqMx",
+          "body": "验证一下 https://codesandbox.io/s/sharp-dawn-5e5hp?file=/src/capture.js ",
+          "star": {
+            "totalCount": 0
+          },
+          "author": {
+            "login": "cloudXA",
+            "url": "https://github.com/cloudXA"
+          }
         }
       ]
     },
@@ -12204,6 +12555,17 @@
             "login": "shfshanyue",
             "url": "https://github.com/shfshanyue"
           }
+        },
+        {
+          "id": "IC_kwDODQzyOs4-j4sa",
+          "body": "实现方式：\r\n```css\r\n    html[theme=\"dark-model\"] {\r\n        filter: invert(1) hue-rotate(180);\r\n        transition: color 300ms, background-color 300ms; /*过渡动画*/\r\n    }\r\n```\r\n\r\n解释：\r\n  css 的 filter属性 是将用于图片上的过滤，颜色变化等图形效果应用与元素上，\r\n  上面所使用到的 invert 可以用来反转应用程序的颜色; hue-rotate 是用来改变图像上的应用色颜色\r\n  通过invert(1)将白色变成黑色，那么为了适配颜色的变化，网页上的图像的颜色应该也做一个改变，这个改变就是通过hue-rotate(180edg)来实现的\r\n  filter属性 其他著名的应用还有:\r\n    * blur() 模糊图像\r\n    * opacity() 图像透明程度\r\n    * drop-shadow() 对图像应用阴影效果\r\n    * ...\r\n\r\n## Reference \r\n[MDN Docs](https://developer.mozilla.org/zh-CN/docs/Web/CSS/filter)\r\n[如何实现网页dark-model](https://segmentfault.com/a/1190000023598551)",
+          "star": {
+            "totalCount": 0
+          },
+          "author": {
+            "login": "CsongL",
+            "url": "https://github.com/CsongL"
+          }
         }
       ]
     },
@@ -12222,7 +12584,19 @@
     "title": "【Q371】在 redux 中如何发送请求",
     "body": "",
     "comments": {
-      "nodes": []
+      "nodes": [
+        {
+          "id": "IC_kwDODQzyOs4_aQy2",
+          "body": "使用redux-thunk中间件 就能够在redux中发送请求 ",
+          "star": {
+            "totalCount": 0
+          },
+          "author": {
+            "login": "selecaing",
+            "url": "https://github.com/selecaing"
+          }
+        }
+      ]
     },
     "labels": {
       "nodes": [
@@ -12239,7 +12613,19 @@
     "title": "【Q372】redis 是如何删掉过期数据的",
     "body": "",
     "comments": {
-      "nodes": []
+      "nodes": [
+        {
+          "id": "IC_kwDODQzyOs493_tZ",
+          "body": "懒删除：查询时删除\r\n定时删除：通过定时任务删除",
+          "star": {
+            "totalCount": 0
+          },
+          "author": {
+            "login": "shay-an",
+            "url": "https://github.com/shay-an"
+          }
+        }
+      ]
     },
     "labels": {
       "nodes": [
@@ -13533,6 +13919,28 @@
             "login": "hwb2017",
             "url": "https://github.com/hwb2017"
           }
+        },
+        {
+          "id": "IC_kwDODQzyOs4-AaSB",
+          "body": "```javascript\r\nfunction solution(s, limit) {\r\n    const n = s.length;\r\n    let res = '';\r\n    for (let i = 0, cnt = 0; i < n; i += cnt) {\r\n        cnt = 1;\r\n        while (s[i] === s[i + cnt]) cnt++;\r\n        res += cnt > limit ? s[i] + cnt : s[i].repeat(cnt);\r\n    }\r\n    return res;\r\n}\r\n```",
+          "star": {
+            "totalCount": 0
+          },
+          "author": {
+            "login": "chenxinan",
+            "url": "https://github.com/chenxinan"
+          }
+        },
+        {
+          "id": "IC_kwDODQzyOs4-Vntu",
+          "body": "const encode = word => {\r\n  if(!word) return \"\";\r\n  let ary = word.split('');\r\n  let group = {}\r\n  let result = \"\"\r\n  group[ary[0]] = 1\r\n  for(let i = 1, j = ary.length; i <= j; i++) {\r\n    if(ary[i - 1] != ary[i]) {\r\n      result += Object.entries(group).flat().join('')\r\n      group = {}\r\n      group[ary[i]] = 1\r\n    } else {\r\n      group[ary[i]]++\r\n    }\r\n  }\r\n  return result\r\n\r\n}\r\n\r\n\r\n\r\nconst encode1 = word => {\r\n  return word.replace(/1/gi, '')\r\n}\r\n\r\n\r\nconst encode2 = word => {\r\n  let one = word.substring(0, 1)\r\n  let newWord = ''\r\n  for(item of word) {\r\n    newWord += item == 2 ? one : item\r\n    one = item\r\n  }\r\n  return newWord\r\n}\r\n\r\n",
+          "star": {
+            "totalCount": 0
+          },
+          "author": {
+            "login": "LiJinWD",
+            "url": "https://github.com/LiJinWD"
+          }
         }
       ]
     },
@@ -14798,7 +15206,7 @@
           "id": "MDEyOklzc3VlQ29tbWVudDc2MDc1MTgyNw==",
           "body": "```js\r\nfunction unique(arr) {\r\n  if (!Array.isArray(arr)) throw new TypeError();\r\n  return [...new Set(arr)];\r\n}\r\n```",
           "star": {
-            "totalCount": 0
+            "totalCount": 1
           },
           "author": {
             "login": "justable",
@@ -14831,7 +15239,7 @@
           "id": "IC_kwDODQzyOs401s27",
           "body": "```js\r\nfunction unique(array) {\r\n  return array.filter((item, index) => array.indexOf(item) === index);\r\n}\r\n```",
           "star": {
-            "totalCount": 0
+            "totalCount": 1
           },
           "author": {
             "login": "haotie1990",
@@ -15408,6 +15816,17 @@
           "author": {
             "login": "hhhpw",
             "url": "https://github.com/hhhpw"
+          }
+        },
+        {
+          "id": "IC_kwDODQzyOs48HWVi",
+          "body": "首屏时间: window.performance.timing.domInteractive - window.performace.timing.navigationStart\r\n\r\nwindow.performace.timing.navigationStart\r\n\r\nperformace ->  performance少了个n\r\n",
+          "star": {
+            "totalCount": 0
+          },
+          "author": {
+            "login": "wuyuehui",
+            "url": "https://github.com/wuyuehui"
           }
         }
       ]
@@ -16814,7 +17233,19 @@
     "title": "【Q506】Grid 布局如何实现类似 flex: row-reverse",
     "body": "",
     "comments": {
-      "nodes": []
+      "nodes": [
+        {
+          "id": "IC_kwDODQzyOs4-0rQl",
+          "body": "通过 grid-auto-flow属性 和 direction属性 来实现grid布局类似 flex: row-reverse的样式\r\n\r\ngrid-auto-flow: [row | column] || dense      该属性指定采用grid布局的容器内部的元素如何排序\r\ndirection: rtl | ltr  指定文本, 表列的水平方向\r\n\r\n[Code](https://codepen.io/csongl/pen/RwjegQL)\r\n\r\n## Reference\r\n[MDN](https://developer.mozilla.org/zh-CN/docs/Web/CSS/direction)\r\n[Article](https://blog.csdn.net/qq_42740797/article/details/113737171)",
+          "star": {
+            "totalCount": 0
+          },
+          "author": {
+            "login": "CsongL",
+            "url": "https://github.com/CsongL"
+          }
+        }
+      ]
     },
     "labels": {
       "nodes": [
@@ -17393,7 +17824,7 @@
       "nodes": [
         {
           "id": "MDEyOklzc3VlQ29tbWVudDg0ODM3MTMwMw==",
-          "body": "指定一个项目所需的 node 最小版本，这属于一个项目的质量工程。\r\n\r\n如果对于版本不匹配将会报错(yarn)或警告(npm)，那我们需要在 `package.json` 中的 `engines` 字段中指定 Node 版本号\r\n\r\n> 更多质量工程问题，见 [如何保障项目质量](https://github.com/shfshanyue/Daily-Question/issues/552)\r\n\r\n``` json\r\n{\r\n  \"engines\": {\r\n    \"node\": \">=14.0.0\"\r\n  }\r\n}\r\n```\r\n\r\n一个示例：\r\n\r\n**我在本地把项目所需要的 node 版本号改成 `>=16.0.0`，而本地的 node 版本号为 `v8.17.0`**\r\n\r\n此时，npm 将会发生警告\r\n\r\n``` bash\r\nnpm WARN EBADENGINE Unsupported engine { package: 'next-app@1.0.0',\r\nnpm WARN EBADENGINE   required: { node: '>=16.0.0' },\r\nnpm WARN EBADENGINE   current: { node: 'v8.17.0', npm: '7.14.0' } }\r\n```\r\n\r\n而 yarn 将会直接报错\r\n\r\n``` bash\r\nerror next-app@1.0.0: The engine \"node\" is incompatible with this module. Expected version \">=16.0.0\". Got \"8.17.0\"\r\n```\r\n\r\n而如果我们**项目中某些依赖所需要的 Node 版本号与项目运行时的 Node 版本号不匹配，也会报错(在yarn中)**，此时无法正常运行项目，可避免意外发生",
+          "body": "> + 我: 老大，我这个项目本地白屏了，今天调了一天都没找到问题，快来看看\r\n> + leader: (瞄了一眼) 你的 node 版本号有问题\r\n> + 我: 老大，不能怪我跑挂了，我一个新入职的小前端怎么能够知道这个项目所需的 Node 版本号是多少呢\r\n> + leader: 怎么不能知道，这说明你水平不到家\r\n\r\n指定一个项目所需的 node 最小版本，这属于一个项目的质量工程。\r\n\r\n如果对于版本不匹配将会报错(yarn)或警告(npm)，那我们需要在 `package.json` 中的 `engines` 字段中指定 Node 版本号\r\n\r\n> 更多质量工程问题，见 [如何保障项目质量](https://github.com/shfshanyue/Daily-Question/issues/552)\r\n\r\n``` json\r\n{\r\n  \"engines\": {\r\n    \"node\": \">=14.0.0\"\r\n  }\r\n}\r\n```\r\n\r\n一个示例：\r\n\r\n**我在本地把项目所需要的 node 版本号改成 `>=16.0.0`，而本地的 node 版本号为 `v10.24.1`**\r\n\r\n此时，npm 将会发生警告，提示你本地的 node 版本与此项目不符。\r\n\r\n``` bash\r\nnpm WARN EBADENGINE Unsupported engine { package: 'next-app@1.0.0',\r\nnpm WARN EBADENGINE   required: { node: '>=16.0.0' },\r\nnpm WARN EBADENGINE   current: { node: 'v10.24.1', npm: '7.14.0' } }\r\n```\r\n\r\n而 yarn 将会直接报错，提示。\r\n\r\n``` bash\r\nerror next-app@1.0.0: The engine \"node\" is incompatible with this module. Expected version \">=16.0.0\". Got \"10.24.1\"\r\n```\r\n\r\n**最为重要的是，项目中某些依赖所需要的 Node 版本号与项目运行时的 Node 版本号不匹配，也会报错(在yarn中)**，此时无法正常运行项目，可避免意外发生。\r\n\r\n可看一个示例，[engines 示例](https://github.com/shfshanyue/node-examples/tree/master/engineering/package/engines)，其中 `ansi-regex` 该依赖所需的 node 版本号为 `12+`，而此时本地的 node 版本号为 10，使用 yarn 安装报错！\r\n\r\n``` js\r\n// 在 package.json 中，所需 node 版本号需要 >=10\r\n{\r\n  \"engines\": {\r\n    \"node\": \">=10.0.0\"\r\n  }\r\n}\r\n\r\n// 在 package-lock.json 中，所需 node 版本号需要 >=12\r\n{\r\n  \"node_modules/ansi-regex\": {\r\n    \"version\": \"6.0.1\",\r\n    \"engines\": {\r\n      \"node\": \">=12\"\r\n    }\r\n  }\r\n}\r\n```\r\n\r\n![](https://cdn.jsdelivr.net/gh/shfshanyue/assets/2021-12-25/clipboard-2084.d06897.webp)\r\n\r\n> PS: 如果项目的 package.json 中没有 `engines` 字段，可查看 Dockerfile 中 node 镜像确定项目所需的 node 版本号。",
           "star": {
             "totalCount": 0
           },
@@ -17444,7 +17875,7 @@
       "nodes": [
         {
           "id": "MDEyOklzc3VlQ29tbWVudDg0NjU5MjA3MA==",
-          "body": "`semver`，`Semantic Versioning` 语义化版本的缩写，文档可见 <https://semver.org/>，它由 `[major, minor, patch]` 三部分组成，其中\r\n\r\n+ `major`: 当你发了一个含有 Breaking Change 的 API\r\n+ `minor`:  当你新增了一个向后兼容的功能时\r\n+ `patch`: 当你修复了一个向后兼容的 Bug 时\r\n\r\n\r\n假设你的版本库中含有一个函数\r\n\r\n``` js\r\n// 假设原函数\r\nexport const sum = (x: number, y: number): number => x + y\r\n\r\n// Patch Version，修复小 Bug\r\nexport const sum = (x: number, y: number): number => x + y\r\n\r\n// Minor Version，向后兼容\r\nexport const sum = (...rest: number[]): number => rest.reduce((s, x) => s + x, 0)\r\n\r\n// Marjor Version，出现 Breaking Change\r\nexport const sub = () => {}\r\n```\r\n\r\n对于 `~1.2.3` 而言，它的版本号范围是 `>=1.2.3  <1.3.0`\r\n\r\n对于 `^1.2.3` 而言，它的版本号范围是 `>=1.2.3  <2.0.0`\r\n\r\n当我们 `npm i` 时，默认的版本号是 `^`，可最大限度地在向后兼容与新特性之间做取舍，但是有些库有可能不遵循该规则，我们在项目时应当使用 `yarn.lock`/`package-lock.json` 锁定版本号。\r\n\r\n我们看看 `package-lock` 的工作流程。\r\n\r\n1. `npm i webpack`，此时下载最新 webpack 版本 `5.58.2`，在 `package.json` 中显示为 `webpack: ^5.58.2`，版本号范围是 `>=5.58.2 < 6.0.0`\r\n2. 在 `package-lock.json` 中全局搜索 `webpack`，发现 webpack 的版本是被锁定的，也是说它是确定的 `webpack: 5.58.2`\r\n3. 经过一个月后，webpack 最新版本为 `5.100.0`，但由于 `webpack` 版本在 `package-lock.json` 中锁死，每次上线时仍然下载 `5.58.2` 版本号\r\n4. 经过一年后，webpack 最新版本为 `6.0.0`，但由于 `webpack` 版本在 `package-lock.json` 中锁死，且 package.json 中 `webpack` 版本号为 `^5.58.2`，与 `package-lock.json` 中为一致的版本范围。每次上线时仍然下载 `5.58.2` 版本号\r\n5. 支线剧情：经过一年后，webpack 最新版本为 `6.0.0`，需要进行升级，此时手动改写 `package.json` 中 `webpack` 版本号为 `^6.0.0`，与 `package-lock.json` 中不是一致的版本范围。此时 `npm i` 将下载 `6.0.0` 最新版本号，并重写 `package-lock.json` 中锁定的版本号为 `6.0.0`",
+          "body": "`semver`，`Semantic Versioning` 语义化版本的缩写，文档可见 <https://semver.org/>，它由 `[major, minor, patch]` 三部分组成，其中\r\n\r\n+ `major`: 当你发了一个含有 Breaking Change 的 API\r\n+ `minor`:  当你新增了一个向后兼容的功能时\r\n+ `patch`: 当你修复了一个向后兼容的 Bug 时\r\n\r\n\r\n假设你的版本库中含有一个函数\r\n\r\n``` js\r\n// 假设原函数\r\nexport const sum = (x: number, y: number): number => x + y\r\n\r\n// Patch Version，修复小 Bug\r\nexport const sum = (x: number, y: number): number => x + y\r\n\r\n// Minor Version，向后兼容\r\nexport const sum = (...rest: number[]): number => rest.reduce((s, x) => s + x, 0)\r\n\r\n// Marjor Version，出现 Breaking Change\r\nexport const sub = () => {}\r\n```\r\n\r\n对于 `~1.2.3` 而言，它的版本号范围是 `>=1.2.3  <1.3.0`\r\n\r\n对于 `^1.2.3` 而言，它的版本号范围是 `>=1.2.3  <2.0.0`\r\n\r\n当我们 `npm i` 时，默认的版本号是 `^`，可最大限度地在向后兼容与新特性之间做取舍，但是有些库有可能不遵循该规则，我们在项目时应当使用 `yarn.lock`/`package-lock.json` 锁定版本号。\r\n\r\n我们看看 `package-lock` 的工作流程。\r\n\r\n1. `npm i webpack`，此时下载最新 webpack 版本 `5.58.2`，在 `package.json` 中显示为 `webpack: ^5.58.2`，版本号范围是 `>=5.58.2 < 6.0.0`\r\n2. 在 `package-lock.json` 中全局搜索 `webpack`，发现 webpack 的版本是被锁定的，也是说它是确定的 `webpack: 5.58.2`\r\n3. 经过一个月后，webpack 最新版本为 `5.100.0`，但由于 `webpack` 版本在 `package-lock.json` 中锁死，每次上线时仍然下载 `5.58.2` 版本号\r\n4. 经过一年后，webpack 最新版本为 `6.0.0`，但由于 `webpack` 版本在 `package-lock.json` 中锁死，且 package.json 中 `webpack` 版本号为 `^5.58.2`，与 `package-lock.json` 中为一致的版本范围。每次上线时仍然下载 `5.58.2` 版本号\r\n5. 支线剧情：经过一年后，webpack 最新版本为 `6.0.0`，需要进行升级，此时手动改写 `package.json` 中 `webpack` 版本号为 `^6.0.0`，与 `package-lock.json` 中不是一致的版本范围。此时 `npm i` 将下载 `6.0.0` 最新版本号，并重写 `package-lock.json` 中锁定的版本号为 `6.0.0`\r\n\r\n## 一个问题总结:\r\n\r\nnpm i 某个 package 时会修改 `package-lock.json` 中的版本号吗？\r\n\r\n当 `package-lock.json` 该 package 锁死的版本号符合 `package.json` 中的版本号范围时，将以 `package-lock.json` 锁死版本号为主。\r\n\r\n当 `package-lock.json` 该 package 锁死的版本号不符合 `package.json` 中的版本号范围时，将会安装该 package 符合 `package.json` 版本号范围的最新版本号，并重写 `package-lock.json`",
           "star": {
             "totalCount": 0
           },
@@ -17625,6 +18056,17 @@
           "author": {
             "login": "shfshanyue",
             "url": "https://github.com/shfshanyue"
+          }
+        },
+        {
+          "id": "IC_kwDODQzyOs4_Kczv",
+          "body": "```javascript\r\nfunction getTargetAndRest(target, originList) {\r\n  let targetArr = []\r\n  for(let i = 0; i<originList.length; i++) {\r\n    if (originList[i] === target) {\r\n      targetArr = originList.splice(i, 1)\r\n      break\r\n    }\r\n  }\r\n  return targetArr.concat(originList)\r\n}\r\n\r\nconst list = [1, 2, 3, 4, 5]\r\nlet [a, ...c] = getTargetAndRest(3, list)\r\n```",
+          "star": {
+            "totalCount": 0
+          },
+          "author": {
+            "login": "JoeWrights",
+            "url": "https://github.com/JoeWrights"
           }
         }
       ]
@@ -17928,8 +18370,8 @@
             "totalCount": 0
           },
           "author": {
-            "login": "ssaylo",
-            "url": "https://github.com/ssaylo"
+            "login": "linlai163",
+            "url": "https://github.com/linlai163"
           }
         }
       ]
@@ -18160,7 +18602,19 @@
     "title": "【Q543】什么是事件冒泡和事件捕获",
     "body": "",
     "comments": {
-      "nodes": []
+      "nodes": [
+        {
+          "id": "IC_kwDODQzyOs4_ks_S",
+          "body": "个人记录\r\n[事件冒泡与事件捕获](https://github.com/CsongL/javaScript-learning/blob/main/interviewJs/BrowserDom/%E4%BA%8B%E4%BB%B6%E5%86%92%E6%B3%A1%E4%BA%8B%E4%BB%B6%E6%8D%95%E8%8E%B7%E4%BA%8B%E4%BB%B6%E5%A7%94%E6%89%98.md)",
+          "star": {
+            "totalCount": 0
+          },
+          "author": {
+            "login": "CsongL",
+            "url": "https://github.com/CsongL"
+          }
+        }
+      ]
     },
     "labels": {
       "nodes": [
@@ -18286,7 +18740,19 @@
     "title": "【Q547】某元素的 fontSize: 2rem; lineHeight: 1.5em; 此时 lineHeight 为多少像素",
     "body": "",
     "comments": {
-      "nodes": []
+      "nodes": [
+        {
+          "id": "IC_kwDODQzyOs493bJQ",
+          "body": "font-size: 2rem. ---->  则该元素默认情况下，font-size: 32px\r\nline-height: 1.5em, em相对于自身元素的font-size， 则 \r\nline-height: 1.5 * 32 === 48px",
+          "star": {
+            "totalCount": 0
+          },
+          "author": {
+            "login": "HunterXing",
+            "url": "https://github.com/HunterXing"
+          }
+        }
+      ]
     },
     "labels": {
       "nodes": [
@@ -19374,7 +19840,19 @@
     "title": "【Q578】HTTP 响应头 cache-control: s-maxage=0 是什么意思",
     "body": "",
     "comments": {
-      "nodes": []
+      "nodes": [
+        {
+          "id": "IC_kwDODQzyOs4--qiR",
+          "body": "缓存立即失效",
+          "star": {
+            "totalCount": 0
+          },
+          "author": {
+            "login": "maya1900",
+            "url": "https://github.com/maya1900"
+          }
+        }
+      ]
     },
     "labels": {
       "nodes": [
@@ -20425,8 +20903,8 @@
             "totalCount": 0
           },
           "author": {
-            "login": "ssaylo",
-            "url": "https://github.com/ssaylo"
+            "login": "linlai163",
+            "url": "https://github.com/linlai163"
           }
         }
       ]
@@ -21110,6 +21588,17 @@
             "login": "shfshanyue",
             "url": "https://github.com/shfshanyue"
           }
+        },
+        {
+          "id": "IC_kwDODQzyOs4--C8f",
+          "body": "压缩的具体操作\r\n1. 去除多余字符，eg：空格，换行、注释\r\n2. 压缩变量名，函数名、属性名\r\n3. 使用更简单的表达，eg：合并声明、布尔值简化",
+          "star": {
+            "totalCount": 0
+          },
+          "author": {
+            "login": "1689851268",
+            "url": "https://github.com/1689851268"
+          }
         }
       ]
     },
@@ -21522,7 +22011,19 @@
     "title": "【Q636】你们项目中使用了哪些依赖/第三方库",
     "body": "",
     "comments": {
-      "nodes": []
+      "nodes": [
+        {
+          "id": "IC_kwDODQzyOs47ViZq",
+          "body": "lodash axios  echarts file-saver patch-package qs sortablejs vue-clipboard2 xlsx watermark-dom",
+          "star": {
+            "totalCount": 0
+          },
+          "author": {
+            "login": "Mikerui",
+            "url": "https://github.com/Mikerui"
+          }
+        }
+      ]
     },
     "labels": {
       "nodes": [
@@ -21864,7 +22365,7 @@
           "id": "IC_kwDODQzyOs40hz5T",
           "body": "``` js\r\nfunction chunk (list, size) {\r\n  const l = []\r\n  for (let i = 0; i < list.length; i++ ) {\r\n    const index = Math.floor(i / size)\r\n    l[index] ??= [];\r\n    l[index].push(list[i])\r\n  }\r\n  return l\r\n}\r\n\r\n```",
           "star": {
-            "totalCount": 2
+            "totalCount": 3
           },
           "author": {
             "login": "shfshanyue",
@@ -22071,6 +22572,39 @@
             "login": "heretic-G",
             "url": "https://github.com/heretic-G"
           }
+        },
+        {
+          "id": "IC_kwDODQzyOs4-U1fY",
+          "body": "//可重复的\r\nfunction liunum() {\r\n    let yanzheng = ''\r\n    for (let i = 0; i < 6; i++) {\r\n        let num = Math.floor(Math.random()*10)\r\n        yanzheng += num\r\n    }\r\n    return yanzheng\r\n}\r\nlet num = liunum()\r\nconsole.log('重复的',num);\r\n//不可重复的\r\nfunction liunum1() {\r\n    let yanzheng1 = ''\r\n    for (let j = 0; j < 6; j++) {\r\n        let num1 = Math.floor(Math.random()*10)\r\n        if (yanzheng1.indexOf(num1)==-1)yanzheng1 += num1\r\n        else j--;\r\n    }\r\n    return yanzheng1\r\n}\r\nlet num1 = liunum1()\r\nconsole.log('不重复的',num1);",
+          "star": {
+            "totalCount": 0
+          },
+          "author": {
+            "login": "liunengnengneng",
+            "url": "https://github.com/liunengnengneng"
+          }
+        },
+        {
+          "id": "IC_kwDODQzyOs4-dI4l",
+          "body": "```typescript\r\nconst randTo = (n: number) => ~~(Math.random() * (n + 1))\r\n\r\nconst shuffle = (list: Array<any>) => list.sort(() => Math.random() - 0.5)\r\n\r\n// 随机生成六位数的手机验证码(重复/不可重复)\r\nconst vc = ({ len = 6, repeat = true } = {}) => {\r\n  if (len > 10 && repeat === false) {\r\n    throw new Error('len should less equal than 10 if repeat is false')\r\n  }\r\n  if (repeat) {\r\n    return Array(len)\r\n      .fill(0)\r\n      .map(() => randTo(9))\r\n  } else {\r\n    return shuffle([...Array(10).keys()]).slice(0, len)\r\n  }\r\n}\r\n\r\nconsole.log(vc())\r\nconsole.log(vc({ len: 9 }))\r\nconsole.log(vc({ repeat: false }))\r\nconsole.log(vc({ len: 9, repeat: false }))\r\nconsole.log(vc({ len: 11, repeat: false }))\r\n```",
+          "star": {
+            "totalCount": 0
+          },
+          "author": {
+            "login": "ryanmoyo",
+            "url": "https://github.com/ryanmoyo"
+          }
+        },
+        {
+          "id": "IC_kwDODQzyOs4-n0la",
+          "body": "``` js\r\nconst random = (length) => Math.floor(Math.random() * length);\r\n\r\n// 重复\r\nconst randomCode = () => {\r\n  return [...new Array(6)].map((i) => random(10));\r\n};\r\n\r\n// 不重复\r\nconst randomUniqueCode = () => {\r\n  let arr = [...new Array(10)].map((_, index) => index);\r\n  return [...new Array(6)].map((i) => {\r\n    const selectIndex = random(arr.length);\r\n    return arr.splice(selectIndex, 1)[0];\r\n  });\r\n};\r\n```",
+          "star": {
+            "totalCount": 0
+          },
+          "author": {
+            "login": "createhappymemoryforlife",
+            "url": "https://github.com/createhappymemoryforlife"
+          }
         }
       ]
     },
@@ -22122,7 +22656,19 @@
     "title": "【Q647】Array 中那些 API 可改变自身",
     "body": "",
     "comments": {
-      "nodes": []
+      "nodes": [
+        {
+          "id": "IC_kwDODQzyOs4_LWCw",
+          "body": "增删改\r\npush，pop，shift，unshift，splice",
+          "star": {
+            "totalCount": 0
+          },
+          "author": {
+            "login": "oooooooyk",
+            "url": "https://github.com/oooooooyk"
+          }
+        }
+      ]
     },
     "labels": {
       "nodes": [
@@ -22189,6 +22735,17 @@
           "author": {
             "login": "heretic-G",
             "url": "https://github.com/heretic-G"
+          }
+        },
+        {
+          "id": "IC_kwDODQzyOs4-n2wt",
+          "body": "> ```js\r\n> const trim = str => str.trim || str.replace(/^\\s+|\\s+$/g, '')\r\n> ```\r\n\r\nconst trim = str => str.trim?.() || str.replace(/^\\s+|\\s+$/g, '')\r\n",
+          "star": {
+            "totalCount": 0
+          },
+          "author": {
+            "login": "createhappymemoryforlife",
+            "url": "https://github.com/createhappymemoryforlife"
           }
         }
       ]
@@ -22485,7 +23042,7 @@
           "id": "IC_kwDODQzyOs41CCva",
           "body": "bind/softBind/apply/call 都是this显式绑定的方法\r\n\r\n- bind会返回一个硬绑定的新函数，新函数会使用指定的第一个thisCtx去调用原始函数，并将其它参数传给原始函数。 硬绑定会降低函数的灵活性，在绑定之后不能通过显式或硬绑定的方式改变this，只能通过new改变\r\n- softBind 会对指定的函数进行封装，首先检查调用时的 this，如果 this 绑定到全局对象或者 undefined，那就用指定的thisCtx 去调用函数，否则不会修改 this  \r\n- apply和call功能相同，都是以指定的thisCtx和参数去执行方法，并返回原方法的返回值，只是apply中参数以数组传递\r\n```javascript\r\nFunction.prototype.myBind = function (ctx = globalThis) {\r\n  const fn = this;\r\n  const args = Array.from(arguments).slice(1);\r\n  function bound() {\r\n    if (this instanceof bound) {\r\n      fn.apply(this, args);\r\n    } else {\r\n      fn.apply(ctx, args);\r\n    }\r\n  }\r\n  bound.prototype = fn.prototype;\r\n  return bound;\r\n};\r\n```\r\n\r\n```javascript\r\nFunction.prototype.mySoftBind = function (ctx = globalThis) {\r\n  const fn = this;\r\n  const args = Array.from(arguments).slice(1);\r\n  function bound() {\r\n    if (!this || this === globalThis) {\r\n      fn.apply(ctx, args);\r\n    } else {\r\n      fn.apply(this, args);\r\n    }\r\n  }\r\n  bound.prototype = fn.prototype;\r\n  return bound;\r\n};\r\n```\r\n\r\n```javascript\r\nFunction.prototype.myCall = function (ctx = globalThis) {\r\n  const args = Array.from(arguments).slice(1);\r\n  const key = Symbol(\"key\");\r\n  ctx[key] = this;\r\n  const res=ctx[key](...args);\r\n  delete ctx[key]\r\n  return res\r\n};\r\n```\r\n```javascript\r\nFunction.prototype.myApply = function (ctx = globalThis) {\r\n  const args = arguments[1];\r\n  const key = Symbol(\"key\");\r\n  ctx[key] = this;\r\n  const res=ctx[key](...args);\r\n  delete ctx[key]\r\n  return res\r\n};\r\n```",
           "star": {
-            "totalCount": 1
+            "totalCount": 2
           },
           "author": {
             "login": "wussss",
@@ -22716,6 +23273,17 @@
           "author": {
             "login": "haotie1990",
             "url": "https://github.com/haotie1990"
+          }
+        },
+        {
+          "id": "IC_kwDODQzyOs48gW7i",
+          "body": "const render = function(template,data){\r\n\t\t return\ttemplate.replace(/\\{\\{(.*?)\\}\\}/g,($0,$1) => eval('data.' + $1))\r\n\t\t}",
+          "star": {
+            "totalCount": 1
+          },
+          "author": {
+            "login": "sunwenlong1995",
+            "url": "https://github.com/sunwenlong1995"
           }
         }
       ]
@@ -23163,7 +23731,7 @@
           "id": "IC_kwDODQzyOs40x20A",
           "body": "1. 对于 pv 量比较高的页面，比如b站等流量图也比较大的，采用ssr \r\n   采用 ssr 如何优化性能\r\n    - 性能瓶颈在于 react-dom render/hydrate 和 server 端的 renderToString \r\n    - 尽量减少 dom 结构， 采用流式渲染，jsonString 一个对象，而不是 literal 对象\r\n    - server 去获取数据\r\n    - 不同情况不同分析，减少主线程阻塞时间\r\n    - 减少不必要的应用逻辑在服务端运行\r\n2. 减少依赖和包的体积\r\n   - 利用 webpack 的 contenthash 缓存\r\n   -  重复依赖包处理，可以采用 pnpm\r\n   - 采用code splitting，减少首次请求体积\r\n   - 减少第三方依赖的体积\r\n   \r\n 3. FP (First Paint) 首次绘制\r\n  FCP (First Contentful Paint) 首次内容绘制\r\n  LCP (Largest Contentful Paint) 最大内容渲染\r\n  DCL (DomContentloaded)\r\n  FMP(First Meaningful Paint) 首次有效绘制\r\n  L (onLoad)\r\n  TTI (Time to Interactive) 可交互时间\r\n  TBT (Total Blocking Time) 页面阻塞总时长\r\n  FID (First Input Delay) 首次输入延迟\r\n  CLS (Cumulative Layout Shift) 累积布局偏移\r\n  SI (Speed Index)\r\n  一些性能指标可以监控性能\r\n\r\n4.网络 prefetch cdn ",
           "star": {
-            "totalCount": 0
+            "totalCount": 1
           },
           "author": {
             "login": "illumi520",
@@ -23654,6 +24222,17 @@
             "login": "heretic-G",
             "url": "https://github.com/heretic-G"
           }
+        },
+        {
+          "id": "IC_kwDODQzyOs4-AXoz",
+          "body": "```javascript\r\nfunction solution(n) {\r\n    const dp = Array.from({ length: 2 }, () => new Array(n + 1).fill(0));\r\n    for (let i = 1; i <= n; i++) {\r\n        dp[0][i] = i;\r\n        dp[1][i] = n;\r\n        for (let j = 1; j <= i; j++) {\r\n            dp[1][i] = Math.min(dp[1][i], Math.max(dp[0][j - 1], dp[1][i - j]) + 1);\r\n        }\r\n    }\r\n    return dp[1][n - 1];\r\n}\r\n```",
+          "star": {
+            "totalCount": 0
+          },
+          "author": {
+            "login": "chenxinan",
+            "url": "https://github.com/chenxinan"
+          }
         }
       ]
     },
@@ -23732,7 +24311,7 @@
       "nodes": [
         {
           "id": "IC_kwDODQzyOs41KJDN",
-          "body": "TODO",
+          "body": "1. `Reflect.ownKeys({ a: 3, b: 4})`\r\n2. `Object.keys({ a: 3, b: 4 })`",
           "star": {
             "totalCount": 0
           },
@@ -23750,6 +24329,17 @@
           "author": {
             "login": "DanielLeefu",
             "url": "https://github.com/DanielLeefu"
+          }
+        },
+        {
+          "id": "IC_kwDODQzyOs49q_DT",
+          "body": "普通对象可以通过添加一个`Symbol.iterator`属性，实现使用 `for of` 遍历\r\n```js\r\nconst obj = {a: 1, b: 2, c: 3}\r\n\r\nobj[Symbol.iterator] = function () {\r\n  let i = 0\r\n  const keys = Object.keys(this)\r\n  return {\r\n    next: () => {\r\n      return i <= keys.length - 1 ? \r\n        {value: this[keys[i++]], done: false} : \r\n        {value: undefined, done: true}\r\n    }\r\n  }\r\n}\r\n\r\nfor (let item of obj) {\r\n  console.log(item)\r\n}\r\n\r\n//   1\r\n//   2\r\n//   3\r\n```\r\n`for of` 遍历每次都会调用 `Symbol.iterator` 中的 `next` 方法",
+          "star": {
+            "totalCount": 0
+          },
+          "author": {
+            "login": "Yand-hi",
+            "url": "https://github.com/Yand-hi"
           }
         }
       ]
@@ -23998,6 +24588,28 @@
           "author": {
             "login": "Camliar",
             "url": "https://github.com/Camliar"
+          }
+        },
+        {
+          "id": "IC_kwDODQzyOs49lsNG",
+          "body": "```javascript\r\nfunction rand5 () {\r\n    return Math.random() * 6 | 0\r\n}\r\n\r\nfunction rand7 () {\r\n    while (true) {\r\n        let num = rand5() * 6 + rand5()\r\n        if (num < 32) {\r\n            return num % 8\r\n        }\r\n    } \r\n};\r\n```",
+          "star": {
+            "totalCount": 0
+          },
+          "author": {
+            "login": "heretic-G",
+            "url": "https://github.com/heretic-G"
+          }
+        },
+        {
+          "id": "IC_kwDODQzyOs4-AT8c",
+          "body": "```javascript\r\nfunction rand5 () {\r\n    return Math.random() * 6 | 0\r\n}\r\n\r\nfunction rand7 () {\r\n    return (rand5() & 1) * 4 + (rand5() & 1) * 2 + (rand5() & 1);\r\n};\r\n```",
+          "star": {
+            "totalCount": 0
+          },
+          "author": {
+            "login": "chenxinan",
+            "url": "https://github.com/chenxinan"
           }
         }
       ]
@@ -24397,6 +25009,17 @@
             "login": "Asarua",
             "url": "https://github.com/Asarua"
           }
+        },
+        {
+          "id": "IC_kwDODQzyOs47qgl1",
+          "body": "首先明确nodeCallback的规范：\r\n1、回调函数在主函数参数的位置是最后一个\r\n2、回调函数的第一个参数是error\r\n 例如\r\n```\r\nfunction main(err, b, c, callback) {\r\n  let data = b+c\r\n  callback(err,data)\r\n }\r\n```\r\n所以实现的思路就是：\r\n 把结果由原先的放在callback中返回，改成放在Promise中返回\r\n```\r\nconst promisify = (fnc) => (...args) => {\r\n  return new Promise((resolve, reject) => {\r\n    fnc.call(this, ...args, function (err, data) {\r\n      if (err) {\r\n        reject(err);\r\n      } else {\r\n        resolve(data);\r\n      }\r\n    });\r\n  });\r\n};\r\n```\r\n测试结果：\r\n```\r\nvar func1 = function (a, b, c, callback) {\r\n  let rst = a + b + c;\r\n  callback(null, rst);\r\n};\r\n```\r\n```\r\nvar func2 = promisify(func1);\r\nfunc2(1, 2, 3).then((rst) => {\r\n  console.log(\"rst\", rst);\r\n}); //输出6\r\n```",
+          "star": {
+            "totalCount": 0
+          },
+          "author": {
+            "login": "wangjiayan",
+            "url": "https://github.com/wangjiayan"
+          }
         }
       ]
     },
@@ -24528,6 +25151,28 @@
             "login": "mengliren666",
             "url": "https://github.com/mengliren666"
           }
+        },
+        {
+          "id": "IC_kwDODQzyOs48yOTk",
+          "body": "`0 1 2 3 4 5 6`",
+          "star": {
+            "totalCount": 0
+          },
+          "author": {
+            "login": "9527YL",
+            "url": "https://github.com/9527YL"
+          }
+        },
+        {
+          "id": "IC_kwDODQzyOs4-Dnpx",
+          "body": "之前看过PromiseA+源码，结果碰上这道题还是理解，我给大家找到了相应的知乎解答：https://www.zhihu.com/question/453677175。\r\n这边，我来阐述下我的理解：\r\n顺序执行 0 和 1 应该大家都没什么问题，所以现在问题变成了为什么return Promise 为什么产生了 2 次微任务？\r\n知乎评论里有人说：根据 promise/A+ ，结果应该为 0 1 2 4 3 5 6 ，也就是根据Promise/A++ 标准只产生了1次微任务。\r\n按照PromiseA+的规范，此处应该是2.3.2标准：`If x is a promise` ,根据A+准则的源码是以这么处理的：\r\n1. 遇到.then就创建一pending状态的Promise保存起来。\r\n2. 如果是一个普通的number类型，则直接用Promise.resolve(number)即可。\r\n    如果是 promise类型的话，需要做一个状态同步操作，代码如下：\r\n    其中 x 是接收的已经resolved 的 Promise，即(Promise.resolve(4))，而this指向我们刚创建的 pending 状态的 Promise \r\n```javascript\r\nresolveWithPromise(x) {\r\n    x.then(\r\n      result => {\r\n        this.resolve(result); // promise将结果给resolve\r\n      },\r\n      reason => {\r\n        this.reject(reason);\r\n      }\r\n    );\r\n```\r\n也就是说，这1个micro task的作用就是同步状态。\r\n\r\n至于还有一个微任务的产生原因是来自：v8和PromiseA+规范的差异。\r\nv8中的Promie实现是通过C++编写的，与promise/A+规范的不同之处在于，v8并没有对`x is a promise` 的情况做处理，而是只有对`x is an object`的处理。所以多了一步micro task：作用就是将 resolveWithPromise => resolveWithThenableObject，伪代码如下：\r\n```javascript\r\nif(x instanceOf MyPromise){\r\n    createPromiseResolveThenableJob // + micro task\r\n}\r\n```\r\n========================================================================\r\n以上仅仅只是我阅读知乎后的粗略理解，如果有说的不对的望指正！\r\n面试的时候只需要简单记住：如果resolve()的括号内的结果是一个promise的话，会多执行两个`micro task`\r\n类似的题目有：\r\n\r\n```javascript\r\nnew Promise(resolve => {\r\n    let resolvedPromise = Promise.resolve()\r\n    resolve(resolvedPromise)\r\n}).then(() => {\r\n    console.log('resolvePromise resolved')\r\n})\r\n\r\nPromise.resolve()\r\n   .then(() => { console.log('promise1') })\r\n   .then(() => { console.log('promise2') })\r\n   .then(() => { console.log('promise3') })\r\n```\r\n结果是：'resolvePromise resolved' 是在 'promise2' 后面打印出来的。\r\n\r\n\r\n\r\n",
+          "star": {
+            "totalCount": 0
+          },
+          "author": {
+            "login": "wangjs-jacky",
+            "url": "https://github.com/wangjs-jacky"
+          }
         }
       ]
     },
@@ -24549,7 +25194,7 @@
       "nodes": [
         {
           "id": "IC_kwDODQzyOs43RFL_",
-          "body": "`webpack` 的 runtime，也就是 webpack 最后生成的代码，做了以下三件事:\r\n\r\n1. `__webpack_modules__`: 维护一个所有模块的数组。将入口模块解析为 AST，根据 AST 深度优先搜索所有的模块，并构建出这个模块数组。每个模块都由一个包裹函数 `(module, module.exports, __webpack_require__)` 对模块进行包裹构成。\r\n2. `__webpack_require__(moduleId)`: 手动实现加载一个模块。对已加载过的模块进行缓存，对胃加载过的模块，执行 id 定位到 `__webpack_modules__` 中的包裹函数，执行并返回 `module.exports`，并缓存\r\n3. `__webpack_require__(0)`: 运行第一个模块，即运行入口模块\r\n\r\n另外，当涉及到多个 chunk 的打包方式中，比如 `code spliting`，webpack 中会有 `jsonp` 加载 chunk 的运行时代码。\r\n\r\n以下是 `webpack runtime` 的最简代码，配置示例可见 [node-examples](https://github.com/shfshanyue/node-examples/blob/master/engineering/webpack/cjs/example/main.js)\r\n\r\n``` js\r\n/******/ var __webpack_modules__ = ([\r\n/* 0 */,\r\n/* 1 */\r\n/***/ ((module) => {\r\n\r\nmodule.exports = (...args) => args.reduce((x, y) => x + y, 0)\r\n\r\n/***/ })\r\n/******/ ]);\r\n/************************************************************************/\r\n/******/ // The module cache\r\n/******/ var __webpack_module_cache__ = {};\r\n/******/ \r\n/******/ // The require function\r\n/******/ function __webpack_require__(moduleId) {\r\n/******/ \t// Check if module is in cache\r\n/******/ \tvar cachedModule = __webpack_module_cache__[moduleId];\r\n/******/ \tif (cachedModule !== undefined) {\r\n/******/ \t\treturn cachedModule.exports;\r\n/******/ \t}\r\n/******/ \t// Create a new module (and put it into the cache)\r\n/******/ \tvar module = __webpack_module_cache__[moduleId] = {\r\n/******/ \t\t// no module.id needed\r\n/******/ \t\t// no module.loaded needed\r\n/******/ \t\texports: {}\r\n/******/ \t};\r\n/******/ \r\n/******/ \t// Execute the module function\r\n/******/ \t__webpack_modules__[moduleId](module, module.exports, __webpack_require__);\r\n/******/ \r\n/******/ \t// Return the exports of the module\r\n/******/ \treturn module.exports;\r\n/******/ }\r\n/******/ \r\n/************************************************************************/\r\nvar __webpack_exports__ = {};\r\n// This entry need to be wrapped in an IIFE because it need to be isolated against other modules in the chunk.\r\n(() => {\r\nconst sum = __webpack_require__(1)\r\n\r\nsum(3, 8)\r\n\r\n})();\r\n```\r\n\r\n对 `webpack runtime` 做进一步的精简，代码如下\r\n\r\n``` js\r\nconst __webpack_modules__ = [() => {}]\r\nconst __webpack_require = id => {\r\n  const module = { exports: {} }\r\n  const m = __webpack_modules__[id](module)\r\n  return module.exports\r\n}\r\n\r\n__webpack_require__(0)\r\n```",
+          "body": "## Webpack Runtime\r\n\r\n`webpack` 的 runtime，也就是 webpack 最后生成的代码，做了以下三件事:\r\n\r\n1. `__webpack_modules__`: 维护一个所有模块的数组。将入口模块解析为 AST，根据 AST 深度优先搜索所有的模块，并构建出这个模块数组。每个模块都由一个包裹函数 `(module, module.exports, __webpack_require__)` 对模块进行包裹构成。\r\n2. `__webpack_require__(moduleId)`: 手动实现加载一个模块。对已加载过的模块进行缓存，对未加载过的模块，执行 id 定位到 `__webpack_modules__` 中的包裹函数，执行并返回 `module.exports`，并缓存\r\n3. `__webpack_require__(0)`: 运行第一个模块，即运行入口模块\r\n\r\n另外，当涉及到多个 chunk 的打包方式中，比如 `code spliting`，webpack 中会有 `jsonp` 加载 chunk 的运行时代码。\r\n\r\n以下是 `webpack runtime` 的最简代码，配置示例可见 [node-examples](https://github.com/shfshanyue/node-examples/blob/master/engineering/webpack/cjs/example/main.js)\r\n\r\n``` js\r\n/******/ var __webpack_modules__ = ([\r\n/* 0 */,\r\n/* 1 */\r\n/***/ ((module) => {\r\n\r\nmodule.exports = (...args) => args.reduce((x, y) => x + y, 0)\r\n\r\n/***/ })\r\n/******/ ]);\r\n/************************************************************************/\r\n/******/ // The module cache\r\n/******/ var __webpack_module_cache__ = {};\r\n/******/ \r\n/******/ // The require function\r\n/******/ function __webpack_require__(moduleId) {\r\n/******/ \t// Check if module is in cache\r\n/******/ \tvar cachedModule = __webpack_module_cache__[moduleId];\r\n/******/ \tif (cachedModule !== undefined) {\r\n/******/ \t\treturn cachedModule.exports;\r\n/******/ \t}\r\n/******/ \t// Create a new module (and put it into the cache)\r\n/******/ \tvar module = __webpack_module_cache__[moduleId] = {\r\n/******/ \t\t// no module.id needed\r\n/******/ \t\t// no module.loaded needed\r\n/******/ \t\texports: {}\r\n/******/ \t};\r\n/******/ \r\n/******/ \t// Execute the module function\r\n/******/ \t__webpack_modules__[moduleId](module, module.exports, __webpack_require__);\r\n/******/ \r\n/******/ \t// Return the exports of the module\r\n/******/ \treturn module.exports;\r\n/******/ }\r\n/******/ \r\n/************************************************************************/\r\nvar __webpack_exports__ = {};\r\n// This entry need to be wrapped in an IIFE because it need to be isolated against other modules in the chunk.\r\n(() => {\r\nconst sum = __webpack_require__(1)\r\n\r\nsum(3, 8)\r\n\r\n})();\r\n```\r\n\r\n对 `webpack runtime` 做进一步的精简，代码如下\r\n\r\n``` js\r\nconst __webpack_modules__ = [() => {}]\r\nconst __webpack_require__ = id => {\r\n  const module = { exports: {} }\r\n  const m = __webpack_modules__[id](module, __webpack_require__)\r\n  return module.exports\r\n}\r\n\r\n__webpack_require__(0)\r\n```\r\n\r\n使用动画表示 Webpack 的输入输出:\r\n\r\n![](https://cdn.jsdelivr.net/gh/shfshanyue/assets/2021-12-28/bundle-webpack.0693ce.gif)\r\n\r\n## Rollup\r\n\r\n在 Rollup 中，并不会将所有模块置于 `modules` 中使用 Module Wrapper 进行维护，**它仅仅将所有模块铺平展开**。\r\n\r\n试举一例:\r\n\r\n``` js\r\n// index.js\r\nimport name from './name'\r\nconsole.log(name)\r\n```\r\n\r\n``` js\r\n// name.js\r\nconst name = 'shanyue'\r\nexport default name\r\n```\r\n\r\n在打包后，直接把所有模块平铺展开即可，可见[实时示例](https://rollupjs.org/repl/?version=2.62.0&shareable=JTdCJTIybW9kdWxlcyUyMiUzQSU1QiU3QiUyMm5hbWUlMjIlM0ElMjJtYWluLmpzJTIyJTJDJTIyY29kZSUyMiUzQSUyMmltcG9ydCUyMG5hbWUlMjBmcm9tJTIwJy4lMkZuYW1lJyU1Q25jb25zb2xlLmxvZyhuYW1lKSUyMiUyQyUyMmlzRW50cnklMjIlM0F0cnVlJTdEJTJDJTdCJTIybmFtZSUyMiUzQSUyMm5hbWUuanMlMjIlMkMlMjJjb2RlJTIyJTNBJTIyY29uc3QlMjBuYW1lJTIwJTNEJTIwJ3NoYW55dWUnJTVDbmV4cG9ydCUyMGRlZmF1bHQlMjBuYW1lJTIyJTJDJTIyaXNFbnRyeSUyMiUzQWZhbHNlJTdEJTVEJTJDJTIyb3B0aW9ucyUyMiUzQSU3QiUyMmZvcm1hdCUyMiUzQSUyMmVzJTIyJTJDJTIybmFtZSUyMiUzQSUyMm15QnVuZGxlJTIyJTJDJTIyYW1kJTIyJTNBJTdCJTIyaWQlMjIlM0ElMjIlMjIlN0QlMkMlMjJnbG9iYWxzJTIyJTNBJTdCJTdEJTdEJTJDJTIyZXhhbXBsZSUyMiUzQW51bGwlN0Q=)\r\n\r\n``` js\r\n// output.js\r\nconst name = 'shanyue'\r\nconsole.log(name)\r\n```\r\n\r\n对于 Rollup 这种方案，当两个模块中发生变量冲突如何解决？很简单，直接重新命名，看示例:\r\n\r\n![](https://cdn.jsdelivr.net/gh/shfshanyue/assets/2021-12-28/clipboard-9429.b9ad82.webp)\r\n\r\n使用动画表示 Rollup 的输入输出:\r\n\r\n![](https://cdn.jsdelivr.net/gh/shfshanyue/assets/2021-12-28/bundle-rollup.60cb6a.gif)",
           "star": {
             "totalCount": 0
           },
@@ -24851,7 +25496,19 @@
     "title": "【Q714】如何处理白屏错误页的监控的？",
     "body": "用户反馈白屏了，你怎么处理？",
     "comments": {
-      "nodes": []
+      "nodes": [
+        {
+          "id": "IC_kwDODQzyOs48v_HS",
+          "body": "1. 排查兼容性。大部分原因是因为低端机型/浏览器低版本 polyfill的问题导致报错\r\n2. 排查网络。js是否下载成功 cdn是否生效\r\n3. 做js错误上报。分析是否存在代码缺陷\r\n4. 做重试逻辑/诱导用户重试\r\n5. Error Boundry避免整页崩溃。限制在组件级别",
+          "star": {
+            "totalCount": 0
+          },
+          "author": {
+            "login": "akbchris",
+            "url": "https://github.com/akbchris"
+          }
+        }
+      ]
     },
     "labels": {
       "nodes": [
@@ -24871,7 +25528,7 @@
       "nodes": [
         {
           "id": "IC_kwDODQzyOs44yw-G",
-          "body": "\r\n在 npm 中，使用 `npm scripts` 可以组织整个前端工程的工具链。\r\n\r\n``` js\r\n{\r\n  start: 'serve ./dist',\r\n  build: 'webpack',\r\n  lint: 'eslint'\r\n}\r\n```\r\n\r\n除了可自定义 `npm script` 外，npm 附带许多内置 scripts\r\n\r\n``` bash\r\nnpm install\r\n\r\nnpm test\r\n\r\nnpm publish\r\n```\r\n\r\n1. 在某个 npm 库安装结束后，自动执行操作如何处理？\r\n1. npm publish 发布 npm 库时将发布打包后文件，如果遗漏了打包过程如何处理，如何在发布前自动打包？\r\n\r\n这就要涉及到一个 npm script 的生命周期\r\n\r\n## 一个 npm script 的生命周期\r\n\r\n当我们执行任意 `npm run` 脚本时，将自动触发 `pre`/`post` 的生命周期。\r\n\r\n当手动执行 `npm run abc` 时，将在此之前自动执行 `npm run preabc`，在此之后自动执行 `npm run postabc`。\r\n\r\n``` js\r\n// 自动执行\r\nnpm run preabc\r\n\r\nnpm run abc\r\n\r\n// 自动执行\r\nnpm run postabc\r\n```\r\n\r\n[patch-package](https://github.com/ds300/patch-package) 一般会放到 `postinstall` 中。\r\n\r\n``` js\r\n{\r\n  postinstall: 'patch-package'\r\n}\r\n```\r\n\r\n而发包的生命周期更为复杂，当执行 `npm publish`，将自动执行以下脚本。\r\n\r\n+ **prepublishOnly**: 最重要的一个生命周期。\r\n+ prepack\r\n+ prepare\r\n+ postpack\r\n+ publish\r\n+ postpublish\r\n\r\n当然你无需完全记住所有的生命周期，如果你需要在发包之前自动做一些事情，如测试、构建等，请在 `prepulishOnly` 中完成。\r\n\r\n``` js\r\n{\r\n  prepublishOnly: 'npm run test && npm run build'\r\n}\r\n```\r\n\r\n## 一个最常用的生命周期\r\n\r\n`prepare`\r\n\r\n1. `npm install` 之后自动执行\r\n1. `npm publish` 之前自动执行\r\n\r\n比如 `husky`\r\n\r\n``` js\r\n{\r\n  prepare: 'husky install'\r\n}\r\n```",
+          "body": "在 npm 中，使用 `npm scripts` 可以组织整个前端工程的工具链。\r\n\r\n``` js\r\n{\r\n  start: 'serve ./dist',\r\n  build: 'webpack',\r\n  lint: 'eslint'\r\n}\r\n```\r\n\r\n除了可自定义 `npm script` 外，npm 附带许多内置 scripts，他们无需带 `npm run`，可直接通过 `npm <script>` 执行\r\n\r\n``` bash\r\n$ npm install\r\n$ npm test\r\n$ npm publish\r\n```\r\n\r\n我们在实际工作中会遇到以下几个问题：\r\n\r\n1. 在某个 npm 库安装结束后，自动执行操作如何处理？\r\n1. npm publish 发布 npm 库时将发布打包后文件，如果遗漏了打包过程如何处理，如何在发布前自动打包？\r\n\r\n这就要涉及到一个 npm script 的生命周期\r\n\r\n## 一个 npm script 的生命周期\r\n\r\n当我们执行任意 `npm run` 脚本时，将自动触发 `pre`/`post` 的生命周期。\r\n\r\n当手动执行 `npm run abc` 时，将在此之前自动执行 `npm run preabc`，在此之后自动执行 `npm run postabc`。\r\n\r\n``` js\r\n// 自动执行\r\nnpm run preabc\r\n\r\nnpm run abc\r\n\r\n// 自动执行\r\nnpm run postabc\r\n```\r\n\r\n[patch-package](https://github.com/ds300/patch-package) 一般会放到 `postinstall` 中。\r\n\r\n``` js\r\n{\r\n  postinstall: 'patch-package'\r\n}\r\n```\r\n\r\n而发包的生命周期更为复杂，当执行 `npm publish`，将自动执行以下脚本。\r\n\r\n+ **prepublishOnly**: 最重要的一个生命周期。\r\n+ prepack\r\n+ prepare\r\n+ postpack\r\n+ publish\r\n+ postpublish\r\n\r\n当然你无需完全记住所有的生命周期，如果你需要在发包之前自动做一些事情，如测试、构建等，请在 `prepulishOnly` 中完成。\r\n\r\n``` js\r\n{\r\n  prepublishOnly: 'npm run test && npm run build'\r\n}\r\n```\r\n\r\n## 一个最常用的生命周期\r\n\r\n`prepare`\r\n\r\n1. `npm install` 之后自动执行\r\n1. `npm publish` 之前自动执行\r\n\r\n比如 `husky`\r\n\r\n``` js\r\n{\r\n  prepare: 'husky install'\r\n}\r\n```\r\n\r\n## npm script 钩子的风险\r\n\r\n假设某一个第三方库的 `npm postinstall`  为 `rm -rf /`，那岂不是又很大的风险?\r\n\r\n``` js\r\n{\r\n  postinstall: 'rm -rf /'\r\n}\r\n```\r\n\r\n实际上，确实有很多 npm package 被攻击后，就是通过 `npm postinstall` 自动执行一些事，比如挖矿等。\r\n\r\n如果 npm 可以限制某些库的某些 hooks 执行，则可以解决这个问题。",
           "star": {
             "totalCount": 0
           },
@@ -24940,7 +25597,7 @@
       "nodes": [
         {
           "id": "IC_kwDODQzyOs45Lqiz",
-          "body": "如何确保所有 `npm install` 的依赖都是安全的？\r\n\r\n当有一个库偷偷在你的笔记本后台挖矿怎么办？\r\n\r\n比如，不久前一个周下载量超过八百万的库被侵入，它在你的笔记本运行时会偷偷挖矿。\r\n\r\n![](https://cdn.jsdelivr.net/gh/shfshanyue/assets/2021-11-03/clipboard-0833.d9da75.webp)\r\n\r\n## Audit\r\n\r\n`Audit`，审计，检测你的所有依赖是否安全。`npm audit`/`yarn audit` 均有效。\r\n\r\n通过审计，可看出有风险的 `package`、依赖库的依赖链、风险原因及其解决方案。\r\n\r\n``` bash\r\n$ npm audit\r\n┌───────────────┬──────────────────────────────────────────────────────────────┐\r\n│ high          │ Regular Expression Denial of Service in trim                 │\r\n├───────────────┼──────────────────────────────────────────────────────────────┤\r\n│ Package       │ trim                                                         │\r\n├───────────────┼──────────────────────────────────────────────────────────────┤\r\n│ Patched in    │ >=0.0.3                                                      │\r\n├───────────────┼──────────────────────────────────────────────────────────────┤\r\n│ Dependency of │ @mdx-js/loader                                               │\r\n├───────────────┼──────────────────────────────────────────────────────────────┤\r\n│ Path          │ @mdx-js/loader > @mdx-js/mdx > remark-mdx > remark-parse >   │\r\n│               │ trim                                                         │\r\n├───────────────┼──────────────────────────────────────────────────────────────┤\r\n│ More info     │ https://www.npmjs.com/advisories/1002775                     │\r\n└───────────────┴──────────────────────────────────────────────────────────────┘\r\n76 vulnerabilities found - Packages audited: 1076\r\nSeverity: 49 Moderate | 27 High\r\n✨  Done in 4.60s.\r\n```\r\n\r\n你可以在我的笔记本上挖矿，但绝不能在生产环境服务器下挖矿，此时可使用以下两条命令。\r\n\r\n``` bash\r\n$ npm audit production\r\n\r\n$ yarn audit dependencies\r\n```\r\n\r\n![Audit](https://cdn.jsdelivr.net/gh/shfshanyue/assets/2021-11-03/clipboard-1904.f4c916.webp)\r\n\r\n通过 `npm audit fix` 可以自动修复该库的风险，原理就是升级依赖库，升级至已修复了风险的版本号。\r\n\r\n``` bash\r\n$ npm audit fix\r\n```\r\n\r\n`yarn audit` 无法自动修复，需要手动更新版本号，不过不够智能。\r\n\r\n[synk](https://snyk.io/) 是一个高级版的 `npm audit`，可自动修复，且支持 CICD 集成与多种语言。\r\n\r\n\r\n``` bash\r\n$ npx snyk\r\n\r\n$ npx wizard\r\n```\r\n\r\n![](https://cdn.jsdelivr.net/gh/shfshanyue/assets/2021-11-03/clipboard-1409.96de76.webp)\r\n\r\n## CI 机器人\r\n\r\n可通过 CI/gitlab/github 中配置机器人，使他们每天轮询一次检查仓库的依赖中是否有风险。\r\n\r\n![Github 机器人](https://cdn.jsdelivr.net/gh/shfshanyue/assets/2021-11-03/clipboard-4186.0dac46.webp)\r\n\r\n在 Github 中，可单独设置 `dependabot` 机器人，在仓库设置中开启小机器人，当它检测到有问题时，会自动向该仓库提交 PR。\r\n\r\n![dependabot](https://cdn.jsdelivr.net/gh/shfshanyue/assets/2021-11-03/clipboard-6581.08f1c2.webp)\r\n\r\n而它的解决方案也是升级版本号。\r\n\r\n![Github Bot 提的 PR](https://cdn.jsdelivr.net/gh/shfshanyue/assets/2021-11-03/clipboard-8617.e80863.webp)\r\n",
+          "body": "如何确保所有 `npm install` 的依赖都是安全的？\r\n\r\n当有一个库偷偷在你的笔记本后台挖矿怎么办？\r\n\r\n比如，不久前一个周下载量超过八百万的库被侵入，它在你的笔记本运行时会偷偷挖矿。\r\n\r\n![](https://cdn.jsdelivr.net/gh/shfshanyue/assets/2021-11-03/clipboard-0833.d9da75.webp)\r\n\r\n## Audit\r\n\r\n`Audit`，审计，检测你的所有依赖是否安全。`npm audit`/`yarn audit` 均有效。\r\n\r\n通过审计，可看出有风险的 `package`、依赖库的依赖链、风险原因及其解决方案。\r\n\r\n``` bash\r\n$ npm audit\r\n┌───────────────┬──────────────────────────────────────────────────────────────┐\r\n│ high          │ Regular Expression Denial of Service in trim                 │\r\n├───────────────┼──────────────────────────────────────────────────────────────┤\r\n│ Package       │ trim                                                         │\r\n├───────────────┼──────────────────────────────────────────────────────────────┤\r\n│ Patched in    │ >=0.0.3                                                      │\r\n├───────────────┼──────────────────────────────────────────────────────────────┤\r\n│ Dependency of │ @mdx-js/loader                                               │\r\n├───────────────┼──────────────────────────────────────────────────────────────┤\r\n│ Path          │ @mdx-js/loader > @mdx-js/mdx > remark-mdx > remark-parse >   │\r\n│               │ trim                                                         │\r\n├───────────────┼──────────────────────────────────────────────────────────────┤\r\n│ More info     │ https://www.npmjs.com/advisories/1002775                     │\r\n└───────────────┴──────────────────────────────────────────────────────────────┘\r\n76 vulnerabilities found - Packages audited: 1076\r\nSeverity: 49 Moderate | 27 High\r\n✨  Done in 4.60s.\r\n```\r\n\r\n你可以在我的笔记本上挖矿，但绝不能在生产环境服务器下挖矿，此时可使用以下两条命令。\r\n\r\n``` bash\r\n$ npm audit production\r\n\r\n$ yarn audit dependencies\r\n```\r\n\r\n![Audit](https://cdn.jsdelivr.net/gh/shfshanyue/assets/2021-11-03/clipboard-1904.f4c916.webp)\r\n\r\n通过 `npm audit fix` 可以自动修复该库的风险，原理就是升级依赖库，升级至已修复了风险的版本号。\r\n\r\n``` bash\r\n$ npm audit fix\r\n```\r\n\r\n`yarn audit` 无法自动修复，需要使用 `yarn upgrade` 手动更新版本号，不够智能。\r\n\r\n[synk](https://snyk.io/) 是一个高级版的 `npm audit`，可自动修复，且支持 CICD 集成与多种语言。\r\n\r\n\r\n``` bash\r\n$ npx snyk\r\n\r\n$ npx wizard\r\n```\r\n\r\n![](https://cdn.jsdelivr.net/gh/shfshanyue/assets/2021-11-03/clipboard-1409.96de76.webp)\r\n\r\n## CI 机器人\r\n\r\n可通过 CI/gitlab/github 中配置机器人，使他们每天轮询一次检查仓库的依赖中是否有风险。\r\n\r\n![Github 机器人](https://cdn.jsdelivr.net/gh/shfshanyue/assets/2021-11-03/clipboard-4186.0dac46.webp)\r\n\r\n在 Github 中，可单独设置 `dependabot` 机器人，在仓库设置中开启小机器人，当它检测到有问题时，会自动向该仓库提交 PR。\r\n\r\n![dependabot](https://cdn.jsdelivr.net/gh/shfshanyue/assets/2021-11-03/clipboard-6581.08f1c2.webp)\r\n\r\n而它的解决方案也是升级版本号。\r\n\r\n![Github Bot 提的 PR](https://cdn.jsdelivr.net/gh/shfshanyue/assets/2021-11-03/clipboard-8617.e80863.webp)\r\n",
           "star": {
             "totalCount": 2
           },
@@ -25056,7 +25713,29 @@
       "nodes": [
         {
           "id": "IC_kwDODQzyOs4505c4",
-          "body": "\r\n## 为何有人说第三方库不需要提交 package-lock.json/yarn.lock？\r\n\r\n> 该观点仅对第三方库的 `dependencies` 有效\r\n\r\n答: 你自己项目中所有依赖都会根据 lockfile 被锁死，**但并不会依照你第三方依赖的 lockfile**。\r\n\r\n试举一例:\r\n\r\n1. 项目中依赖 `react@^17.0.2`\r\n2. 而 `react@17.0.2` 依赖 `object-assign@^4.1.0`\r\n\r\n在 React 自身的 `yarn.lock` 中版本锁定依赖如下:\r\n\r\n``` bash\r\nreact@17.0.2\r\n└── object-assign@4.1.0 (PS: 请注意该版本号)\r\n```\r\n\r\n而在个人业务项目中 `yarn.lock` 中版本锁定依赖如下:\r\n\r\n``` bash\r\nApplication\r\n└── react@17.0.2\r\n    └── object-assign@4.99.99 (PS: 请注意该版本号)\r\n```\r\n\r\n**此时个人业务项目中 `object-assign@4.99.99` 与 React 中 `object-assign@4.1.0` 不符，将有可能出现问题**。\r\n\r\n此时，即使第三方库存在 `lockfile`，但也有着间接依赖(如此时的 `object-assign`，是第三方的依赖，个人业务项目中的依赖的依赖)不可控的问题。\r\n\r\n## 第三方库如何解决潜在的间接依赖不可控问题\r\n\r\n可参考 `next.js` 的解决方案。\r\n\r\n> [next.js 源码](https://github.com/vercel/next.js/tree/canary/packages/next) 点击此处\r\n\r\n1. 将所有依赖中的版本号在 `package.json` 中锁死。可见 [package.json](https://github.com/vercel/next.js/tree/canary/packages/next/package.json)\r\n1. 将部分依赖直接编译后直接引入，而非通过依赖的方式，如 `webpack`、`babel` 等。可见目录 [next/compiled](https://github.com/vercel/next.js/tree/canary/packages/next/compiled)\r\n\r\n以下是一部分 `package.json`\r\n\r\n``` js\r\n{\r\n  \"dependencies\": {\r\n    \"@babel/runtime\": \"7.15.4\",\r\n    \"@hapi/accept\": \"5.0.2\",\r\n    \"@napi-rs/triples\": \"1.0.3\"\r\n  }\r\n}\r\n```\r\n\r\n除了参考 `next.js` 直接锁死版本号方式外，还可以仍然按照 `^x.x.x` 加勤加维护并时时更新 `depencencies`\r\n\r\n## 总结\r\n\r\n`lockfile` 对于第三方库仍然必不可少。可见 `react`、`next.js`、`webpack` 均有 `yarn.lock`。(PS: 可见 yarn 的受欢迎程度，另外 vue3 采用了 pnpm)\r\n\r\n1. 第三方库的 `devDependencies` 必须锁定，这样 Contributor 可根据 lockfile 很容易将项目跑起来。\r\n2. 第三方库的 `dependencies` 虽然有可能存在不可控问题，但是可通过锁死 `package.json` 依赖或者勤加更新的方式来解决。",
+          "body": "## 为何有人说第三方库不需要提交 package-lock.json/yarn.lock？\r\n\r\n> 该观点仅对第三方库的 `dependencies` 有效\r\n\r\n答: 你自己项目中所有依赖都会根据 lockfile 被锁死，**但并不会依照你第三方依赖的 lockfile**。\r\n\r\n试举一例:\r\n\r\n1. 项目中依赖 `react@^17.0.2`\r\n2. 而 `react@17.0.2` 依赖 `object-assign@^4.1.0`\r\n\r\n在 React 自身的 `yarn.lock` 中版本锁定依赖如下:\r\n\r\n``` bash\r\nreact@17.0.2\r\n└── object-assign@4.1.0 (PS: 请注意该版本号)\r\n```\r\n\r\n而在个人业务项目中 `yarn.lock` 中版本锁定依赖如下:\r\n\r\n``` bash\r\nApplication\r\n└── react@17.0.2\r\n    └── object-assign@4.99.99 (PS: 请注意该版本号)\r\n```\r\n\r\n**此时个人业务项目中 `object-assign@4.99.99` 与 React 中 `object-assign@4.1.0` 不符，将有可能出现问题**。\r\n\r\n此时，即使第三方库存在 `lockfile`，但也有着间接依赖(如此时的 `object-assign`，是第三方的依赖，个人业务项目中的依赖的依赖)不可控的问题。\r\n\r\n## 第三方库如何解决潜在的间接依赖不可控问题\r\n\r\n可参考 `next.js` 的解决方案。\r\n\r\n> [next.js 源码](https://github.com/vercel/next.js/tree/canary/packages/next) 点击此处\r\n\r\n1. 将所有依赖中的版本号在 `package.json` 中锁死。可见 [package.json](https://github.com/vercel/next.js/tree/canary/packages/next/package.json)\r\n1. 将部分依赖直接编译后直接引入，而非通过依赖的方式，如 `webpack`、`babel` 等。可见目录 [next/compiled](https://github.com/vercel/next.js/tree/canary/packages/next/compiled)\r\n\r\n以下是一部分 `package.json`\r\n\r\n``` js\r\n{\r\n  \"dependencies\": {\r\n    \"@babel/runtime\": \"7.15.4\",\r\n    \"@hapi/accept\": \"5.0.2\",\r\n    \"@napi-rs/triples\": \"1.0.3\"\r\n  }\r\n}\r\n```\r\n\r\n除了参考 `next.js` 直接锁死版本号方式外，还可以仍然按照 `^x.x.x` 加勤加维护并时时更新 `depencencies`\r\n\r\n## 总结\r\n\r\n`lockfile` 对于第三方库仍然必不可少。可见 `react`、`next.js`、`webpack` 均有 `yarn.lock`。(PS: 可见 yarn 的受欢迎程度，另外 vue3 采用了 pnpm)\r\n\r\n1. 第三方库的 `devDependencies` 必须在 lockfile 中锁定，这样 Contributor 可根据 lockfile 很容易将项目跑起来。\r\n2. 第三方库的 `dependencies` 虽然有可能存在不可控问题，但是可通过锁死 `package.json` 依赖或者勤加更新的方式来解决。",
+          "star": {
+            "totalCount": 0
+          },
+          "author": {
+            "login": "shfshanyue",
+            "url": "https://github.com/shfshanyue"
+          }
+        },
+        {
+          "id": "IC_kwDODQzyOs47MS2c",
+          "body": "对于业务开发者而言第三方库是否锁死自己无法决定吗？ 需要库的开发者自觉处理，请问大佬是这样吗",
+          "star": {
+            "totalCount": 0
+          },
+          "author": {
+            "login": "xiyuanyuan",
+            "url": "https://github.com/xiyuanyuan"
+          }
+        },
+        {
+          "id": "IC_kwDODQzyOs47MXpw",
+          "body": "@xiyuanyuan 不对，恰好相反。我们是对于间接依赖而言的，在业务方可以锁死，但是库的开发者无法决定他们的依赖在我们业务方的锁死版本号",
           "star": {
             "totalCount": 0
           },
@@ -25220,6 +25899,17 @@
             "login": "shfshanyue",
             "url": "https://github.com/shfshanyue"
           }
+        },
+        {
+          "id": "IC_kwDODQzyOs49jEF1",
+          "body": "补充三点 \r\n\r\n1.module默认是defer的加载和执行方式\r\n\r\n2.这里会存在单独的module的域不会污染到全局\r\n\r\n3.直接是strict\r\n\r\n",
+          "star": {
+            "totalCount": 0
+          },
+          "author": {
+            "login": "heretic-G",
+            "url": "https://github.com/heretic-G"
+          }
         }
       ]
     },
@@ -25300,7 +25990,19 @@
     "title": "【Q729】如何分析前端打包体积",
     "body": "",
     "comments": {
-      "nodes": []
+      "nodes": [
+        {
+          "id": "IC_kwDODQzyOs4_tVD3",
+          "body": "1. 安装用于分析包的模块\r\n\r\n```shell\r\nnpm install webpack-bundle-analyzer --save-dev\r\n```\r\n\r\n2. vue.config.js 新增内容\r\n\r\n```js\r\nmodule.exports = {\r\n  chainWebpack: config => {\r\n    if(process.env.analyzer) {\r\n      config\r\n        .plugin(\"webpack-bundle-analyzer\")\r\n        .use(require(\"webpack-bundle-analyzer\").BundleAnalyzerPlugin)\r\n    }\r\n  }\r\n}\r\n```\r\n\r\n3. package.json 新加一条 script -- \"analyzer\"\r\n\r\n```js\r\n\"scripts\": {\r\n  \"analyzer\": \"set analyzer=true && vue-cli-service build\" \r\n}\r\n```\r\n\r\n4. 命令行下输入\r\n\r\n```shell\r\nnpm run analyzer\r\n```\r\n\r\n如果需要修改默认端口，可按如下修改配置\r\n\r\n```js\r\nconst BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin\r\n \r\nmodule.exports = {\r\n  chainWebpack: config => {\r\n    if(process.env.analyzer)\r\n      config\r\n        .plugin('webpack-bundle-analyzer')\r\n        .use(new BundleAnalyzerPlugin({ analyzerPort : 7888 }))\r\n  }\r\n}\r\n```\r\n",
+          "star": {
+            "totalCount": 0
+          },
+          "author": {
+            "login": "wenreq",
+            "url": "https://github.com/wenreq"
+          }
+        }
+      ]
     },
     "labels": {
       "nodes": [
@@ -25328,6 +26030,17 @@
             "login": "shfshanyue",
             "url": "https://github.com/shfshanyue"
           }
+        },
+        {
+          "id": "IC_kwDODQzyOs4-DTzb",
+          "body": "你好，请问下 token流 怎么理解这个名词？因为通常理解的token就是一个唯一的字符串，流，一般想到的是什么文件流什么的。一些什么序列化相关的，而token流说是一个数组，那就是说是由很多字符串组成的一个数组吗？为什么不直接说是一个数组反而要说是token流，为什么要提到 token 以及流（有点咬文嚼字了:( ），谢谢~~",
+          "star": {
+            "totalCount": 0
+          },
+          "author": {
+            "login": "wenhui7788",
+            "url": "https://github.com/wenhui7788"
+          }
         }
       ]
     },
@@ -25346,7 +26059,19 @@
     "title": "【Q731】简述 browserslist 的意义",
     "body": "",
     "comments": {
-      "nodes": []
+      "nodes": [
+        {
+          "id": "IC_kwDODQzyOs471Z8f",
+          "body": "browserslist 是在不同的前端工具之间共用目标浏览器和 node 版本的配置工具。\r\n相当于给 Babel、PostCSS、ESLint、StyleLint 等这些前端工具预设一个浏览器支持范围，这些工具转换或检查代码时会参考这个范围。",
+          "star": {
+            "totalCount": 0
+          },
+          "author": {
+            "login": "YaoHuangMark",
+            "url": "https://github.com/YaoHuangMark"
+          }
+        }
+      ]
     },
     "labels": {
       "nodes": [
@@ -25363,7 +26088,19 @@
     "title": "【Q732】简述 bundless 的优势与不足",
     "body": "",
     "comments": {
-      "nodes": []
+      "nodes": [
+        {
+          "id": "IC_kwDODQzyOs4_dpcR",
+          "body": "Bundleless 的优势。\r\n1.项目启动快。因为不需要过多的打包，只需要处理修改后的单个文件，所以响应速度是 O(1) 级别，刷新即可即时生效，速度很快。\r\n2.浏览器加载块。利用浏览器自主加载的特性，跳过打包的过程。\r\n3.本地文件更新，重新请求单个文件。\r\n![Bundleless](http://oss.tianmasport.com/gx/size/2022-03-11/196/951803225336446976.png) ",
+          "star": {
+            "totalCount": 0
+          },
+          "author": {
+            "login": "wenreq",
+            "url": "https://github.com/wenreq"
+          }
+        }
+      ]
     },
     "labels": {
       "nodes": [
@@ -25380,7 +26117,19 @@
     "title": "【Q733】简述 npm cache",
     "body": "",
     "comments": {
-      "nodes": []
+      "nodes": [
+        {
+          "id": "IC_kwDODQzyOs4_fWtg",
+          "body": "npm 会把所有下载的包，保存在用户文件夹下面。\r\n\r\n默认值：~/.npm在Posix上 或 %AppData%/npm-cache在Windows上。根缓存文件夹。\r\n\r\nnpm install 之后会计算每个包的 sha1 值(PS:安全散列算法(Secure Hash Algorithm))，然后将包与他的 sha1 值关联保存在 package-lock.json 里面，下次 npm install 时，会根据 package-lock.json 里面保存的 sha1 值去文件夹里面寻找包文件，如果找到就不用从新下载安装了。\r\n\r\n```sh\r\nnpm cache verify\r\n```\r\n\r\n上面这个命令是重新计算，磁盘文件是否与 sha1 值匹配，如果不匹配可能删除。\r\n\r\n> 要对现有缓存内容运行脱机验证，请使用 `npm cache verify`。\r\n\r\n```sh\r\nnpm cache clean --force\r\n```\r\n\r\n上面这个命令是删除磁盘所有缓存文件。",
+          "star": {
+            "totalCount": 0
+          },
+          "author": {
+            "login": "wenreq",
+            "url": "https://github.com/wenreq"
+          }
+        }
+      ]
     },
     "labels": {
       "nodes": [
@@ -25462,6 +26211,63 @@
         {
           "id": "MDU6TGFiZWwxNzA3OTU2MjIw",
           "name": "前端工程化"
+        }
+      ]
+    }
+  },
+  {
+    "id": "I_kwDODQzyOs5DC-vH",
+    "number": 764,
+    "title": "【Q737】如何取得一个数字的小数部分与整数部分",
+    "body": "试举几例\r\n\r\n+ `1.3e-19`\r\n+ `1.6`\r\n\r\n引用一些第三方包处理也可以",
+    "comments": {
+      "nodes": [
+        {
+          "id": "IC_kwDODQzyOs49i-_s",
+          "body": "```typescript \r\nfunction splitNum (data: unknown): [string, string] {\r\n    if (typeof data === 'number' && !isNaN(data)) {\r\n        const dataStr = data.toString()\r\n        const eIndex = dataStr.indexOf('e-')\r\n        if (eIndex > -1) {\r\n            const result = dataStr.split('e-')\r\n            return ['0', `0.${'0'.repeat(Number(result[1]) - 1)}${result[0].replace('.', '')}`]\r\n        } else {\r\n            const result = dataStr.split('.')\r\n            if (result.length === 1) {\r\n                result.push('0')\r\n            }\r\n            return [result[0], `0.${result[1]}`]\r\n        }\r\n    }\r\n    return ['0', '0']\r\n}\r\n```",
+          "star": {
+            "totalCount": 0
+          },
+          "author": {
+            "login": "heretic-G",
+            "url": "https://github.com/heretic-G"
+          }
+        },
+        {
+          "id": "IC_kwDODQzyOs49m-zr",
+          "body": "```typescript\r\n/**科学计数法兼容*/\r\nconst SNFn = (val: string) => {\r\n  let state = val.includes('e-');\r\n  let splitStr = `e${state ? '-' : '+'}`;\r\n  let data = val.split(splitStr);\r\n  let fixBit = Number(data[1]);\r\n  let temp = data[0];\r\n  if (temp.includes('.')) {\r\n    let poinitPosition = temp.indexOf('.');\r\n    let len = temp.length;\r\n    fixBit = fixBit + (poinitPosition + (state ? 0 : 1)) - len;\r\n    temp = `${temp}`.replace('.', '');\r\n  }\r\n  let result = state\r\n    ? `0.${`0`.repeat(fixBit)}${temp}`\r\n    : `${temp}${`0`.repeat(fixBit)}`;\r\n  if (state && result.includes('-')) {\r\n    result = `-${result.replace('-', '')}`;\r\n  }\r\n  return state ? [`0`, result] : [result, `0`];\r\n};\r\n\r\n/**main*/\r\nconst splitFn = (val: number) => {\r\n  const valStr = `${val}`;\r\n  /**完全整数返回*/\r\n  if (!valStr.includes('.') && !valStr.includes('e')) return [valStr, `0`];\r\n  /**科学计数法兼容*/\r\n  if (valStr.includes('e')) {\r\n    let result = SNFn(valStr);\r\n    return result;\r\n  }\r\n  /**正常含小数返回*/\r\n  const result = valStr.split('.');\r\n  let state=result[0].includes('-')\r\n  return [`${result[0]}`, `${state?'-':''}0.${result[1]}`];\r\n};\r\n```\r\n\r\nhttps://stackblitz.com/edit/typescript-hr1bbp",
+          "star": {
+            "totalCount": 0
+          },
+          "author": {
+            "login": "Feahter",
+            "url": "https://github.com/Feahter"
+          }
+        }
+      ]
+    },
+    "labels": {
+      "nodes": [
+        {
+          "id": "MDU6TGFiZWwxNjUxNDAyMzE4",
+          "name": "js"
+        }
+      ]
+    }
+  },
+  {
+    "id": "I_kwDODQzyOs5DQggf",
+    "number": 765,
+    "title": "【Q738】websocket 和短轮询有什么区别",
+    "body": "",
+    "comments": {
+      "nodes": []
+    },
+    "labels": {
+      "nodes": [
+        {
+          "id": "MDU6TGFiZWwxNjgwMDkyMDA5",
+          "name": "http"
         }
       ]
     }
