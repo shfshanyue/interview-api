@@ -31,7 +31,7 @@
     "@types/lodash": "^4.14.157",
     "@types/node": "^14.0.23",
     "graphql-request": "^2.0.0",
-    "node-fetch": "^2.6.0",
+    "node-fetch": "^3.1.1",
     "nodemon": "^2.0.4",
     "serverless": "^2.26.0",
     "ts-node": "^8.10.2",
