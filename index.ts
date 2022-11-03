@@ -1,6 +1,5 @@
 import { ApolloServer, gql } from 'apollo-server-express'
 import express from 'express'
-import { Http2ServerRequest } from 'http2'
 import _ from 'lodash'
 
 import issues from './data/issues.json'

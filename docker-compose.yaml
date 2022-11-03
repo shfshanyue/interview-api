@@ -1,0 +1,14 @@
+version: "3"
+services:
+  interview-api:
+    build: .
+    labels:
+      - traefik.http.routers.interview-api.rule=Host(`interview.shanyue.tech`)
+      - traefik.http.routers.interview-api.tls=true
+      - traefik.http.routers.interview-api.tls.certresolver=le
+    restart: always
+
+networks:
+   default:
+     external:
+       name: traefik_default
