@@ -142,11 +142,14 @@ const server = new ApolloServer({
 })
 const app = express()
 
-server.applyMiddleware({ app })
-
-app.use('/', (req, res) => {
-  res.send('hello, shanyue.')
+server.start().then(() => {
+  server.applyMiddleware({ app })
 })
+
+
+// app.use('/', (req, res) => {
+//   res.send('hello, shanyue.')
+// })
 
 app.listen({ port: 4000 }, () =>
   console.log(`🚀 Server ready at http://localhost:4000${server.graphqlPath}`)
