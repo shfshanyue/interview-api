@@ -12,15 +12,17 @@
     "deploy": "sls deploy"
   },
   "engines": {
-    "node": ">=12.16.0"
+    "node": ">=16.0.0"
   },
   "license": "MIT",
   "dependencies": {
+    "@types/lodash": "^4.14.187",
     "apollo-server": "^2.16.0",
     "apollo-server-express": "^2.16.0",
     "graphql": "^15.3.0",
-    "lodash": "^4.17.19",
-    "npm-check-updates": "^7.0.2"
+    "lodash": "^4.17.21",
+    "npm-check-updates": "^7.0.2",
+    "typescript": "^4.8.4"
   },
   "devDependencies": {
     "@graphql-codegen/cli": "^1.17.0",
@@ -28,14 +30,12 @@
     "@graphql-codegen/typescript-graphql-request": "^1.17.0",
     "@graphql-codegen/typescript-operations": "^1.17.0",
     "@shanyue/promise-utils": "^2.0.4",
-    "@types/lodash": "^4.14.157",
     "@types/node": "^14.0.23",
     "graphql-request": "^2.0.0",
     "node-fetch": "^2.6.0",
     "nodemon": "^2.0.4",
     "serverless": "^2.26.0",
     "ts-node": "^8.10.2",
-    "typescript": "^3.9.7",
     "yargs": "^15.4.1"
   }
 }
