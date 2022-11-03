@@ -32,7 +32,7 @@
     "@shanyue/promise-utils": "^2.0.4",
     "@types/node": "^14.0.23",
     "graphql-request": "^2.0.0",
-    "node-fetch": "^2.6.0",
+    "node-fetch": "^3.2.10",
     "nodemon": "^2.0.4",
     "serverless": "^2.26.0",
     "ts-node": "^8.10.2",
