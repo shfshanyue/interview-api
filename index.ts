@@ -1,5 +1,5 @@
-import { ApolloServer, gql } from 'apollo-server-express'
-import express from 'express'
+import { ApolloServer } from '@apollo/server';
+import { startStandaloneServer } from '@apollo/server/standalone';
 import _ from 'lodash'
 
 import issues from './data/issues.json'
@@ -10,7 +10,7 @@ const allQuestions: Array<Issue> = issues as any
 const questionsById = _.keyBy(allQuestions, 'number')
 const labelsByName = _.keyBy(labels, 'name')
 
-const typeDefs = gql`
+const typeDefs = `#graphql
   enum Topic {
     FE
     SERVER
@@ -136,24 +136,13 @@ const server = new ApolloServer({
   resolvers,
   rootValue: {},
   formatError (e) {
-    console.error(e.originalError)
+    console.error(e)
     return e
   }
 })
-const app = express()
 
-server.start().then(() => {
-  server.applyMiddleware({ app })
+startStandaloneServer(server, {
+  listen: { port: 4000 },
+}).then(o => {
+  console.log(o.url)
 })
-
-
-// app.use('/', (req, res) => {
-//   res.send('hello, shanyue.')
-// })
-
-app.listen({ port: 4000 }, () =>
-  console.log(`🚀 Server ready at http://localhost:4000${server.graphqlPath}`)
-)
-
-// 为了与腾讯云的 express component 适配
-module.exports = app

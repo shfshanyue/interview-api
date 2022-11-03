@@ -1,4 +1,4 @@
-import fetch from 'node-fetch'
+import { fetch } from 'undici'
 import { GraphQLClient } from 'graphql-request'
 import fs from 'fs'
 import path from 'path'
