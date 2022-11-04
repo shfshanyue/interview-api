@@ -3,9 +3,11 @@ FROM node:16-alpine
 
 WORKDIR /code
 
+RUN npm i -g pnpm --registry=https://registry.npmmirror.com
+
 # 更好的根据 Image Layer 利用缓存
-ADD package.json yarn.lock ./
-RUN yarn --registry=https://registry.npmmirror.com
+ADD package.json pnpm-lock.yaml ./
+RUN pnpm i --prod --registry=https://registry.npmmirror.com
 
 ADD . /code
 RUN npm run build
