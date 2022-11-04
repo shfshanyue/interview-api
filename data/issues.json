@@ -148,6 +148,17 @@
             "login": "yanshuaidong",
             "url": "https://github.com/yanshuaidong"
           }
+        },
+        {
+          "id": "IC_kwDODQzyOs5Rez88",
+          "body": "> **方法三的简单 demo**\r\n> \r\n> ```\r\n> <!DOCTYPE html>\r\n> <html lang=\"en\">\r\n>   <head>\r\n>     <meta charset=\"UTF-8\" />\r\n>     <meta http-equiv=\"X-UA-Compatible\" content=\"IE=edge\" />\r\n>     <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\" />\r\n>     <title>3.IntersectionObserver API + DataSet API</title>\r\n>     <style>\r\n> \r\n>       * {\r\n>         margin: 0px;\r\n>         padding: 0px;\r\n>       }\r\n> \r\n>       body {\r\n>         margin: 0px;\r\n>         padding: 0px;\r\n>       }\r\n> \r\n>       img {\r\n>         width: 100%;\r\n>         height: 600px;\r\n>       }\r\n>     </style>\r\n>   </head>\r\n>   <body>\r\n>     <img src=\"https://cdn.pixabay.com/photo/2021/08/24/15/38/sand-6570980_960_720.jpg\" alt=\"1\" />\r\n>     <img src=\"https://cdn.pixabay.com/photo/2013/02/21/19/06/drink-84533_960_720.jpg\" alt=\"2\" />\r\n>     <img data-src=\"https://cdn.pixabay.com/photo/2014/12/15/17/16/boardwalk-569314_960_720.jpg\" alt=\"3\" />\r\n>     <img data-src=\"https://cdn.pixabay.com/photo/2013/07/18/20/26/sea-164989_960_720.jpg\" alt=\"4\" />\r\n>     <img data-src=\"https://cdn.pixabay.com/photo/2015/04/23/22/00/tree-736885_960_720.jpg\" alt=\"5\" />\r\n>     <img data-src=\"https://cdn.pixabay.com/photo/2017/03/26/21/54/yoga-2176668_960_720.jpg\" alt=\"6\" />\r\n>     <img data-src=\"https://cdn.pixabay.com/photo/2015/03/17/14/05/sparkler-677774_960_720.jpg\" alt=\"7\" />\r\n>     <script>\r\n>       const images = document.querySelectorAll('img')\r\n> \r\n>       // 新的 api  IntersectionObserver \r\n>       const observer = new IntersectionObserver((changes) => {\r\n>         changes.forEach(change => {\r\n>           if (change.isIntersecting) {\r\n>             const img = change.target\r\n>             // if (img.dataset.src && img.src == \"\") {\r\n>             //   img.src = img.dataset.src\r\n>             // }\r\n>             img.dataset.src && img.src == \"\" && (img.src = img.dataset.src)\r\n>             observer.unobserve(img)\r\n>           }\r\n>         })\r\n>       })\r\n> \r\n>       images.forEach(img => observer.observe(img))\r\n>     </script>\r\n>   </body>\r\n> </html>\r\n> ```\r\n@gethinzz \r\nintersectionObserver这个方式，我试了，但是第三张出现到视口的时候，下面的图片全部一起加载完毕了。。。 isIntersecting 和 intersectionRatio的值都是一致的，这跟我理解的不一样，是我理解错了吗",
+          "star": {
+            "totalCount": 0
+          },
+          "author": {
+            "login": "MSpringy",
+            "url": "https://github.com/MSpringy"
+          }
         }
       ]
     },
@@ -422,8 +433,8 @@
             "totalCount": 0
           },
           "author": {
-            "login": "12redcircle",
-            "url": "https://github.com/12redcircle"
+            "login": "wxyunhe",
+            "url": "https://github.com/wxyunhe"
           }
         },
         {
@@ -1556,6 +1567,17 @@
             "login": "hefeng6500",
             "url": "https://github.com/hefeng6500"
           }
+        },
+        {
+          "id": "IC_kwDODQzyOs5T2UXu",
+          "body": "```javascript\r\nFunction.prototype.myBind = function (ctx) {\r\n    ctx ??= globalThis\r\n    ctx = Object(ctx)\r\n\r\n    const self = this\r\n    const args = [...arguments].slice(1)\r\n\r\n    function bound() {\r\n        self.call(new.target ? this : ctx, ...args)\r\n    }\r\n\r\n    bound.prototype = self.prototype\r\n    return bound\r\n}\r\n```",
+          "star": {
+            "totalCount": 0
+          },
+          "author": {
+            "login": "zhangtuo1999",
+            "url": "https://github.com/zhangtuo1999"
+          }
         }
       ]
     },
@@ -1632,6 +1654,17 @@
           "author": {
             "login": "shen076",
             "url": "https://github.com/shen076"
+          }
+        },
+        {
+          "id": "IC_kwDODQzyOs5T2kBn",
+          "body": "```javascript\r\nFunction.prototype.softBind = function (ctx) {\r\n    ctx ??= globalThis\r\n    ctx = Object(ctx)\r\n\r\n    const self = this\r\n    const args = [...arguments].slice(1)\r\n\r\n    function bound() {\r\n        fn.call(new.target || this !== globalThis ? this : ctx, ...args)\r\n    }\r\n\r\n    bound.prototype = self.prototype\r\n    return bound\r\n}\r\n```",
+          "star": {
+            "totalCount": 0
+          },
+          "author": {
+            "login": "zhangtuo1999",
+            "url": "https://github.com/zhangtuo1999"
           }
         }
       ]
@@ -1987,7 +2020,19 @@
     "title": "【Q040】k8s 由那些组件组成",
     "body": "",
     "comments": {
-      "nodes": []
+      "nodes": [
+        {
+          "id": "IC_kwDODQzyOs5TUplP",
+          "body": "Control Plane Components,Node,Addons\r\nDetail in following website:\r\nhttps://kubernetes.io/zh-cn/docs/concepts/overview/components/",
+          "star": {
+            "totalCount": 0
+          },
+          "author": {
+            "login": "wuzhejia",
+            "url": "https://github.com/wuzhejia"
+          }
+        }
+      ]
     },
     "labels": {
       "nodes": [
@@ -2004,7 +2049,19 @@
     "title": "【Q041】CoW 策略指什么，docker 中有哪些应用",
     "body": "",
     "comments": {
-      "nodes": []
+      "nodes": [
+        {
+          "id": "IC_kwDODQzyOs5TUsS8",
+          "body": "写时复制\r\n优点：\r\n共享镜像层，减少镜像大小、占用存储空间大小\r\n减少容器大小\r\n减少容器的启动时间\r\n当多个容器使用相同镜像时，只需创建可写层\r\n转自：https://www.cnblogs.com/chuanzhang053/p/16612286.html",
+          "star": {
+            "totalCount": 0
+          },
+          "author": {
+            "login": "wuzhejia",
+            "url": "https://github.com/wuzhejia"
+          }
+        }
+      ]
     },
     "labels": {
       "nodes": [
@@ -2634,6 +2691,17 @@
             "login": "shfshanyue",
             "url": "https://github.com/shfshanyue"
           }
+        },
+        {
+          "id": "IC_kwDODQzyOs5OJnkb",
+          "body": "rest的劣势可太多了。。\r\n1. 路由冲突，这个非常常见，尤其在层级很深的情况\r\n2. utils类的路由命名没有规范\r\n3. crud resource，但是批量的接口 没有路由规范，批量创建，删除，或者批量关联。\r\n4. 有时候资源之间的关系很难界定，写路由的时候很难清楚的表达两者的关系。\r\n\r\nrpc不太了解，直接调用方法？\r\n1. 能想到的是 调用起来还是比rest麻烦的，\r\n2. 没有行业规范，命名之类的\r\n3. 文档可能比rest更麻烦一点，跟实现的语言有关，rest可以说是语言无关的。\r\n\r\n两者场景\r\nrest适合暴露给外部，作为外部的服务。\r\n\r\nrpc更适合企业内部服务之间的调用。",
+          "star": {
+            "totalCount": 0
+          },
+          "author": {
+            "login": "grace-shi",
+            "url": "https://github.com/grace-shi"
+          }
         }
       ]
     },
@@ -2925,8 +2993,8 @@
             "totalCount": 0
           },
           "author": {
-            "login": "su-imagine",
-            "url": "https://github.com/su-imagine"
+            "login": "suImagine",
+            "url": "https://github.com/suImagine"
           }
         }
       ]
@@ -3257,7 +3325,7 @@
           "id": "MDEyOklzc3VlQ29tbWVudDc2MjcwMDIxMg==",
           "body": "今天在看这个问题的时候，发现一个关于强制缓存的意外情况。在刷新页面时，有的浏览器会重新验证缓存资源的新鲜度，有的不会。\r\n\r\n假设第一次请求资源的Response Heades包含下列强制缓存信息\r\n```\r\nDate: Tue, 19 Jan 2021 08:37:05 GMT\r\nExpires: Tue, 26 Jan 2021 08:37:05 GMT\r\n```\r\n\r\n在有效期内，按照强制缓存的概念解释，再次请求资源时，不会发送请求，直接返回200。\r\n但是在firefox中(使用版本：84.0.2)，Request Headers中包含`If-Modified-Since`头部，所以仍然会发送请求，返回304。\r\n在chrome中(使用版本：87.0.4280.141)，不会发送请求，会直接使用缓存的资源，返回200。\r\n\r\n在stackoverflow找到了一些关于这个问题的回答https://stackoverflow.com/questions/45829055/why-doesnt-chrome-re-validate-in-memory-cache-when-doing-a-normal-reload/57281076#57281076",
           "star": {
-            "totalCount": 0
+            "totalCount": 1
           },
           "author": {
             "login": "Harry3014",
@@ -4632,8 +4700,8 @@
             "totalCount": 0
           },
           "author": {
-            "login": "12redcircle",
-            "url": "https://github.com/12redcircle"
+            "login": "wxyunhe",
+            "url": "https://github.com/wxyunhe"
           }
         }
       ]
@@ -4725,6 +4793,17 @@
           "author": {
             "login": "shfshanyue",
             "url": "https://github.com/shfshanyue"
+          }
+        },
+        {
+          "id": "IC_kwDODQzyOs5OXdap",
+          "body": "针对静态资源而言，一般会选择文件的 mtime 元属性作为上次修改时间，该元属性表示文件内容的修改时间，在linux中可以用stat命令来查看文件属性，其中就包括了mtime和ctime。mtime指的是文件内容修改时间，而ctime指的是文件修改时间",
+          "star": {
+            "totalCount": 0
+          },
+          "author": {
+            "login": "feefeefee",
+            "url": "https://github.com/feefeefee"
           }
         }
       ]
@@ -4995,6 +5074,17 @@
             "login": "shfshanyue",
             "url": "https://github.com/shfshanyue"
           }
+        },
+        {
+          "id": "IC_kwDODQzyOs5PM7yD",
+          "body": "chokidar这个包更好吧，我记得理论上它避免了fs.watch的一些坑，而且webpack底层用的也是这个，在mac和windows的兼容性应该都还行",
+          "star": {
+            "totalCount": 0
+          },
+          "author": {
+            "login": "yinzhixiaxue",
+            "url": "https://github.com/yinzhixiaxue"
+          }
         }
       ]
     },
@@ -5223,7 +5313,19 @@
     "title": "【Q130】docker 如何隔离容器与宿主机的时间",
     "body": "",
     "comments": {
-      "nodes": []
+      "nodes": [
+        {
+          "id": "IC_kwDODQzyOs5UIad3",
+          "body": "命名空间（namespace）是Linux内核的一个强大特征，为容器虚拟化的实现带来了极大的便利。\r\n利用这一特征，每个容器都可以拥有自己单独的命名空间，运行在其中的应用都像是在独立的操作系统环境中一样。\r\n命令空间机制保证了容器彼此之间互不影响。",
+          "star": {
+            "totalCount": 0
+          },
+          "author": {
+            "login": "wuzhejia",
+            "url": "https://github.com/wuzhejia"
+          }
+        }
+      ]
     },
     "labels": {
       "nodes": [
@@ -6112,6 +6214,17 @@
             "login": "Carrie999",
             "url": "https://github.com/Carrie999"
           }
+        },
+        {
+          "id": "IC_kwDODQzyOs5OXqcA",
+          "body": "sonarQube插件",
+          "star": {
+            "totalCount": 0
+          },
+          "author": {
+            "login": "maya1900",
+            "url": "https://github.com/maya1900"
+          }
         }
       ]
     },
@@ -6222,6 +6335,17 @@
           "author": {
             "login": "SageSanyue",
             "url": "https://github.com/SageSanyue"
+          }
+        },
+        {
+          "id": "IC_kwDODQzyOs5VCAz2",
+          "body": "``` js\r\n// 旧方式\r\ndocument.cookie = 'a=3'\r\n\r\n// 也可以使用新的 API\r\ncookieStore.set('a', 3)\r\n```",
+          "star": {
+            "totalCount": 0
+          },
+          "author": {
+            "login": "shfshanyue",
+            "url": "https://github.com/shfshanyue"
           }
         }
       ]
@@ -6511,7 +6635,7 @@
           "id": "MDEyOklzc3VlQ29tbWVudDU3Mzk2MTEwNQ==",
           "body": "> 那如何生成100个元素为1的数组呢？\r\n\r\n```ts\r\nArray(100).fill(1)\r\n```",
           "star": {
-            "totalCount": 3
+            "totalCount": 4
           },
           "author": {
             "login": "Chersquwn",
@@ -6689,7 +6813,7 @@
           "id": "IC_kwDODQzyOs49dcsq",
           "body": "https://jsbin.com/xemaxovisa/edit?css,output",
           "star": {
-            "totalCount": 2
+            "totalCount": 3
           },
           "author": {
             "login": "dsize1",
@@ -7319,8 +7443,8 @@
             "totalCount": 0
           },
           "author": {
-            "login": "senking2",
-            "url": "https://github.com/senking2"
+            "login": "canddyBrea",
+            "url": "https://github.com/canddyBrea"
           }
         },
         {
@@ -7413,7 +7537,19 @@
     "title": "【Q192】简述你们前端项目中资源的缓存配置策略",
     "body": "",
     "comments": {
-      "nodes": []
+      "nodes": [
+        {
+          "id": "IC_kwDODQzyOs5T9746",
+          "body": "1. html设置协商缓存\r\n2. 静态资源 hash + 强缓存",
+          "star": {
+            "totalCount": 0
+          },
+          "author": {
+            "login": "jayyoonn",
+            "url": "https://github.com/jayyoonn"
+          }
+        }
+      ]
     },
     "labels": {
       "nodes": [
@@ -9384,6 +9520,17 @@
             "login": "jeff-wangzhen",
             "url": "https://github.com/jeff-wangzhen"
           }
+        },
+        {
+          "id": "IC_kwDODQzyOs5R68xf",
+          "body": "如有错误，欢迎指正\r\n\r\n```js\r\nasync function foo(promise){\r\n  const t=[]\r\n  for(let p of promise){\r\n    // 检查传参\r\n    if (p instanceof Promise === false) {\r\n      throw new Error('传参错误')\r\n    }\r\n    // 并行触发\r\n    (async () => {\r\n      try{\r\n        const r=await p\r\n        t.push(r)\r\n      }catch(err){\r\n        // 捕获异常\r\n        return err\r\n      }\r\n    })()\r\n  }\r\n  // 轮询\r\n  const res = await new Promise(resolve=>{\r\n    const timer=setInterval(() => {\r\n      if(t.length===promise.length) {\r\n        clearInterval(timer)\r\n        resolve(t)\r\n      }\r\n    }, 1000);\r\n  })\r\n  return res\r\n}\r\n```",
+          "star": {
+            "totalCount": 0
+          },
+          "author": {
+            "login": "iamphc",
+            "url": "https://github.com/iamphc"
+          }
         }
       ]
     },
@@ -9589,6 +9736,17 @@
             "login": "4may-mcx",
             "url": "https://github.com/4may-mcx"
           }
+        },
+        {
+          "id": "IC_kwDODQzyOs5SFaJE",
+          "body": "```js\r\nfunction Node(key, val){\r\n  this.prev=null\r\n  this.next=null\r\n  this.key=key\r\n  this.val=val\r\n}\r\nfunction DoubleList(){\r\n  this._node=new Node(null, null)\r\n  this.size=0\r\n  // 插入到头部\r\n  this.addFirst=(node)=>{\r\n    // 找到头节点\r\n    while(this._node){\r\n      this._node=this._node.prev\r\n    }\r\n    // 处理头节点\r\n    this._node.prev=node\r\n    node.next=this._node\r\n    // 找到尾节点\r\n    while(this._node){\r\n      this._node=this._node.next\r\n    }\r\n    // 处理尾节点\r\n    this._node.prev.next=null\r\n    this._node.prev=null\r\n    this.size++\r\n  }\r\n  // 移除一个节点\r\n  this.remove=(node)=>{\r\n    if(!this.size) return -1\r\n    const prev=node.prev\r\n    const next=node.next\r\n    if(prev) {\r\n      node.prev.next=node.next\r\n    }\r\n    if(next){\r\n      node.next.prev=node.prev\r\n    }\r\n    this.size--\r\n  }\r\n  // 移除最后一个节点，并返回该节点\r\n  this.removeLast=()=>{\r\n    if(!this.size) return -1\r\n    while(this._node){\r\n      this._node=this._node.next\r\n    }\r\n    this.remove(this._node)\r\n    return this._node\r\n  }\r\n}\r\nfunction LRUcache(limit) {\r\n  this._limit=limit\r\n  this._doubleList=new DoubleList()\r\n  this._map=new Map()\r\n  // 获取key对应的节点，并将节点提前\r\n  this.get=(key)=>{\r\n    if(!this._map.has(key)) return -1\r\n    const node=this._map.get(key)\r\n    this._doubleList.addFirst(node)\r\n    return node\r\n  }\r\n  // 插入节点，并将节点提前\r\n  this.put=(key, val)=>{\r\n    const node=new Node(key,val)\r\n    if(this._map.has(key)){\r\n      this._doubleList.remove(this._map.get(key))\r\n    }\r\n    if(this._doubleList.size===this._limit){\r\n      const lastNode=this._doubleList.removeLast()\r\n      this._map.delete(lastNode.key)\r\n    }\r\n    this._doubleList.addFirst(node)\r\n    this._map.set(key,node)\r\n  }\r\n}\r\n```",
+          "star": {
+            "totalCount": 0
+          },
+          "author": {
+            "login": "iamphc",
+            "url": "https://github.com/iamphc"
+          }
         }
       ]
     },
@@ -9621,6 +9779,17 @@
           "author": {
             "login": "edisonwd",
             "url": "https://github.com/edisonwd"
+          }
+        },
+        {
+          "id": "IC_kwDODQzyOs5TUuJq",
+          "body": "netstat -tlunp | grep {name}",
+          "star": {
+            "totalCount": 0
+          },
+          "author": {
+            "login": "wuzhejia",
+            "url": "https://github.com/wuzhejia"
           }
         }
       ]
@@ -10234,6 +10403,17 @@
             "login": "mrcaidev",
             "url": "https://github.com/mrcaidev"
           }
+        },
+        {
+          "id": "IC_kwDODQzyOs5U1Biz",
+          "body": "我不确定是指 一个完全新的从零开始的项目，还是指已有的项目相对于新人来说的刚接手的“新”。\r\n\r\n1. 如果是一个完全新的从零开始的项目，一般来说，如果均是采用最新稳定版本的依赖包，那么可以采用的node版本，其范围可以确定在 `^14.18.0 || >=16` 不超过node的当前最新稳定版本；而如果由于项目的特殊性，采用了低版本的依赖包，那么需要查看这些包的 `package.json` 的 `engines.node` 以确定这些包支持的node版本，取交集后确定最终采用的node版本。\r\n\r\n2. 如果是一个已有的项目，首先查看的是 项目的 `package.json` 中的 `engines.node` 字段，如果有声明，那么就采用对应的版本，如果没有，那么直接询问该项目的原负责人，确认是否有 node 版本的要求以及应该使用哪个版本，负责人不确定就询问原先用于开发或构建这个项目的机器安装的 node 版本，这样可以保证切换到新人的开发机器上，也有一致的node环境。\r\n",
+          "star": {
+            "totalCount": 0
+          },
+          "author": {
+            "login": "pengzhanbo",
+            "url": "https://github.com/pengzhanbo"
+          }
         }
       ]
     },
@@ -10426,7 +10606,7 @@
           "id": "MDEyOklzc3VlQ29tbWVudDY4MTc0MzU2OA==",
           "body": "> inline 元素的 margin 与 padding 左右生效，上下不生效\r\n\r\n不是inline 下 margin 上下失效 ，padding 下 都生效吗 只不过不会撑大父元素而已 ",
           "star": {
-            "totalCount": 3
+            "totalCount": 4
           },
           "author": {
             "login": "fariellany",
@@ -11553,7 +11733,7 @@
           "id": "MDEyOklzc3VlQ29tbWVudDY2MDYxNjUyMA==",
           "body": "`css specificity` 即 css 中关于选择器的权重，以下三种类型的选择器依次下降\r\n\r\n1. `id` 选择器，如 `#app`\r\n1. `class`、`attribute` 与 `pseudo-classes` 选择器，如 `.header`、`[type=\"radio\"]` 与 `:hover`\r\n1. `type` 标签选择器和伪元素选择器，如 `h1`、`p` 和 `::before`\r\n\r\n其中通配符选择器 `*`，组合选择器 `+ ~ >`，否定伪类选择器 `:not()` 对优先级无影响\r\n\r\n另有内联样式 `<div class=\"foo\" style=\"color: red;\"></div>` 及 `!important`(最高) 具有更高的权重\r\n\r\n> [`:not` 的优先级影响 - codepen](https://codepen.io/shanyue/pen/dyGQqBe) 可以看出 `:not` 对选择器的优先级无任何影响\r\n\r\n> [CSS Specificity - codepen](https://codepen.io/shanyue/pen/XWMRQOw) 可以看出十几个 class 选择器也没有一个 id 选择器权重高",
           "star": {
-            "totalCount": 4
+            "totalCount": 5
           },
           "author": {
             "login": "shfshanyue",
@@ -11687,7 +11867,7 @@
   {
     "id": "MDU6SXNzdWU2MzA0NjU4MTY=",
     "number": 315,
-    "title": "【Q313】在浏览器中如何监听剪切板中内容",
+    "title": "【Q313】在浏览器中如何获取剪切板中内容",
     "body": "",
     "comments": {
       "nodes": [
@@ -11773,6 +11953,17 @@
           "author": {
             "login": "QC2168",
             "url": "https://github.com/QC2168"
+          }
+        },
+        {
+          "id": "IC_kwDODQzyOs5T9gLx",
+          "body": "div后相邻的p标签文字都会变红，而不是只有第一个p标签变红\r\n",
+          "star": {
+            "totalCount": 0
+          },
+          "author": {
+            "login": "Psycho-Monster",
+            "url": "https://github.com/Psycho-Monster"
           }
         }
       ]
@@ -14305,6 +14496,17 @@
             "login": "Vi-jay",
             "url": "https://github.com/Vi-jay"
           }
+        },
+        {
+          "id": "IC_kwDODQzyOs5UEkQp",
+          "body": "惰性函数\r\n```js\r\nfunction once(fn) {\r\n  function o(...args) {\r\n    const res = fn(...args)\r\n    o = () => res\r\n    return o()\r\n  }\r\n  return o\r\n}\r\n```",
+          "star": {
+            "totalCount": 0
+          },
+          "author": {
+            "login": "eva-asdf",
+            "url": "https://github.com/eva-asdf"
+          }
         }
       ]
     },
@@ -14690,6 +14892,50 @@
             "login": "Asarua",
             "url": "https://github.com/Asarua"
           }
+        },
+        {
+          "id": "IC_kwDODQzyOs5OEo5E",
+          "body": "极简主义，认知觉醒，卡片笔记写作法 ",
+          "star": {
+            "totalCount": 2
+          },
+          "author": {
+            "login": "lonCocoon",
+            "url": "https://github.com/lonCocoon"
+          }
+        },
+        {
+          "id": "IC_kwDODQzyOs5OEpqT",
+          "body": "象与骑象人，脑与认知科学概论，快感",
+          "star": {
+            "totalCount": 2
+          },
+          "author": {
+            "login": "WarrenLee19",
+            "url": "https://github.com/WarrenLee19"
+          }
+        },
+        {
+          "id": "IC_kwDODQzyOs5OEysX",
+          "body": "1.西蒙学习法（学习如何高效学习）\r\n2.古龙作品全集（快意江湖，自己也有个写武侠小说的梦）\r\n3.非暴力沟通 （提高自己的情商）",
+          "star": {
+            "totalCount": 1
+          },
+          "author": {
+            "login": "Guwei1013",
+            "url": "https://github.com/Guwei1013"
+          }
+        },
+        {
+          "id": "IC_kwDODQzyOs5OE1J-",
+          "body": "> \r\n\r\n我也有一段时间沉迷于古龙作品全集，三少爷的剑，多情剑客无情剑，陆小凤传奇，欢乐英雄，武林外史，绝代双骄",
+          "star": {
+            "totalCount": 0
+          },
+          "author": {
+            "login": "shfshanyue",
+            "url": "https://github.com/shfshanyue"
+          }
         }
       ]
     },
@@ -14958,6 +15204,17 @@
             "login": "xyuh111",
             "url": "https://github.com/xyuh111"
           }
+        },
+        {
+          "id": "IC_kwDODQzyOs5PKCj0",
+          "body": "```js\r\nconst encode = (str) => {\r\n    let hash = {}\r\n    for (const s of str) {\r\n        hash[s] = hash[s] + 1 || 1\r\n    }\r\n    let s = ''\r\n    for (const [key, value] of Object.entries(hash)) {\r\n        //如果只出现一次，不编码数字\r\n        if (value === 1) {\r\n            s = s + key\r\n        } else if (value === 2) {\t//如果只出现两次，不进行编码\r\n            s = s + key + key\r\n        } else {\r\n            s = s + key + value\r\n        }\r\n    }\r\n    return s\r\n}\r\n```",
+          "star": {
+            "totalCount": 0
+          },
+          "author": {
+            "login": "coderWxs",
+            "url": "https://github.com/coderWxs"
+          }
         }
       ]
     },
@@ -15225,7 +15482,7 @@
           "id": "IC_kwDODQzyOs5EqBRb",
           "body": "写一个啰嗦一点的版本供大家参考：\r\n想法很简单：\r\n1. 用一个变量收集所有的参数。\r\n2. 返回一个带有 valueOf 属性的 function。\r\n```javascript\r\nfunction sum(...args: number[]) {\r\n  // allArgs 收集所有的 args\r\n  let allArgs = args;\r\n\r\n  // 返回一个 function 可以接受参数   \r\n  function fn(...args2) {\r\n    allArgs = allArgs.concat(args2);\r\n    return fn;\r\n  }\r\n  \r\n  // function 上有一个属性叫 valueOf\r\n  fn.valueOf = function () {\r\n    // valueOf 触发时才开始累加\r\n    return allArgs.reduce((res, cur) => (res += cur));\r\n  };\r\n  return fn;\r\n}\r\n\r\n```",
           "star": {
-            "totalCount": 1
+            "totalCount": 2
           },
           "author": {
             "login": "wangjs-jacky",
@@ -15717,6 +15974,17 @@
           "author": {
             "login": "shfshanyue",
             "url": "https://github.com/shfshanyue"
+          }
+        },
+        {
+          "id": "IC_kwDODQzyOs5OPoUI",
+          "body": "表示为空，跟 ts 一样的。",
+          "star": {
+            "totalCount": 0
+          },
+          "author": {
+            "login": "yuetong3yu",
+            "url": "https://github.com/yuetong3yu"
           }
         }
       ]
@@ -16665,6 +16933,17 @@
             "login": "shfshanyue",
             "url": "https://github.com/shfshanyue"
           }
+        },
+        {
+          "id": "IC_kwDODQzyOs5RX6vh",
+          "body": "nextTick方法主要是使用了宏任务和微任务。它是定义了一个异步方法，如果多次调用nextTick的话，就会将方法存入队列中，通过这个异步方法来清空当前队列，这个nextTick方法就是异步方法",
+          "star": {
+            "totalCount": 0
+          },
+          "author": {
+            "login": "wangenze267",
+            "url": "https://github.com/wangenze267"
+          }
         }
       ]
     },
@@ -17133,6 +17412,28 @@
           "author": {
             "login": "hsq777",
             "url": "https://github.com/hsq777"
+          }
+        },
+        {
+          "id": "IC_kwDODQzyOs5O4K1L",
+          "body": "html 中直接设置 input 的类型为 file 就可以实现上传了\r\n\r\n```html\r\n// HTML\r\n<input type=\"file\" id=\"upload\"/>\r\n```\r\n```js\r\n// JS\r\nconst uploadInput = document.getElementById('upload');\r\nconst handleUpload = (event) => {\r\n  const file = event.target.files[0];\r\n  const formData = new FormData();\r\n  formData.append('file', file);\r\n  // 文件上传操作\r\n}\r\nuploadInput.addEventListener('change', handleUpload) \r\n```",
+          "star": {
+            "totalCount": 0
+          },
+          "author": {
+            "login": "HydratedPig",
+            "url": "https://github.com/HydratedPig"
+          }
+        },
+        {
+          "id": "IC_kwDODQzyOs5O4MWd",
+          "body": "> html 中直接设置 input 的类型为 file 就可以实现上传了\r\n> \r\n> ```\r\n> // HTML\r\n> <input type=\"file\" id=\"upload\"/>\r\n> ```\r\n> \r\n> ```js\r\n> // JS\r\n> const uploadInput = document.getElementById('upload');\r\n> const handleUpload = (event) => {\r\n>   const file = event.target.files[0];\r\n>   const formData = new FormData();\r\n>   formData.append('file', file);\r\n>   // 文件上传操作\r\n> }\r\n> uploadInput.addEventListener('change', handleUpload) \r\n> ```\r\n\r\n当然也可以放在表单里，统一提交表单\r\n[MDN](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input/file#examples)的示例里还告诉我们input 各个浏览器长得不一样，我们也可以用其他东西隐藏 input ",
+          "star": {
+            "totalCount": 1
+          },
+          "author": {
+            "login": "HydratedPig",
+            "url": "https://github.com/HydratedPig"
           }
         }
       ]
@@ -19227,6 +19528,17 @@
             "login": "shfshanyue",
             "url": "https://github.com/shfshanyue"
           }
+        },
+        {
+          "id": "IC_kwDODQzyOs5QfMM8",
+          "body": "想知道 `main/module/browser/exports` 直接的优先级，在 `package.json` 中同时指定这些，会优先以 `exports` 为准吗?",
+          "star": {
+            "totalCount": 0
+          },
+          "author": {
+            "login": "GiveMe-A-Name",
+            "url": "https://github.com/GiveMe-A-Name"
+          }
         }
       ]
     },
@@ -19924,7 +20236,7 @@
       "nodes": [
         {
           "id": "MDEyOklzc3VlQ29tbWVudDg1MTc0MDYwNQ==",
-          "body": "+ `e.preventDefault()`: 取消事件\r\n+ `e.cancelable`: 事件是否可取消",
+          "body": "+ `e.preventDefault()`: 取消事件\r\n+ `e.cancelable`: 事件是否可取消\r\n\r\n如果 `addEventListener` 第三个参数 `{ passive: true}`，`preventDefault` 将会会无效",
           "star": {
             "totalCount": 0
           },
@@ -19993,7 +20305,7 @@
       "nodes": [
         {
           "id": "MDEyOklzc3VlQ29tbWVudDg1MTEzMTMyNA==",
-          "body": "![image](https://user-images.githubusercontent.com/13389461/120127876-31b39b00-c1f3-11eb-8297-ca155f3b4562.png)\r\n\r\n事件委托指当有大量子元素触发事件时，将事件监听器绑定在父元素进行监听，此时数百个事件监听器变为了一个监听器，提升了网页性能。\r\n\r\n另外，React 把所有事件委托在 Root Element，用以提升性能。",
+          "body": "![](https://static.shanyue.tech/images/23-02-11/clipboard-0095.c66057.webp)\r\n\r\n事件委托指当有大量子元素触发事件时，将事件监听器绑定在父元素进行监听，此时数百个事件监听器变为了一个监听器，提升了网页性能。\r\n\r\n另外，React 把所有事件委托在 Root Element，用以提升性能。",
           "star": {
             "totalCount": 0
           },
@@ -20120,6 +20432,17 @@
           "author": {
             "login": "HunterXing",
             "url": "https://github.com/HunterXing"
+          }
+        },
+        {
+          "id": "IC_kwDODQzyOs5UC4TM",
+          "body": "rem是相对长度单位，相对于根元素。\r\nem也是相对长度单位，相对于父元素。\r\n浏览器默认 1rem = 16px\r\n所以font-size : 2rem = 2 * 16px = 32px\r\nline-height: 1.5em ，em相对于父元素的font-size (32px)  ==> line-height: 1.5em = 1.5 * 32 = 48px",
+          "star": {
+            "totalCount": 0
+          },
+          "author": {
+            "login": "liuerhost",
+            "url": "https://github.com/liuerhost"
           }
         }
       ]
@@ -20471,7 +20794,7 @@
   {
     "id": "MDU6SXNzdWU5MDUwMzY2MDA=",
     "number": 571,
-    "title": "【Q556】如何设置一个支持过期时间的 localStorage",
+    "title": "【Q556】如何封装一个支持过期时间的 localStorage",
     "body": "",
     "comments": {
       "nodes": [
@@ -20484,6 +20807,17 @@
           "author": {
             "login": "heretic-G",
             "url": "https://github.com/heretic-G"
+          }
+        },
+        {
+          "id": "IC_kwDODQzyOs5VBxoQ",
+          "body": "设置如下数据结构，当用户存储数据时，存储至 `__value` 字段。并将过期时间存储至 `__expires` 字段。\r\n\r\n``` js\r\n{  __value, __expires }\r\n```\r\n\r\n而当每次获取数据时，判断当前时间是否已超过 `__expires` 过期时间，如果超过，则返回 `undefined`，并删除该数据。",
+          "star": {
+            "totalCount": 0
+          },
+          "author": {
+            "login": "shfshanyue",
+            "url": "https://github.com/shfshanyue"
           }
         }
       ]
@@ -20513,6 +20847,17 @@
           "author": {
             "login": "shfshanyue",
             "url": "https://github.com/shfshanyue"
+          }
+        },
+        {
+          "id": "IC_kwDODQzyOs5UC6RV",
+          "body": "      * {\r\n            box-sizing: border-box;\r\n        }\r\n\r\n        .container {\r\n            background-color: #eee;\r\n            height: 10rem;\r\n            width: 40rem;\r\n            margin: 1rem;\r\n            display: flex;\r\n        }\r\n\r\n        .item {\r\n            flex: 1;\r\n            border: 1px solid #888;\r\n        }",
+          "star": {
+            "totalCount": 0
+          },
+          "author": {
+            "login": "liuerhost",
+            "url": "https://github.com/liuerhost"
           }
         }
       ]
@@ -20824,7 +21169,7 @@
       "nodes": [
         {
           "id": "MDEyOklzc3VlQ29tbWVudDg1MTczMjUzNQ==",
-          "body": "代码见 [zindex - codepen](https://codepen.io/shanyue/pen/XWMVpxJ)\r\n\r\n不可，更复杂的示例见 [层叠上下文 - MDN](https://developer.mozilla.org/zh-CN/docs/Web/CSS/CSS_Positioning/Understanding_z_index/The_stacking_context)",
+          "body": "代码见 [zindex - codepen](https://codepen.io/shanyue/pen/XWMVpxJ)\r\n\r\n不一定，更复杂的示例见 [层叠上下文 - MDN](https://developer.mozilla.org/zh-CN/docs/Web/CSS/CSS_Positioning/Understanding_z_index/The_stacking_context)",
           "star": {
             "totalCount": 0
           },
@@ -21344,11 +21689,22 @@
           "id": "MDEyOklzc3VlQ29tbWVudDg1ODQyOTQ3Nw==",
           "body": "cache-control:默认值是private,\r\nprivite    响应只能为私有缓存，不能在用户间共享\r\npublic    公有缓存，可以在多用户间共享",
           "star": {
-            "totalCount": 0
+            "totalCount": 1
           },
           "author": {
             "login": "Kiera569",
             "url": "https://github.com/Kiera569"
+          }
+        },
+        {
+          "id": "IC_kwDODQzyOs5OpdNA",
+          "body": "具体是什么场景下使用?",
+          "star": {
+            "totalCount": 0
+          },
+          "author": {
+            "login": "leohxj",
+            "url": "https://github.com/leohxj"
           }
         }
       ]
@@ -21763,6 +22119,17 @@
           "author": {
             "login": "shfshanyue",
             "url": "https://github.com/shfshanyue"
+          }
+        },
+        {
+          "id": "IC_kwDODQzyOs5OdQ_f",
+          "body": "react 将所有事件统一映射托管到 FiberRoot，这样做有如下优势：\r\n1. 用户不用再考虑浏览器兼容性问题，可以专心于功能实现\r\n2. 便于对事件的管理，比如新增、删除、修改事件均可在此处做处理",
+          "star": {
+            "totalCount": 0
+          },
+          "author": {
+            "login": "kizuner-bonely",
+            "url": "https://github.com/kizuner-bonely"
           }
         }
       ]
@@ -22476,6 +22843,17 @@
             "login": "linlai163",
             "url": "https://github.com/linlai163"
           }
+        },
+        {
+          "id": "IC_kwDODQzyOs5T5bW6",
+          "body": "CSS 的盒模型主要包括以下两种，可通过 [box-sizing](https://developer.mozilla.org/zh-CN/docs/Web/CSS/box-sizing) 属性进行配置：\r\n\r\n+ `content-box`：默认属性。width 只包含 content\r\n+ `border-box`：width 包含 (content、padding、border)",
+          "star": {
+            "totalCount": 0
+          },
+          "author": {
+            "login": "shfshanyue",
+            "url": "https://github.com/shfshanyue"
+          }
         }
       ]
     },
@@ -22599,6 +22977,17 @@
           "author": {
             "login": "shfshanyue",
             "url": "https://github.com/shfshanyue"
+          }
+        },
+        {
+          "id": "IC_kwDODQzyOs5NyM7K",
+          "body": "vue\r\n1. 通过组件的实例用ref的方式去拿到组件的实例，然后再去拿到组件的数；\r\n  a. 如果vue3使用setup语法糖的话，需要用defineExpose暴露出去数据；\r\n2. 使用vuex/pinia之类的库；\r\n3. 通过一个公有的父组件，然这个父组件当中间层去转发，通过props/emit之类的形式拿到下面子组件的数据，再去派发到另一个子组件；\r\n4. eventbus事件总线",
+          "star": {
+            "totalCount": 1
+          },
+          "author": {
+            "login": "feefeefee",
+            "url": "https://github.com/feefeefee"
           }
         }
       ]
@@ -23030,6 +23419,17 @@
             "login": "nmsn",
             "url": "https://github.com/nmsn"
           }
+        },
+        {
+          "id": "IC_kwDODQzyOs5PGhzy",
+          "body": "还真没注意过，看了下 MDN，上面解释已经很明示了\r\n- `isNaN`:\r\n> Return Value: true if the given value is NaN after being converted to a number; otherwise, false.\r\n- `Number.isNaN`:\r\n> Return value: The boolean value true if the given value is a number with value NaN. Otherwise, false.\r\n\r\n`globalThis.isNaN` 会对参数进行强制转换后判断是不是 `NaN`，而 `Number.isNaN` 不会对输入的参数进行强制转换",
+          "star": {
+            "totalCount": 0
+          },
+          "author": {
+            "login": "HydratedPig",
+            "url": "https://github.com/HydratedPig"
+          }
         }
       ]
     },
@@ -23266,7 +23666,7 @@
           "id": "MDEyOklzc3VlQ29tbWVudDg3Njg4NzI2Ng==",
           "body": "``` js\r\nconst maxBy = (list, keyBy) => list.reduce((x, y) => keyBy(x) > keyBy(y) ? x : y)\r\n```\r\n\r\n若需要返回多个项，则使用以下代码\r\n\r\n``` js\r\nconst maxBy = (list, keyBy) => {\r\n  return list.slice(1).reduce((acc, x) => {\r\n    if (keyBy(x) > keyBy(acc[0])) {\r\n      return [x]\r\n    }\r\n    if (keyBy(x) === keyBy(acc[0])) {\r\n      return [...acc, x]\r\n    }\r\n    return acc\r\n  }, [list[0]])\r\n}\r\n```",
           "star": {
-            "totalCount": 2
+            "totalCount": 3
           },
           "author": {
             "login": "shfshanyue",
@@ -23344,13 +23744,24 @@
       "nodes": [
         {
           "id": "IC_kwDODQzyOs40mIPX",
-          "body": "根据 MDN 的文档描述：<https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Number/isSafeInteger>\r\n\r\n> 一个安全整数是一个符合下面条件的整数：\r\n> \r\n> 1. 可以准确地表示为一个IEEE-754双精度数字,\r\n> 1. 其IEEE-754表示不能是舍入任何其他整数以适应IEEE-754表示的结果。.\r\n\r\n可以使用 `Number.isSafeInteger()` 来判断一个数值是否为安全整数\r\n",
+          "body": "根据 MDN 的文档描述：<https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Number/isSafeInteger>\r\n\r\n> 一个安全整数是一个符合下面条件的整数：\r\n> \r\n> 1. 可以准确地表示为一个IEEE-754双精度数字,\r\n> 1. 其IEEE-754表示不能是舍入任何其他整数以适应IEEE-754表示的结果。.\r\n\r\n`Number.MAX_SAFE_INTEGER` 是最大安全整数，`Number.isSafeInteger()` 用来判断一个数值是否为安全整数。\r\n\r\n而在安全整数之外，加减计算则会发生精度问题，如下：\r\n\r\n``` js\r\nNumber.MAX_SAFE_INTEGER\r\n//=> 9007199254740991\r\n\r\nNumber.MAX_SAFE_INTEGER + 1\r\n//=> 9007199254740992\r\n\r\n// 计算错误，结果应该是 9007199254740993\r\nNumber.MAX_SAFE_INTEGER + 2\r\n//=> 9007199254740992\r\n```\r\n\r\n而安全整数的问题，与 `0.1+0.2` 的问题类似。**在 Javascript 中，整数被存储为双精度浮点数**，而在整数大到一定程度后，就会导致精读失真。\r\n\r\n如下，最大安全整数可以精准表示。以下截图使用 <https://devtool.tech/double-type> 进行实时转换整数的 IEEE754 表示。\r\n\r\n> 在双精度浮点数中，尾数位有 52 位，而最大安全整数为 `2 ** 53 - 1`，通过以下截图，也可以看做是 `1.9999999999999998 * 2 ** (1075-1023)`\r\n\r\n![](https://static.shanyue.tech/images/22-11-04/clipboard-1213.2266e3.webp)\r\n\r\n但是最大安全整数加2，尾数位会溢出，导致该数值无法精准表示。\r\n\r\n![](https://static.shanyue.tech/images/22-11-04/clipboard-1372.3d3b4d.webp)\r\n",
           "star": {
-            "totalCount": 0
+            "totalCount": 2
           },
           "author": {
             "login": "shfshanyue",
             "url": "https://github.com/shfshanyue"
+          }
+        },
+        {
+          "id": "IC_kwDODQzyOs5NrCJL",
+          "body": "自2003年以后，电脑普遍采用x86-64架构，而架构的数据单元的固定为64位(8字节)\r\n64位双精度浮点数(double-precision 64-bit floating point format）\r\n其中双精度浮点数是用来表示带有小数部分的实数\r\n双精度浮点数最多有15或16位十进制有效数字,即53位二进制有效数字\r\nIEEE-754规定\r\n64位二进制存储单元由3部分组成 1+11+52 1是表示正负数 11是表示指数位置 52则是数据值位置\r\n所以因为单位存储空间限制，安全整数的范围是1位正数加52位数据位 即53位二进制，超过只能溢出到指数位置存储，无法安全表示，所以安全整数的位数是\r\n`Number.MAX_SAFE_INTEGER.toString(2).length;`\r\n\r\nhttps://github.com/anjia/blog/issues/87",
+          "star": {
+            "totalCount": 0
+          },
+          "author": {
+            "login": "Feahter",
+            "url": "https://github.com/Feahter"
           }
         }
       ]
@@ -24283,8 +24694,8 @@
             "totalCount": 0
           },
           "author": {
-            "login": "yurica7",
-            "url": "https://github.com/yurica7"
+            "login": "tyri1",
+            "url": "https://github.com/tyri1"
           }
         },
         {
@@ -24734,7 +25145,7 @@
           "id": "IC_kwDODQzyOs41CCva",
           "body": "bind/softBind/apply/call 都是this显式绑定的方法\r\n\r\n- bind会返回一个硬绑定的新函数，新函数会使用指定的第一个thisCtx去调用原始函数，并将其它参数传给原始函数。 硬绑定会降低函数的灵活性，在绑定之后不能通过显式或硬绑定的方式改变this，只能通过new改变\r\n- softBind 会对指定的函数进行封装，首先检查调用时的 this，如果 this 绑定到全局对象或者 undefined，那就用指定的thisCtx 去调用函数，否则不会修改 this  \r\n- apply和call功能相同，都是以指定的thisCtx和参数去执行方法，并返回原方法的返回值，只是apply中参数以数组传递\r\n```javascript\r\nFunction.prototype.myBind = function (ctx = globalThis) {\r\n  const fn = this;\r\n  const args = Array.from(arguments).slice(1);\r\n  function bound() {\r\n    if (this instanceof bound) {\r\n      fn.apply(this, args);\r\n    } else {\r\n      fn.apply(ctx, args);\r\n    }\r\n  }\r\n  bound.prototype = fn.prototype;\r\n  return bound;\r\n};\r\n```\r\n\r\n```javascript\r\nFunction.prototype.mySoftBind = function (ctx = globalThis) {\r\n  const fn = this;\r\n  const args = Array.from(arguments).slice(1);\r\n  function bound() {\r\n    if (!this || this === globalThis) {\r\n      fn.apply(ctx, args);\r\n    } else {\r\n      fn.apply(this, args);\r\n    }\r\n  }\r\n  bound.prototype = fn.prototype;\r\n  return bound;\r\n};\r\n```\r\n\r\n```javascript\r\nFunction.prototype.myCall = function (ctx = globalThis) {\r\n  const args = Array.from(arguments).slice(1);\r\n  const key = Symbol(\"key\");\r\n  ctx[key] = this;\r\n  const res=ctx[key](...args);\r\n  delete ctx[key]\r\n  return res\r\n};\r\n```\r\n```javascript\r\nFunction.prototype.myApply = function (ctx = globalThis) {\r\n  const args = arguments[1];\r\n  const key = Symbol(\"key\");\r\n  ctx[key] = this;\r\n  const res=ctx[key](...args);\r\n  delete ctx[key]\r\n  return res\r\n};\r\n```",
           "star": {
-            "totalCount": 8
+            "totalCount": 10
           },
           "author": {
             "login": "wussss",
@@ -24783,6 +25194,17 @@
           "author": {
             "login": "yxw007",
             "url": "https://github.com/yxw007"
+          }
+        },
+        {
+          "id": "IC_kwDODQzyOs5TzxGo",
+          "body": "```javascript\r\nFunction.prototype.myCall = function (ctx) {\r\n    ctx ??= globalThis\r\n    ctx = Object(ctx)\r\n\r\n    const args = [...arguments].slice(1)\r\n\r\n    const key = Symbol('key')\r\n    ctx[key] = this\r\n    const res = ctx[key](...args)\r\n    delete ctx[key]\r\n\r\n    return res\r\n}\r\n\r\nFunction.prototype.myApply = function (ctx) {\r\n    ctx ??= globalThis\r\n    ctx = Object(ctx)\r\n\r\n    const args = arguments[1]\r\n\r\n    const key = Symbol('key')\r\n    ctx[key] = this\r\n    const res = ctx[key](...args)\r\n    delete ctx[key]\r\n\r\n    return res\r\n}\r\n```",
+          "star": {
+            "totalCount": 0
+          },
+          "author": {
+            "login": "zhangtuo1999",
+            "url": "https://github.com/zhangtuo1999"
           }
         }
       ]
@@ -25064,7 +25486,7 @@
       "nodes": [
         {
           "id": "IC_kwDODQzyOs40s8PD",
-          "body": "TODO",
+          "body": "+ Reno，慢启动，拥塞避免，快重传，快恢复\r\n+ BBR",
           "star": {
             "totalCount": 0
           },
@@ -25129,6 +25551,17 @@
           "author": {
             "login": "shfshanyue",
             "url": "https://github.com/shfshanyue"
+          }
+        },
+        {
+          "id": "IC_kwDODQzyOs5OE1F5",
+          "body": "众所周知，js 是单线程的语言，同一时间只做一件事，单线程也就导致一个任务执行完才能执行下一个任务，一旦某个任务执行时间太长就容易造成阻塞，为了解决这一问题，js 引入了事件循环机制\r\n\r\njs 单线程任务分为同步任务和异步任务\r\n\r\n同步任务：立即执行的任务，直接在主线程上排队执行\r\n异步任务：不进入主线程，而是在异步任务有了结果之后将回调函数放入到任务队列中等待主线程空闲时调用执行\r\n\r\n主线程任务执行完毕后从任务队列中不断读取任务，放入到主线程去执行，这个过程是循环不停的\r\n\r\n而异步任务又可以分为宏任务和微任务\r\n\r\n微任务和宏任务\r\n常见微任务：Promise.then，Object.observe，MutationObserver，process.nextTick(Node 环境)\r\n常见宏任务：setTimeout，ajax，dom 事件，setImmediate(Node 环境)，requestAnimationFrame\r\n\r\n同步任务执行完毕后会开始从调用栈中去执行异步任务，优先执行的是微任务，当微任务队列清空后才会去执行宏任务，每次单个宏任务执行完毕后会去检查微任务队列是否为空，如果不为空会按照先入先出的原则执行微任务，待微任务队列清空后再执行下一个宏任务，如此循环往复，这种运行机制就叫做事件循环",
+          "star": {
+            "totalCount": 0
+          },
+          "author": {
+            "login": "Richard-Zhang1019",
+            "url": "https://github.com/Richard-Zhang1019"
           }
         }
       ]
@@ -25494,6 +25927,17 @@
           "author": {
             "login": "buzuosheng",
             "url": "https://github.com/buzuosheng"
+          }
+        },
+        {
+          "id": "IC_kwDODQzyOs5VCBD9",
+          "body": "详见 MDN https://developer.mozilla.org/zh-CN/docs/Web/API/EventTarget/addEventListener",
+          "star": {
+            "totalCount": 0
+          },
+          "author": {
+            "login": "shfshanyue",
+            "url": "https://github.com/shfshanyue"
           }
         }
       ]
@@ -26170,8 +26614,8 @@
             "totalCount": 0
           },
           "author": {
-            "login": "QJune",
-            "url": "https://github.com/QJune"
+            "login": "Qiu-Jun",
+            "url": "https://github.com/Qiu-Jun"
           }
         },
         {
@@ -26192,8 +26636,8 @@
             "totalCount": 0
           },
           "author": {
-            "login": "QJune",
-            "url": "https://github.com/QJune"
+            "login": "Qiu-Jun",
+            "url": "https://github.com/Qiu-Jun"
           }
         },
         {
@@ -26575,6 +27019,17 @@
             "login": "Carrie999",
             "url": "https://github.com/Carrie999"
           }
+        },
+        {
+          "id": "IC_kwDODQzyOs5QSFA1",
+          "body": "# TypeScript 逆变和协变\r\n> 文章中所有的代码均在这里 [TS Playground - An online editor for exploring TypeScript and JavaScript](https://www.typescriptlang.org/play?#code/JYOwLgpgTgZghgYwgAgIImAWzgG2QbwChkTkQ5MIAuZAZzClAHNCBfQw0SWRFAEQD2TZBAAekEABNaaDNjxFSyAPTLkgcRNAfDqAX3WKkA7nCZNmAFTjAcACgCUNAG4Dgkthy7R4SZAGEBUEyLiEFIygsKKpAhwIADqRiYgTDTwOLQQroQ4EGDI0Vi4NOj5eAC8BHok5JQ0AOR58jUANGwA3JnZyJJCNGHIZRGVFNTINWACmE0VyIbGZhbWNgTICAIgtAJZAHQ4QlY1MwlM5pYAhDWLrM2sbYT1uH2dQhxgAJ4ADigAYiAAjA9WcH8PSEixKAD5kGFnu8viAAEz-QFJWTFUEQ3z+YAcLI5GC-GjfH5tHHIPFwgnwm6EPF-MpkoA)\r\n\r\n## 一些概念\r\n### Subtyping 子类型\r\n在编程语言理论中，子类型是一种类型多态的形式，这种类型可以替换其超类型(supertype)。如果 S 是 T 的子类型，一般表示为 S <: T，意思是在任何类型为 T 的地方都可以安全的使用 S。\r\n```js\r\ntype T = number\r\ntype S = T | string\r\n\r\ntype Fn = (arg: T) => void\r\n\r\nlet fn: Fn = (arg: S) => {}\r\n```\r\n上面的代码我们定义了 T 和 S 类型，然后定义了一个 参数为 T 返回值为 any 的函数类型 Fn， 但是在具体的赋值的时候我们将 args 变为 S，程序是可以正常运行的。\r\n### 协变与逆变\r\n> 协变与逆变（Covariance and contravariance）是在计算机科学中，描述具有父/子型别关系的多个型别通过型别构造器、构造出的多个复杂型别之间是否有父/子型别关系的用语。\r\n在一门程序设计语言的[类型系统](https://zh.wikipedia.org/wiki/%E5%9E%8B%E5%88%A5%E7%B3%BB%E7%B5%B1)中，一个类型规则或者类型构造器是：\r\n- 协变（covariant），如果它保持了[子类型序关系≦](https://zh.wikipedia.org/wiki/%E5%AD%90%E5%9E%8B%E5%88%A5)。该序关系是：子类型≦基类型。\r\n- 逆变（contravariant），如果它逆转了子类型序关系。\r\n- 不变（invariant），如果上述两种均不适用。\r\n维基百科中的描述有点抽象，我们提取一下关键词\r\n- 父/子型别\r\n- 构造器构造\r\n- 是否具有父/子型别关系\r\n我们先用简单的数学模拟一下，假设我们现在有两个值 x = -1 ， y = -5，x 和 y 的关系为 x > y。\r\n假设现在有函数 \r\n$$f(t) = t + 10$$\r\n将我们的 x 和 y 代入 f(t) 后得到 f(x) = 9 和 f(y) = 5 ，可以发现 f(x) 和 f(y) 的关系仍然为 f(x) > f(y)，这就是典型的协变。\r\n假设如下函数\r\n$$g(t) = t^2$$\r\ng(x) = 1 < g(y) = 5 这就是逆变。\r\n上面只是举了一个很简单并且不够严谨的例子，主要是为了方便理解，现在我们看一下在 ts 中的实现。\r\n### TypeScript实现\r\n考虑如下类型\r\n```js\r\ndinterface Animal {\r\n    name: string\r\n}\r\n\r\ninterface Dog extends Animal {\r\n    // 摇尾巴\r\n    waggingTail(): void\r\n}\r\n\r\ninterface Corgi extends Dog {\r\n    canWagging: false\r\n}\r\n```\r\n代码中我们定义了三个类型，他们之间的子集关系为 Corgi <: Dog <: Animal。\r\n```js\r\n// 协变\r\ntype AnimalList = Array<Animal>\r\ntype DogList = Array<Dog>\r\n\r\nlet animalArr: AnimalList = [];\r\nlet dogArr: DogList = [];\r\n// ✅ DogList 为 AnimalList 子集\r\nanimalArr = dogArr;\r\n```\r\n我们再考虑一种特殊情况\r\n```js\r\ntype Fn1 = (arg: Dog) => Dog\r\n```\r\nFn1 类型的子类型是什么呢？\r\n是 (arg: Corgi) => Corgi吗？\r\n考虑如下场景\r\n![image](https://user-images.githubusercontent.com/73587626/207111255-346a9f4b-22ae-4f8b-939d-1429b95888cc.png)\r\n显然 Fn3 并不是 Fn1 的子类型。\r\n我们分析一下这样为什么不被允许，由于 Fn3 类型的限制，这里 fn3 函数的参数只能传入 arg 为 Corgi 类型的函数，但是本来的 Fn1 是允许任何 Dog 类型的参数，所以 ts 禁止了这样的操作。\r\n所以 Fn1 的子类型应该为参数可以接受任何类型的 Dog，返回值具有 Dog 所有值的类型。\r\n所以正确答案是 (arg: Animal) => Corgi 。\r\n![image](https://user-images.githubusercontent.com/73587626/207111384-9e00ad55-266f-4149-b487-60530555a103.png)\r\n> 为了方便表示，这里我们定义 A → B 指的是以 A 为参数类型，以 B 为返回值类型的函数类型。\r\n返回值类型很容易理解：柯基是狗的子类型。但参数类型则是相反的：动物是狗的父类。\r\n用合适的术语来描述这个奇怪的表现，可以说我们允许一个函数类型中，返回值类型是协变的，而参数类型是逆变的。返回值类型是协变的，意思是 A <: B 就意味着 (T → A) <: (T → B) 。参数类型是逆变的，意思是 A <: B 就意味着 (B → T) <: (A → T) （ A 和 B 的位置颠倒过来了）。\r\n一个有趣的现象：在 TypeScript 中， [参数类型是双向协变的](https://github.com/Microsoft/TypeScript/wiki/FAQ#why-are-function-parameters-bivariant) ，也就是说既是协变又是逆变的，而这并不安全。但是现在你可以在 [TypeScript 2.6](https://www.typescriptlang.org/docs/handbook/release-notes/typescript-2-6.html) 版本中通过 --strictFunctionTypes 或 --strict 标记来修复这个问题。\r\n\r\n参考\r\n- [维基百科-子类型](https://zh.wikipedia.org/wiki/%E5%AD%90%E7%B1%BB%E5%9E%8B)\r\n- [维基百科-协变与逆变](https://zh.wikipedia.org/wiki/%E5%8D%8F%E5%8F%98%E4%B8%8E%E9%80%86%E5%8F%98#%E2%80%9C%E5%8D%8F%E5%8F%98%E2%80%9D%E4%B8%80%E8%AF%8D%E7%9A%84%E6%9D%A5%E6%BA%90)\r\n- [What are covariance and contravariance? | Stephan Boyer](https://www.stephanboyer.com/post/132/what-are-covariance-and-contravariance)",
+          "star": {
+            "totalCount": 0
+          },
+          "author": {
+            "login": "huangyulie",
+            "url": "https://github.com/huangyulie"
+          }
         }
       ]
     },
@@ -26919,6 +27374,17 @@
             "login": "shfshanyue",
             "url": "https://github.com/shfshanyue"
           }
+        },
+        {
+          "id": "IC_kwDODQzyOs5OzIId",
+          "body": "主要在await会等待Promise的完结状态，如果Promise为reject，会在当前trycatch中被捕获，否则会将reject传递到外层。\r\nhttps://stackoverflow.com/questions/38708550/difference-between-return-await-promise-and-return-promise",
+          "star": {
+            "totalCount": 0
+          },
+          "author": {
+            "login": "PstereoJW",
+            "url": "https://github.com/PstereoJW"
+          }
         }
       ]
     },
@@ -27100,6 +27566,17 @@
           "author": {
             "login": "illumi520",
             "url": "https://github.com/illumi520"
+          }
+        },
+        {
+          "id": "IC_kwDODQzyOs5O4yrx",
+          "body": "interface和type都可以用来声明和约束变量类型结构，interface可以被继承重载，type要想被继承只能使用联合&，而且interface的性能比type更好\r\n",
+          "star": {
+            "totalCount": 0
+          },
+          "author": {
+            "login": "coderhn",
+            "url": "https://github.com/coderhn"
           }
         }
       ]
@@ -28025,7 +28502,7 @@
           "id": "IC_kwDODQzyOs4_fWtg",
           "body": "npm 会把所有下载的包，保存在用户文件夹下面。\r\n\r\n默认值：~/.npm在Posix上 或 %AppData%/npm-cache在Windows上。根缓存文件夹。\r\n\r\nnpm install 之后会计算每个包的 sha1 值(PS:安全散列算法(Secure Hash Algorithm))，然后将包与他的 sha1 值关联保存在 package-lock.json 里面，下次 npm install 时，会根据 package-lock.json 里面保存的 sha1 值去文件夹里面寻找包文件，如果找到就不用从新下载安装了。\r\n\r\n```sh\r\nnpm cache verify\r\n```\r\n\r\n上面这个命令是重新计算，磁盘文件是否与 sha1 值匹配，如果不匹配可能删除。\r\n\r\n> 要对现有缓存内容运行脱机验证，请使用 `npm cache verify`。\r\n\r\n```sh\r\nnpm cache clean --force\r\n```\r\n\r\n上面这个命令是删除磁盘所有缓存文件。",
           "star": {
-            "totalCount": 4
+            "totalCount": 5
           },
           "author": {
             "login": "wenreq",
@@ -28399,6 +28876,35 @@
         {
           "id": "MDU6TGFiZWwzMDU0MjAwNTE1",
           "name": "code"
+        }
+      ]
+    }
+  },
+  {
+    "id": "I_kwDODQzyOs5WNCdJ",
+    "number": 794,
+    "title": "【Q748】在 babel 编译为低版本 ES 时，为何能够编译可选链之类语法，但无法编译 API",
+    "body": "",
+    "comments": {
+      "nodes": [
+        {
+          "id": "IC_kwDODQzyOs5OOTHW",
+          "body": "见 <https://q.shanyue.tech/engineering/734.html>\r\n\r\nbabel/swc 只能处理操作符，而无法处理新的 API。如果需要处理 API 兼容，则需要引入 `core-js` 增加垫片代码",
+          "star": {
+            "totalCount": 0
+          },
+          "author": {
+            "login": "shfshanyue",
+            "url": "https://github.com/shfshanyue"
+          }
+        }
+      ]
+    },
+    "labels": {
+      "nodes": [
+        {
+          "id": "MDU6TGFiZWwxNzA3OTU2MjIw",
+          "name": "前端工程化"
         }
       ]
     }
