@@ -134,8 +134,8 @@
             "totalCount": 0
           },
           "author": {
-            "login": "gethinzz",
-            "url": "https://github.com/gethinzz"
+            "login": "gethin036",
+            "url": "https://github.com/gethin036"
           }
         },
         {
@@ -158,6 +158,28 @@
           "author": {
             "login": "MSpringy",
             "url": "https://github.com/MSpringy"
+          }
+        },
+        {
+          "id": "IC_kwDODQzyOs5VU4_p",
+          "body": "IntersectionObserver 也可以去做一些广告曝光统计。 \r\n\r\n我之前做过一个 统计 banner 广告曝光次数的需求，在用户看到这个 banner 的时候，去上报一下",
+          "star": {
+            "totalCount": 0
+          },
+          "author": {
+            "login": "CroatiaParanoia",
+            "url": "https://github.com/CroatiaParanoia"
+          }
+        },
+        {
+          "id": "IC_kwDODQzyOs5WJVEX",
+          "body": "> > **方法三的简单 demo**\r\n> > ```\r\n> > <!DOCTYPE html>\r\n> > <html lang=\"en\">\r\n> >   <head>\r\n> >     <meta charset=\"UTF-8\" />\r\n> >     <meta http-equiv=\"X-UA-Compatible\" content=\"IE=edge\" />\r\n> >     <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\" />\r\n> >     <title>3.IntersectionObserver API + DataSet API</title>\r\n> >     <style>\r\n> > \r\n> >       * {\r\n> >         margin: 0px;\r\n> >         padding: 0px;\r\n> >       }\r\n> > \r\n> >       body {\r\n> >         margin: 0px;\r\n> >         padding: 0px;\r\n> >       }\r\n> > \r\n> >       img {\r\n> >         width: 100%;\r\n> >         height: 600px;\r\n> >       }\r\n> >     </style>\r\n> >   </head>\r\n> >   <body>\r\n> >     <img src=\"https://cdn.pixabay.com/photo/2021/08/24/15/38/sand-6570980_960_720.jpg\" alt=\"1\" />\r\n> >     <img src=\"https://cdn.pixabay.com/photo/2013/02/21/19/06/drink-84533_960_720.jpg\" alt=\"2\" />\r\n> >     <img data-src=\"https://cdn.pixabay.com/photo/2014/12/15/17/16/boardwalk-569314_960_720.jpg\" alt=\"3\" />\r\n> >     <img data-src=\"https://cdn.pixabay.com/photo/2013/07/18/20/26/sea-164989_960_720.jpg\" alt=\"4\" />\r\n> >     <img data-src=\"https://cdn.pixabay.com/photo/2015/04/23/22/00/tree-736885_960_720.jpg\" alt=\"5\" />\r\n> >     <img data-src=\"https://cdn.pixabay.com/photo/2017/03/26/21/54/yoga-2176668_960_720.jpg\" alt=\"6\" />\r\n> >     <img data-src=\"https://cdn.pixabay.com/photo/2015/03/17/14/05/sparkler-677774_960_720.jpg\" alt=\"7\" />\r\n> >     <script>\r\n> >       const images = document.querySelectorAll('img')\r\n> > \r\n> >       // 新的 api  IntersectionObserver \r\n> >       const observer = new IntersectionObserver((changes) => {\r\n> >         changes.forEach(change => {\r\n> >           if (change.isIntersecting) {\r\n> >             const img = change.target\r\n> >             // if (img.dataset.src && img.src == \"\") {\r\n> >             //   img.src = img.dataset.src\r\n> >             // }\r\n> >             img.dataset.src && img.src == \"\" && (img.src = img.dataset.src)\r\n> >             observer.unobserve(img)\r\n> >           }\r\n> >         })\r\n> >       })\r\n> > \r\n> >       images.forEach(img => observer.observe(img))\r\n> >     </script>\r\n> >   </body>\r\n> > </html>\r\n> > ```\r\n> \r\n> @gethinzz intersectionObserver这个方式，我试了，但是第三张出现到视口的时候，下面的图片全部一起加载完毕了。。。 isIntersecting 和 intersectionRatio的值都是一致的，这跟我理解的不一样，是我理解错了吗\r\n\r\n这里需要将图片给一个默认高度，因为页面滚动的时候，懒加载的图片都没有宽高，所以滚动判断会认为该元素已经在可视区域了\r\n你可以在 img.dataset.src && img.src == \"\" && (img.src = img.dataset.src) 这一句上面加一个断点，就能看到懒加载图片都是破损状态，但是都在可视区域内了\r\n```\r\n<style>\r\n    body {\r\n      display: flex;\r\n      flex-direction: column;\r\n    }\r\n\r\n    img {\r\n      min-height: 640px;\r\n    }\r\n  </style>\r\n````",
+          "star": {
+            "totalCount": 0
+          },
+          "author": {
+            "login": "zhengaimin",
+            "url": "https://github.com/zhengaimin"
           }
         }
       ]
@@ -432,10 +454,7 @@
           "star": {
             "totalCount": 0
           },
-          "author": {
-            "login": "wxyunhe",
-            "url": "https://github.com/wxyunhe"
-          }
+          "author": null
         },
         {
           "id": "IC_kwDODQzyOs4-dZ2t",
@@ -515,7 +534,7 @@
           "id": "MDEyOklzc3VlQ29tbWVudDYwOTUzMTA5NQ==",
           "body": "引自：https://css-tricks.com/centering-css-complete-guide/\r\n1 该元素的宽高固定吗？\r\n在将元素绝对定位为top: 50%; left: 50%;后，可以使用值为宽的一半和高的一半的负margin实现垂直水平居中。（跨浏览器支持很不错）\r\n```\r\n.parent {\r\n  position: relative;\r\n}\r\n\r\n.child {\r\n  width: 300px;\r\n  height: 100px;\r\n  padding: 20px;\r\n\r\n  position: absolute;\r\n  top: 50%;\r\n  left: 50%;\r\n\r\n  margin: -70px 0 0 -170px;\r\n}\r\n```\r\n2 该元素宽高未知？\r\n（1）如果宽高未知，在将元素绝对定位为top: 50%; left: 50%;后，可以使用transform属性来做负的50%移动（基于当前元素宽高）。\r\n```\r\n.parent {\r\n  position: relative;\r\n}\r\n.child {\r\n  position: absolute;\r\n  top: 50%;\r\n  left: 50%;\r\n  transform: translate(-50%, -50%);\r\n}\r\n```\r\n（2）也可以元素相对父容器绝对定位(left: 0;right: 0;top: 0;bottom: 0;)并margin: auto，不需要提前知道尺寸兼容性好。\r\n```\r\n.container {\r\n  position: relative;\r\n  height: 300px;\r\n  border: 1px solid red;\r\n}\r\n.item {\r\n  width: 100px;\r\n  height: 50px;\r\n  position: absolute;\r\n  left: 0;\r\n  top: 0;\r\n  right: 0;\r\n  bottom: 0;\r\n  margin: auto;\r\n  border: 1px solid green;\r\n}\r\n```\r\n3 你要用flexbox吗？\r\n对flexbox进行垂直水平居中，只需设置两个属性为center: align-items、justify-content。\r\n```\r\n.parent {\r\n  display: flex;\r\n  justify-content: center;\r\n  align-items: center;\r\n}\r\n```\r\n4 你要用grid布局吗？\r\n父容器设置为grid布局后，子元素直接margin: auto;即可实现垂直水平居中。\r\n```\r\nbody, html {\r\n  height: 100%;\r\n  display: grid;\r\n}\r\nspan { /* thing to center */\r\n  margin: auto;\r\n}\r\n```\r\n详细案例解释可参考：https://zhuanlan.zhihu.com/p/87134477",
           "star": {
-            "totalCount": 4
+            "totalCount": 5
           },
           "author": {
             "login": "SageSanyue",
@@ -526,7 +545,7 @@
           "id": "MDEyOklzc3VlQ29tbWVudDc5NDgyMzc1NQ==",
           "body": "你不知道的 flex 布局～\r\n\r\n```\r\n.box {\r\n  display: flex;\r\n}\r\n\r\n.item {\r\n  margin: auto;\r\n}\r\n```",
           "star": {
-            "totalCount": 2
+            "totalCount": 3
           },
           "author": {
             "login": "lastSeries",
@@ -813,6 +832,17 @@
             "login": "Muralitob",
             "url": "https://github.com/Muralitob"
           }
+        },
+        {
+          "id": "IC_kwDODQzyOs5bhy4i",
+          "body": "1.类组件比起函数组件更难以理解。\r\n\r\n2.无需修改组件结构的情况下复用状态逻辑，状态管理更加清晰。\r\n\r\n3.不用写类函数就可以使用更多的 React 特性。 \r\n\r\n4.更符合 React 本身的思想，函数式、组件化。\r\n\r\n5.组件树层级变浅 （原本的HOC/render props 等方式增加了组件树层数及渲染，在 React DevTools 中观察过 React 应用，你会发现由 providers，consumers，高阶组件，render props 等其他抽象层组成的组件会形成“嵌套地狱”，这些功能都可以通过强大的自定义的 Hooks 来实现。）\r\n\r\n6.不用再去考虑 this 的指向、生命周期问题。",
+          "star": {
+            "totalCount": 0
+          },
+          "author": {
+            "login": "yangzi0210",
+            "url": "https://github.com/yangzi0210"
+          }
         }
       ]
     },
@@ -858,7 +888,7 @@
           "id": "MDEyOklzc3VlQ29tbWVudDU2ODk2MjY4Mg==",
           "body": "```js\r\nimport React, { useEffect, useState } from \"react\";\r\n\r\nfunction App() {\r\n    const [count, setCount] = useState(0);\r\n    useEffect(() => {\r\n        const timer = setInterval(() => {\r\n            setCount(count => count + 1)\r\n        }, 1000)\r\n\r\n        return () => {\r\n           clearInterval(timer)\r\n        }\r\n    }, [])\r\n\r\n    return <h1>{count}</h1>\r\n}\r\n```",
           "star": {
-            "totalCount": 15
+            "totalCount": 14
           },
           "author": {
             "login": "shaul-xu",
@@ -960,7 +990,7 @@
     "id": "MDU6SXNzdWU1MTk5NTY3NjQ=",
     "number": 18,
     "title": "【Q017】css 如何实现左侧固定300px，右侧自适应的布局",
-    "body": "",
+    "body": "问题追问：\r\n\r\n+ 如果使用 flex 布局回答 `flex: 1` 时，则追问它是那几个属性的简写，最主要配置的是哪一个属性",
     "comments": {
       "nodes": [
         {
@@ -1578,6 +1608,17 @@
             "login": "zhangtuo1999",
             "url": "https://github.com/zhangtuo1999"
           }
+        },
+        {
+          "id": "IC_kwDODQzyOs5ZBcNc",
+          "body": "```js\r\nFunction.prototype._bind(obj,...args){\r\n  obj.fn = this\r\n  return function(...args){\r\n    const r = obj.fn(...args)\r\n    delete obj.fn\r\n    return  r\r\n  }\r\n}\r\n```",
+          "star": {
+            "totalCount": 0
+          },
+          "author": {
+            "login": "Yinzhuo19970516",
+            "url": "https://github.com/Yinzhuo19970516"
+          }
         }
       ]
     },
@@ -1665,6 +1706,28 @@
           "author": {
             "login": "zhangtuo1999",
             "url": "https://github.com/zhangtuo1999"
+          }
+        },
+        {
+          "id": "IC_kwDODQzyOs5XWOid",
+          "body": "> bound.prototype = Object.create(fn.prototype); 为什么要有这一句，不是很懂\r\n是要考虑到new的情况来着",
+          "star": {
+            "totalCount": 0
+          },
+          "author": {
+            "login": "rujptw",
+            "url": "https://github.com/rujptw"
+          }
+        },
+        {
+          "id": "IC_kwDODQzyOs5Yb6LA",
+          "body": "实现一个Bind:\r\n```\r\nfunction person(a, b, c, d, e) {\r\n    console.log(this.name, a + b + c);\r\n    console.log(d,e);\r\n}\r\n\r\nconst yeti = {\r\n    name: 'yeti'\r\n}\r\n\r\n// 实现一个bind\r\nFunction.prototype.newmyBind = function (obj, ...args) {\r\n    const that = this\r\n    return function (...rest) {  //返回一个修改好this的函数\r\n        // ...rest来自返回函数传入的参数  ...args是调用Bind时传入的参数\r\n        that.call(obj, ...args, ...rest)\r\n    }\r\n\r\n}\r\n\r\nconst resBind = person.newmyBind(yeti, 1, 2, 6) //1 2 6 就是...args\r\nresBind(5, 6)   //传入...rest\r\n```",
+          "star": {
+            "totalCount": 0
+          },
+          "author": {
+            "login": "Yeti-xxx",
+            "url": "https://github.com/Yeti-xxx"
           }
         }
       ]
@@ -3204,8 +3267,8 @@
             "totalCount": 0
           },
           "author": {
-            "login": "izhangjinzhe",
-            "url": "https://github.com/izhangjinzhe"
+            "login": "yunshenpro",
+            "url": "https://github.com/yunshenpro"
           }
         },
         {
@@ -3749,6 +3812,28 @@
             "login": "yxw007",
             "url": "https://github.com/yxw007"
           }
+        },
+        {
+          "id": "IC_kwDODQzyOs5VndA6",
+          "body": "```js\r\nfunction pMap(argsArr, fn, config) {\r\n    let queue = [];\r\n\r\n    const next = () => {\r\n        if (queue.length > 0) {\r\n            queue.shift().then(_task => _task());\r\n        }\r\n    };\r\n\r\n    const run = async (fn, resolve, args) => {\r\n        const result = await (async () => fn(...args))()\r\n        resolve(result)\r\n        try {\r\n            result\r\n        } catch (e) { }\r\n        next()\r\n    };\r\n\r\n    return new Promise((resolve, reject) => {\r\n        const concurrency = (config || {}).concurrency;\r\n        if (!concurrency) {\r\n            Promise.all(\r\n                argsArr.map((item) =>\r\n                    item instanceof Promise ? item.then(fn) : fn(item)\r\n                )\r\n            ).then(resolve).catch(reject);\r\n        } else {\r\n            queue = argsArr.map(async (item) => run.bind(null, fn, resolve, [item instanceof Promise ? (await item) : item]));\r\n            for (let i = 0; i < concurrency; i++) {\r\n                queue[i].then(_task => _task())\r\n            }\r\n        }\r\n    });\r\n}\r\n\r\n```",
+          "star": {
+            "totalCount": 0
+          },
+          "author": {
+            "login": "kirazZ1",
+            "url": "https://github.com/kirazZ1"
+          }
+        },
+        {
+          "id": "IC_kwDODQzyOs5XV7rF",
+          "body": "```ts\r\ntype pMapType<T = any> = (\r\n  argsArr: any[],\r\n  fn: (...args: any) => Promise<T>,\r\n  concurrency?: number\r\n) => Promise<T>;\r\n\r\nconst pMap: pMapType = (argsArr, fn, concurrency = Infinity) => {\r\n  return new Promise((resolve, reject) => {\r\n    const result = new Array(argsArr.length).fill(0);\r\n\r\n    const taskQueue: any[] = [];\r\n\r\n    let currentWorkingAmount = 0;\r\n\r\n    function run() {\r\n      while (currentWorkingAmount < concurrency) {\r\n        const nextTask = taskQueue.shift();\r\n        if(nextTask) {\r\n          nextTask()\r\n          currentWorkingAmount++\r\n        }\r\n        if(taskQueue.length === 0) break\r\n      }\r\n    }\r\n\r\n    for (let i = 0; i < argsArr.length; i++) {\r\n      taskQueue.push(() => {\r\n        Promise.resolve(fn(argsArr[i]))\r\n          .then((res) => {\r\n            result[i] = res;\r\n            currentWorkingAmount--;\r\n            if(taskQueue.length === 0 && currentWorkingAmount === 0) return resolve(result)\r\n            if (currentWorkingAmount < concurrency) run();\r\n          })\r\n          .catch(reject);\r\n      });\r\n    }\r\n\r\n    run();\r\n  });\r\n};\r\n\r\nfunction asyncFun(value: any, delay: number) {\r\n  return new Promise((resolve) => {\r\n      console.log(\"start \" + value);\r\n      setTimeout(() => resolve(value), delay);\r\n  });\r\n}\r\n\r\npMap([1, 2, 3, 4, 5, 6, 7, 8], (x) => asyncFun(`task${x}`, 2000), 4).then(res => {\r\n  console.log(\"res\",res)\r\n});\r\n\r\n```",
+          "star": {
+            "totalCount": 0
+          },
+          "author": {
+            "login": "kirazZ1",
+            "url": "https://github.com/kirazZ1"
+          }
         }
       ]
     },
@@ -3961,8 +4046,8 @@
             "totalCount": 0
           },
           "author": {
-            "login": "DoubleRayWang",
-            "url": "https://github.com/DoubleRayWang"
+            "login": "rex-ll",
+            "url": "https://github.com/rex-ll"
           }
         },
         {
@@ -4668,7 +4753,7 @@
           "id": "MDEyOklzc3VlQ29tbWVudDcxNjI2NzE4MA==",
           "body": "> 比如 nginx 中的 etag 由 last_modified 与 content_length 组成，而 last_modified 又由 mtime 组成。\r\n> \r\n> 那Etag是怎么解决last_modified，当编辑文件却未更改文件时间的问题？\r\n\r\n1. 此时文件大小有可能发生更改，ETag 会改变\r\n1. 此时文件大小没有发生更改，ETag 不会改变。但这需要极其苛刻的条件：1s 内更改文件，并且保持文件大小不变。这种情况出现概率很低，因此忽略了",
           "star": {
-            "totalCount": 1
+            "totalCount": 2
           },
           "author": {
             "login": "shfshanyue",
@@ -4699,10 +4784,7 @@
           "star": {
             "totalCount": 0
           },
-          "author": {
-            "login": "wxyunhe",
-            "url": "https://github.com/wxyunhe"
-          }
+          "author": null
         }
       ]
     },
@@ -4964,6 +5046,17 @@
           "author": {
             "login": "liaotao123",
             "url": "https://github.com/liaotao123"
+          }
+        },
+        {
+          "id": "IC_kwDODQzyOs5ahSKS",
+          "body": "TCP（传输控制协议）是一种面向连接的、可靠的传输协议。TCP 通过以下几种机制来保证数据传输的可靠性：\r\n\r\n应答机制：当发送方发送数据时，接收方会发送一个应答确认已经收到数据。如果发送方在超时时间内未收到应答，就会重新发送数据，直到接收方发送应答确认为止。\r\n\r\n序列号和确认号：TCP 将每个数据包都分配一个序列号，接收方收到数据包后会向发送方发送一个确认号，确认当前已收到的数据包的序列号。发送方可以根据确认号知道哪些数据包已经被接收方成功接收，哪些数据包需要重新发送。\r\n\r\n滑动窗口：TCP 使用滑动窗口机制来控制发送方发送数据的速度。滑动窗口的大小取决于接收方的可用缓冲区大小和网络延迟等因素。发送方只能发送窗口内的数据，接收方只确认窗口内的数据。如果发送方收到接收方的窗口更新通知，则可以增加窗口大小，以便发送更多的数据。\r\n\r\n超时重传：如果发送方在超时时间内未收到接收方的确认应答，就会认为数据包已经丢失，并重新发送数据包。超时时间通常根据网络延迟和拥塞程度等因素来计算，以确保重传时机的合理性。\r\n\r\n拥塞控制：TCP 通过拥塞控制算法来防止网络拥塞。如果网络出现拥塞，TCP 会减少发送速率，以避免进一步加重网络负载。",
+          "star": {
+            "totalCount": 0
+          },
+          "author": {
+            "login": "Azure089",
+            "url": "https://github.com/Azure089"
           }
         }
       ]
@@ -5237,6 +5330,17 @@
             "login": "xinlanlan",
             "url": "https://github.com/xinlanlan"
           }
+        },
+        {
+          "id": "IC_kwDODQzyOs5ahSXS",
+          "body": "加密：VPN使用加密技术对数据进行加密，以确保数据在传输过程中是安全的。VPN使用的加密算法通常是对称加密和公钥加密的组合。\r\n隧道：VPN通过隧道技术，在公共网络上创建一个加密通道，将远程用户或分支机构的数据流量转发到私有网络中。隧道技术可以确保数据在公共网络上传输时是安全的，并且只有经过身份验证的用户才能访问私有网络。\r\n认证：VPN使用认证技术来验证用户的身份。这通常包括用户名和密码、数字证书或其他身份验证证书。\r\n授权：VPN使用授权技术来限制用户对私有网络资源的访问。这可以通过访问控制列表、安全策略和其他技术来实现。",
+          "star": {
+            "totalCount": 0
+          },
+          "author": {
+            "login": "Azure089",
+            "url": "https://github.com/Azure089"
+          }
         }
       ]
     },
@@ -5427,6 +5531,17 @@
             "login": "nextprops",
             "url": "https://github.com/nextprops"
           }
+        },
+        {
+          "id": "IC_kwDODQzyOs5ahSin",
+          "body": "加密：SSH使用加密技术对网络连接进行保护，以确保数据在传输过程中是安全的。它使用的加密算法通常是对称加密和公钥加密的组合。\r\n隧道：SSH通过隧道技术，在不安全的网络中创建一个加密通道，将本地计算机和远程计算机之间的数据进行传输。隧道技术可以确保数据在不安全的网络中传输时是安全的，并且只有经过身份验证的用户才能访问远程计算机。\r\n身份验证：SSH提供了多种身份验证机制，包括基于密码、公钥、证书和挑战响应等。这些身份验证机制可以确保只有经过身份验证的用户才能访问远程计算机。\r\n端口转发：SSH还提供了端口转发功能，可以将本地计算机上的应用程序连接到远程计算机上的服务，从而实现远程访问本地服务的功能。",
+          "star": {
+            "totalCount": 0
+          },
+          "author": {
+            "login": "Azure089",
+            "url": "https://github.com/Azure089"
+          }
         }
       ]
     },
@@ -5541,7 +5656,7 @@
           "id": "IC_kwDODQzyOs438Zbw",
           "body": "通过 AST 分析，根据选项配置一些策略，来生成一颗更小体积的 AST 并生成代码。\r\n\r\n目前前端工程化中使用 [terser](https://terser.org/docs/api-reference#compress-options) 和 [swc](https://swc.rs/docs/configuration/minification) 进行 JS 代码压缩，他们拥有相同的 API。\r\n\r\n常见用以压缩 AST 的几种方案如下:\r\n\r\n## 去除多余字符: 空格，换行及注释\r\n\r\n``` javascript\r\n// 对两个数求和\r\nfunction sum (a, b) {\r\n  return a + b;\r\n}\r\n```\r\n\r\n此时文件大小是 `62 Byte`， **一般来说中文会占用更大的空间。**\r\n\r\n多余的空白字符会占用大量的体积，如空格，换行符，另外注释也会占用文件体积。当我们把所有的空白符合注释都去掉之后，代码体积会得到减少。\r\n\r\n**去掉多余字符之后，文件大小已经变为 `30 Byte`。** 压缩后代码如下:\r\n\r\n``` javascript\r\nfunction sum(a,b){return a+b}\r\n```\r\n\r\n替换掉多余字符后会有什么问题产生呢？\r\n\r\n**有，比如多行代码压缩到一行时要注意行尾分号。** \r\n\r\n## 压缩变量名：变量名，函数名及属性名\r\n\r\n``` javascript\r\nfunction sum (first, second) {\r\n  return first + second;  \r\n}\r\n```\r\n\r\n如以上 `first` 与 `second` 在函数的作用域中，在作用域外不会引用它，此时可以让它们的变量名称更短。但是如果这是一个 `module` 中，`sum` 这个函数也不会被导出呢？那可以把这个函数名也缩短。\r\n\r\n``` javascript\r\n// 压缩: 缩短变量名\r\nfunction sum (x, y) {\r\n  return x + y;  \r\n}\r\n\r\n// 再压缩: 去除空余字符\r\nfunction s(x,y){return x+y}\r\n```\r\n\r\n在这个示例中，当完成代码压缩 (`compress`) 时，代码的混淆 (`mangle`) 也捎带完成。 **但此时缩短变量的命名也需要 AST 支持，不至于在作用域中造成命名冲突。**\r\n\r\n## 解析程序逻辑：合并声明以及布尔值简化\r\n\r\n通过分析代码逻辑，可对代码改写为更精简的形式。\r\n\r\n合并声明的示例如下：\r\n\r\n``` javascript\r\n// 压缩前\r\nconst a = 3;\r\nconst b = 4;\r\n\r\n// 压缩后\r\nconst a = 3, b = 4;\r\n```\r\n\r\n布尔值简化的示例如下：\r\n\r\n``` javascript\r\n// 压缩前\r\n!b && !c && !d && !e\r\n\r\n// 压缩后\r\n!(b||c||d||e)\r\n```\r\n\r\n## 解析程序逻辑: 编译预计算\r\n\r\n在编译期进行计算，减少运行时的计算量，如下示例:\r\n\r\n``` javascript\r\n// 压缩前\r\nconst ONE_YEAR = 365 * 24 * 60 * 60\r\n\r\n// 压缩后\r\nconst ONE_YAAR = 31536000\r\n```\r\n\r\n以及一个更复杂的例子，简直是杀手锏级别的优化。\r\n\r\n``` javascript\r\n// 压缩前\r\nfunction hello () {\r\n  console.log('hello, world')\r\n}\r\n\r\nhello()\r\n\r\n// 压缩后\r\nconsole.log('hello, world')\r\n```\r\n",
           "star": {
-            "totalCount": 2
+            "totalCount": 3
           },
           "author": {
             "login": "shfshanyue",
@@ -5918,8 +6033,8 @@
             "totalCount": 0
           },
           "author": {
-            "login": "vikoala",
-            "url": "https://github.com/vikoala"
+            "login": "bantangzm",
+            "url": "https://github.com/bantangzm"
           }
         }
       ]
@@ -5939,7 +6054,19 @@
     "title": "【Q149】什么是队首阻塞，如何解决，原理如何",
     "body": "",
     "comments": {
-      "nodes": []
+      "nodes": [
+        {
+          "id": "IC_kwDODQzyOs5coXzS",
+          "body": "队首阻塞包含http应用层协议上的队首阻塞和tcp传输层的队首阻塞\r\n\r\n1. http应用层协议上的队首阻塞:\r\n以http1.1为例，一个tcp连接一次只能处理一个请求，如果接受端处理慢的话，后面的请求就得排队，这是导致队首阻塞的根本原因\r\n虽然http1.1提出了管线技术，支持同时发起多个请求出去，但是又限制了接收端返回必须得按照顺序，所以这项技术也未能解决队首阻塞。\r\n\r\nhttp2.0 提出了 frame 和 stream的概念，\r\n把请求数据分成了不同的二进制frame，有strameid标识，包装进不同的stream通过同一个tcp管道进行并发的多路复用传输，\r\n接收端根据streamid来进行组装，解决了队首阻塞的问题。\r\n\r\n但是依然没有解决tcp传输层的队首阻塞，如果过程中一个包丢了，需要重传，就需要后面的包等待了\r\n\r\n\r\n\r\n\r\n\r\n\r\n",
+          "star": {
+            "totalCount": 0
+          },
+          "author": {
+            "login": "yuzd",
+            "url": "https://github.com/yuzd"
+          }
+        }
+      ]
     },
     "labels": {
       "nodes": [
@@ -6289,8 +6416,8 @@
             "totalCount": 0
           },
           "author": {
-            "login": "DoubleRayWang",
-            "url": "https://github.com/DoubleRayWang"
+            "login": "rex-ll",
+            "url": "https://github.com/rex-ll"
           }
         },
         {
@@ -6468,7 +6595,7 @@
           "id": "MDEyOklzc3VlQ29tbWVudDYxMDczODQ3NA==",
           "body": "因为JavaScript单线程的特点，每个同步任务不能耗时太长，不然就会让程序不会对其他输入作出相应，React的更新过程就是犯了这个禁忌，而React Fiber就是要改变现状。\r\n而可以通过分片来破解JavaScript中同步操作时间过长的问题。\r\n\r\n把一个耗时长的任务分成很多小片，每一个小片的运行时间很短，虽然总时间依然很长，但是在每个小片执行完之后，都给其他任务一个执行的机会，这样唯一的线程就不会被独占，其他任务依然有运行的机会。\r\n\r\nReact Fiber把更新过程碎片化，每执行完一段更新过程，就把控制权交还给React负责任务协调的模块，看看有没有其他紧急任务要做，如果没有就继续去更新，如果有紧急任务，那就去做紧急任务。\r\n\r\n维护每一个分片的数据结构，就是Fiber。",
           "star": {
-            "totalCount": 3
+            "totalCount": 4
           },
           "author": {
             "login": "yuzeyang97",
@@ -6595,7 +6722,7 @@
           "id": "MDEyOklzc3VlQ29tbWVudDU3MzY3MTY0Mg==",
           "body": "首先，什么是类数组(Array Like)？\r\n\r\n**一个简单的定义，如果一个对象有 `length` 属性值，则它就是类数组**\r\n\r\n那常见的类数组有哪些呢？\r\n\r\n这在 DOM 中甚为常见，如各种元素检索 API 返回的都是类数组，如 `document.getElementsByTagName`，`document.querySelectorAll` 等等。除了 DOM API 中，常见的 `function` 中的 `arguments` 也是类数组\r\n\r\n那如何把类数组转化为数组呢？这是类数组操作时一个典型的场景，也是一个典型的面试题\r\n\r\n以下我们将以 `{ length: 3 }` 来指代类数组，来作为演示\r\n\r\n<!--more-->\r\n\r\n## ES6+\r\n\r\n`ES6` 中有现成的 API：`Array.from`，极为简单\r\n\r\n``` js\r\n// [undefined, undefined, undefined]\r\nArray.from({ length: 3 })\r\n```\r\n\r\n除了 `Array.from` 还有更简单的运算符 `...` 扩展运算符，不过它只能作用于 `iterable` 对象，即拥有 `Symbol(Symbol.iterator)` 属性值\r\n\r\n拥有 `Symbol(Symbol.iterator)` 属性值，意味着可以使用 `for of` 来循环迭代\r\n\r\n``` js\r\n// 适用于 iterable 对象\r\n[...document.querySelectorAll('div')]\r\n```\r\n\r\n但是严格意义上来说，它不能把类数组转化为数组，如 `{ length: 3 }`。它将会抛出异常\r\n\r\n``` js\r\n// Uncaught TypeError: object is not iterable (cannot read property Symbol(Symbol.iterator))\r\n[...{length: 3}]\r\n```\r\n\r\n## ES5\r\n\r\n在此之前，我们先不使用 `{ length: 3 }`，使用以下数据来代表类数组\r\n\r\n``` js\r\nconst arrayLike = {\r\n  0: 3,\r\n  1: 4,\r\n  2: 5,\r\n  length: 3\r\n}\r\n```\r\n\r\n在 `ES5` 中可以借用 `Array API` 通过 `call/apply` 改变 `this` 或者 `arguments` 来完成转化。\r\n\r\n最常见的转换是 `Array.prototype.slice`\r\n\r\n``` js\r\nArray.prototype.slice.call(arrayLike)\r\n```\r\n\r\n**当然由于借用 `Array API`，一切以数组为输入，并以数组为输出的 API 都可以来做数组转换，如**\r\n\r\n+ `Array` (借用 arguments)\r\n+ `Array.prototype.concat` (借用 arguments)\r\n+ `Array.prototype.slice` (借用 this)\r\n+ `Array.prototype.map` (借用 this)\r\n+ `Array.prototype.filter` (借用 this)\r\n\r\n``` js\r\nArray.apply(null, arrayLike)\r\nArray.prototype.concat.apply([], arrayLike)\r\nArray.prototype.slice.call(arrayLike)\r\nArray.prototype.map.call(arrayLike, x => x)\r\nArray.prototype.filter.call(arrayLike, x => 1)\r\n```\r\n\r\n此时一切正常，但是忘了一个特例，稀疏数组。在此之前，先做一个题，以下代码输出多少\r\n\r\n``` js\r\n// 该代码输出多少\r\nArray(100).map(x => 1)\r\n```\r\n\r\n> 参考 [Array(100).map(x => 1) 结果是多少](https://github.com/shfshanyue/Daily-Question/issues/170)\r\n\r\n## 稀疏数组 (sparse array)\r\n\r\n使用 `Array(n)` 将会创建一个稀疏数组，为了节省空间，稀疏数组内含非真实元素，在控制台上将以 `empty` 显示，如下所示\r\n\r\n`[,,,]` 与 `Array(3)` 都将返回稀疏数组\r\n\r\n``` js\r\n> [,,,]\r\n[empty × 3]\r\n> Array(3)\r\n[empty × 3]\r\n```\r\n\r\n当类数组为 `{ length: 3 }` 时，一切将类数组做为 `this` 的方法将都返回稀疏数组，而将类数组做为 `arguments` 的方法将都返回密集数组\r\n\r\n## 总结\r\n\r\n由上总结，把类数组转化成数组最靠谱的方式是以下三个\r\n\r\n``` js\r\nArray.from(arrayLike)\r\nArray.apply(null, arrayLike)\r\nArray.prototype.concat.apply([], arrayLike)\r\n```\r\n\r\n以下几种方式需要考虑稀疏数组的转化\r\n\r\n``` js\r\nArray.prototype.filter.call(divs, x => 1)\r\nArray.prototype.map.call(arrayLike, x => x)\r\nArray.prototype.filter.call(arrayLike, x => 1)\r\n```\r\n\r\n以下方法要注意是否是 `iterable object`\r\n\r\n``` js\r\n[...arrayLike]\r\n```",
           "star": {
-            "totalCount": 0
+            "totalCount": 1
           },
           "author": {
             "login": "shfshanyue",
@@ -7029,7 +7156,7 @@
           "id": "MDEyOklzc3VlQ29tbWVudDc1MTU1MDAwNA==",
           "body": "实现一个**从右向左**(right to left)计算的组合函数:\r\n\r\n``` js\r\nconst compose = (...fns) =>\r\n  // 注意 f、g 的位置，如果实现从左到右计算，则置换顺序\r\n  fns.reduce((f, g) => (...args) => f(g(...args)))\r\n```\r\n\r\n跑一个示例\r\n\r\n``` js\r\nconst add5 = x => x + 5\r\nconst multiply = (x) => x * 10\r\nconst multiply10AndAdd5 = compose(\r\n  add5,\r\n  multiply\r\n)\r\nmultiply10AndAdd5(10) // 105\r\n```\r\n\r\n在 `Redux` 中广泛使用了 `compose` 函数，其中的实现如下\r\n\r\n+ [源码位置](https://github.com/reduxjs/redux/blob/master/src/compose.ts)\r\n\r\n``` ts\r\nexport default function compose(...funcs: Function[]) {\r\n  if (funcs.length === 0) {\r\n    // infer the argument type so it is usable in inference down the line\r\n    return <T>(arg: T) => arg\r\n  }\r\n\r\n  if (funcs.length === 1) {\r\n    return funcs[0]\r\n  }\r\n\r\n  return funcs.reduce((a, b) => (...args: any) => a(b(...args)))\r\n}\r\n```",
           "star": {
-            "totalCount": 0
+            "totalCount": 1
           },
           "author": {
             "login": "shfshanyue",
@@ -7078,6 +7205,17 @@
           "author": {
             "login": "maolovecoding",
             "url": "https://github.com/maolovecoding"
+          }
+        },
+        {
+          "id": "IC_kwDODQzyOs5XHUJC",
+          "body": "之前看了koa的compose实现，先入为主了，感觉写的没上面的优雅，不过能过用例：\r\n```js\r\nfunction compose(...args) {\r\n  const length = args.length;\r\n  function dispatch(index, val) {\r\n    if (index === length) return val;\r\n    else {\r\n      args = args || [];\r\n      return args[index](dispatch(index + 1, val));\r\n    }\r\n  }\r\n  return (init) => dispatch(0, init);\r\n}\r\n```",
+          "star": {
+            "totalCount": 0
+          },
+          "author": {
+            "login": "kirazZ1",
+            "url": "https://github.com/kirazZ1"
           }
         }
       ]
@@ -7182,7 +7320,7 @@
           "id": "MDEyOklzc3VlQ29tbWVudDU5NTY3ODE3MQ==",
           "body": "css变量减少样式重复定义，比如同一个颜色值要在多个地方重复使用，以前通过less和sass预处理做到，现在css变量也可以做到，方便维护，提高可读性\r\n```\r\n:root{\r\n  --bgcolor: blue;\r\n  --color: red;\r\n}\r\np {\r\n  color: var(--color);\r\n}\r\ndiv {\r\n  backgroung-color: var(--bgcolor);\r\n  color: var(--color)\r\n}\r\n```\r\n在媒体查询中使用，精简代码，减少冗余\r\n```\r\n.box {\r\n  --base-size: 10;\r\n  width: calc(var(--base-size)* 10px);\r\n  height: clac(var(--base-size)* 5px);\r\n  padding:calc(var(--base-size) * 1px);\r\n}\r\n@media screen and (min-width: 1480px) {\r\n  .box{\r\n    --base-size: 8;\r\n  }\r\n}\r\n```\r\n方便在js中使用\r\n```\r\n// 设置变量\r\ndocument.getElementById(\"box\").style.setPropertyValue('--color', 'pink')\r\n// 读取变量\r\ndoucment.getElementById('box').style.getPropertyValue('--color').trim()    //pink\r\n// 删除变量\r\ndocument.getElementById('box').style.removeProperty('--color')\r\n```",
           "star": {
-            "totalCount": 2
+            "totalCount": 4
           },
           "author": {
             "login": "Cicelychen",
@@ -7228,6 +7366,17 @@
           "author": {
             "login": "linlai163",
             "url": "https://github.com/linlai163"
+          }
+        },
+        {
+          "id": "IC_kwDODQzyOs5Ww6P2",
+          "body": "> css变量减少样式重复定义，比如同一个颜色值要在多个地方重复使用，以前通过less和sass预处理做到，现在css变量也可以做到，方便维护，提高可读性\r\n> \r\n> ```\r\n> :root{\r\n>   --bgcolor: blue;\r\n>   --color: red;\r\n> }\r\n> p {\r\n>   color: var(--color);\r\n> }\r\n> div {\r\n>   backgroung-color: var(--bgcolor);\r\n>   color: var(--color)\r\n> }\r\n> ```\r\n> \r\n> 在媒体查询中使用，精简代码，减少冗余\r\n> \r\n> ```\r\n> .box {\r\n>   --base-size: 10;\r\n>   width: calc(var(--base-size)* 10px);\r\n>   height: clac(var(--base-size)* 5px);\r\n>   padding:calc(var(--base-size) * 1px);\r\n> }\r\n> @media screen and (min-width: 1480px) {\r\n>   .box{\r\n>     --base-size: 8;\r\n>   }\r\n> }\r\n> ```\r\n> \r\n> 方便在js中使用\r\n> \r\n> ```\r\n> // 设置变量\r\n> document.getElementById(\"box\").style.setPropertyValue('--color', 'pink')\r\n> // 读取变量\r\n> doucment.getElementById('box').style.getPropertyValue('--color').trim()    //pink\r\n> // 删除变量\r\n> document.getElementById('box').style.removeProperty('--color')\r\n> ```\r\n\r\ndocument.getElementById(\"box\").style.setPropertyValue('--color', 'pink')\r\n这句 **setPropertyValue** 是不是写错了，我在 MDN 上只看到了 **setProperty** 这个 API\r\nhttps://developer.mozilla.org/zh-CN/docs/Web/API/CSSStyleDeclaration/setProperty\r\n",
+          "star": {
+            "totalCount": 0
+          },
+          "author": {
+            "login": "zhengaimin",
+            "url": "https://github.com/zhengaimin"
           }
         }
       ]
@@ -7709,8 +7858,8 @@
             "totalCount": 0
           },
           "author": {
-            "login": "DoubleRayWang",
-            "url": "https://github.com/DoubleRayWang"
+            "login": "rex-ll",
+            "url": "https://github.com/rex-ll"
           }
         },
         {
@@ -8082,6 +8231,28 @@
           "author": {
             "login": "coderWxs",
             "url": "https://github.com/coderWxs"
+          }
+        },
+        {
+          "id": "IC_kwDODQzyOs5ZUH3B",
+          "body": "```js\r\nconst obj = {\r\n\tre: /hello/,\r\n  f() {},\r\n  date: new Date(),\r\n  map: new Map(),\r\n  list: [1,2,3],\r\n  a: 3,\r\n  b: 4\r\n}\r\nfunction deepClone(target,map= new Map()) {\r\n  if(target === null) return null\r\n  if(Object.prototype.toString.call(target) === '[object RegExp]') {\r\n    return new RegExp(target)\r\n  }\r\n  if(Object.prototype.toString.call(target) === '[object Date]') {\r\n    return new Date(target)\r\n  }\r\n  if(typeof target === 'object') {\r\n    let cloneTarget = Array.isArray(target)?[]:{}\r\n    if(map.get(target)){\r\n      return map.get(target)\r\n    }\r\n    map.set(target,cloneTarget)\r\n    for(const key in target){\r\n      cloneTarget[key] = deepClone(target[key],map)\r\n    }\r\n    return cloneTarget\r\n  } else {\r\n    return target\r\n  }  \r\n}\r\n```",
+          "star": {
+            "totalCount": 0
+          },
+          "author": {
+            "login": "Yinzhuo19970516",
+            "url": "https://github.com/Yinzhuo19970516"
+          }
+        },
+        {
+          "id": "IC_kwDODQzyOs5ZmA49",
+          "body": "Array、Set、Map、Object中都可能出现循环引用。\r\n```javascript\r\nconst obj = {\r\n    re: /hello/,\r\n    f () {},\r\n    date: new Date(),\r\n    map: new Map(),\r\n    list: [1, 2, 3],\r\n    a: 3,\r\n    b: 4\r\n}\r\n\r\nconst obj2 = {loop2: obj, name: 'obj2'}\r\nobj.loop = obj2\r\n\r\n\r\nfunction deepClone(source, cache = new WeakMap()) {\r\n    //原始类型或函数直接返回\r\n    if (typeof source !== 'object') {\r\n        return source\r\n    }\r\n\r\n    //加入缓存解决循环引用\r\n    if (cache.has(source)) {\r\n        return cache.get(source)\r\n    }\r\n    let res = new source.constructor()\r\n    cache.set(source, res)\r\n    \r\n    //处理JS内置数据结构：Array、Map、Set、Object\r\n    if (source instanceof Array) {\r\n        source.forEach(v => {\r\n            res.push(deepClone(v, cache))\r\n        })\r\n    }\r\n    else if (source instanceof Map) {\r\n        for (const [k, v] of source) {\r\n            res.set(k, deepClone(v, cache))\r\n        }\r\n    }\r\n    else if (source instanceof Set) {\r\n        for (const v of source) {\r\n            res.add(deepClone(v, cache))\r\n        }\r\n    }\r\n    else if (Object.prototype.toString.call(source) == '[object Object]') {\r\n        for(const key in source){\r\n            res[key] = deepClone(source[key], cache)\r\n        }\r\n    }else {\r\n        //处理自定义对象（需遵循协议new constructors时为深拷贝）\r\n        res = new source.constructor(source)\r\n    }\r\n\r\n    return res\r\n}\r\n\r\nconst newObj = deepClone(obj)\r\nconsole.log(newObj)\r\n```",
+          "star": {
+            "totalCount": 1
+          },
+          "author": {
+            "login": "xicYue",
+            "url": "https://github.com/xicYue"
           }
         }
       ]
@@ -8736,7 +8907,7 @@
           "id": "MDEyOklzc3VlQ29tbWVudDc4Njk5MDU2Ng==",
           "body": "![image](https://user-images.githubusercontent.com/19162008/109372242-850c0980-78e3-11eb-8fe6-ecb15fa5e480.png)\r\n\r\nheap（堆）：对象被分配在堆中，堆是一个用来表示一大块（通常是非结构化的）内存区域的计算机术语。\r\nstack（栈）：函数调用形成了一个由若干帧组成的栈。\r\nWebAPIS：囊括 Web 强大脚本能力的每个 API 参考资料， 包括 DOM 、所有相关的 APIs 及可以用来构建 Web 的相关接口。\r\n队列（event queue || Callback Queue）：一个 JavaScript 运行时包含了一个待处理消息的消息队列。每一个消息都关联着一个用以处理这个消息的回调函数\r\n\r\n\r\n[event loop 运行图解](http://latentflip.com/loupe/?code=c2V0VGltZW91dChmdW5jdGlvbigpewogICAgY29uc29sZS5sb2coJzEnKQp9LDApOwoKbmV3oCBQcm9taXNlKGZ1bmN0aW9uKHJlc29sdmUpewoKoCBjb25zb2xlLmxvZygnMicpOwoKoCByZXNvbHZlKCk7Cgp9KS50aGVuKGZ1bmN0aW9uKCl7Cgpjb25zb2xlLmxvZygnMycpCgp9KTsKCmNvbnNvbGUubG9nKCc0Jyk7Cg%3D%3D!!!PGJ1dHRvbj5DbGljayBtZSE8L2J1dHRvbj4%3D)\r\n\r\n```\r\nsetTimeout(() => {\r\n    console.log(1)\r\n}, 100)\r\nconsole.log(2);\r\nsetTimeout(() => {\r\n    console.log(3)\r\n}, 0)\r\n// 2\r\n// 1\r\n// 3\r\n```\r\n\r\n![未标题-1](https://user-images.githubusercontent.com/19162008/109375818-9c0a2600-78fa-11eb-8a0f-1d65394fb6a6.gif)\r\n\r\n\r\n\r\n看图我们可以了解到，setTimeout(() => {console.log(1)}, 0) 会在Stack执行，在放入WebAPIs中当成一个匿名函数执行，匿名函数执行完毕之后会放入Callback Queue 中。\r\nconsole.log(2) 则直接被推入Stack 中执行。\r\n\r\nsetTimeout(() => {console.log(3)}, 0) 同样的执行后放入WebAPIs中当成一个匿名函数执行，在放入Callback Queue中。当同步任务执行完之后，才会将Callback Queue 队列中的方法推入Stack中。\r\n\r\n**因为JS是单线程的，单线程就意味着，所有任务需要排队，前一个任务结束，才会执行后一个任务。为了解决排除等待问题，JS的任务分为同步任务（synchronous）和异步任务（asynchronous）。\r\n所有同步任务都在主线程上执行，形成一个Stac）。异步任务（如果是WebAPI 则会进入WebAPI，例如ajax setTimeout）不进入主线程，而是进入另一 Callback Queue。同步任务顺序执行，只有执行栈中的同步任务执行完了，系统才回读取任务队列中可以执行的异步任务，才会把此异步任务从事件队列中放入执行栈中执行，如此循环，直至所有任务执行完毕。**\r\n\r\n**这就是EventLoop**\r\n\r\n\r\n",
           "star": {
-            "totalCount": 0
+            "totalCount": 1
           },
           "author": {
             "login": "martin-yin",
@@ -8928,6 +9099,17 @@
             "totalCount": 0
           },
           "author": null
+        },
+        {
+          "id": "IC_kwDODQzyOs5XSe_I",
+          "body": "问题的本质是管理者无能，换掉一个管理者。",
+          "star": {
+            "totalCount": 0
+          },
+          "author": {
+            "login": "wuhaohao1234",
+            "url": "https://github.com/wuhaohao1234"
+          }
         }
       ]
     },
@@ -8954,8 +9136,8 @@
             "totalCount": 0
           },
           "author": {
-            "login": "DoubleRayWang",
-            "url": "https://github.com/DoubleRayWang"
+            "login": "rex-ll",
+            "url": "https://github.com/rex-ll"
           }
         },
         {
@@ -9498,7 +9680,7 @@
           "id": "MDEyOklzc3VlQ29tbWVudDY2OTI2ODU1Nw==",
           "body": "```js\r\nlet req1 = () => fetch(`https://github.com/shfshanyue/Daily-Question/issues?page=1&q=is%3Aissue+is%3Aopen`);\r\n\r\nlet req2 = () => fetch(`https://github.com/shfshanyue/Daily-Question/issues?page=2&q=is%3Aissue+is%3Aopen`);\r\n\r\nlet req3 = () => fetch(`https://github.com/shfshanyue/Daily-Question/issues?page=3&q=is%3Aissue+is%3Aopen`);\r\n\r\n// promise.all\r\nconst res = await Promise.all([req1(), req2(), req3()]);\r\n\r\nconst res1 = req1()\r\nconst res2 = req2()\r\nconst res3 = req3()\r\n\r\n// await\r\nconst u1 =  await res1\r\nconst u2 =  await res2\r\nconst u3 =  await res3\r\n\r\n```\r\n\r\n![image](https://user-images.githubusercontent.com/57755075/89433879-71e1f280-d775-11ea-8772-6c26e58d29c3.png)\r\n",
           "star": {
-            "totalCount": 3
+            "totalCount": 4
           },
           "author": null
         },
@@ -9530,6 +9712,17 @@
           "author": {
             "login": "iamphc",
             "url": "https://github.com/iamphc"
+          }
+        },
+        {
+          "id": "IC_kwDODQzyOs5akdQm",
+          "body": "> 所以这个题的答案是\r\n> \r\n> tan90° 不存在\r\n\r\n### @ghost\r\n\r\n![image](https://user-images.githubusercontent.com/17308328/233923291-66b7c0e6-73a6-43c7-b0d3-beb17589477d.png)\r\n```html\r\n<script>\r\n    async function fn() {\r\n        const req = (i) => fetch(`https://github.com/shfshanyue/Daily-Question/issues?page=${i}&q=is%3Aissue+is%3Aopen`, {\r\n            mode: 'no-cors'\r\n        });\r\n\r\n        // promise.all\r\n        const res = await Promise.all([req(1), req(2), req(3)]);\r\n\r\n        // await\r\n        const res1 = req(4)\r\n        const res2 = req(5)\r\n        const res3 = req(6)\r\n        const u1 =  await res1\r\n        const u2 =  await res2\r\n        const u3 =  await res3\r\n    }\r\n    fn()\r\n</script>\r\n```\r\n",
+          "star": {
+            "totalCount": 0
+          },
+          "author": {
+            "login": "justorez",
+            "url": "https://github.com/justorez"
           }
         }
       ]
@@ -9633,6 +9826,17 @@
           "author": {
             "login": "shfshanyue",
             "url": "https://github.com/shfshanyue"
+          }
+        },
+        {
+          "id": "IC_kwDODQzyOs5akgV0",
+          "body": "```js\r\nfunction allSettled(promises = []) {\r\n    return new Promise((resolve) => {\r\n        let count = 0\r\n        let values = new Array(promises.length)\r\n        const collect = (index, status) => (value) => {\r\n            const prop = status === 'fulfilled' ? 'value' : 'reason'\r\n            values[index] = { status, [prop]: value }\r\n            ++count === promises.length && resolve(values)\r\n        }\r\n        promises.forEach((promise, i) => {\r\n            if (isPromise(promise)) {\r\n                promise.then(\r\n                    collect(i, 'fulfilled'),\r\n                    collect(i, 'rejected')\r\n                )\r\n            } else {\r\n                collect(i, 'fulfilled')(promise)\r\n            }\r\n        })\r\n    })\r\n}\r\n```",
+          "star": {
+            "totalCount": 0
+          },
+          "author": {
+            "login": "justorez",
+            "url": "https://github.com/justorez"
           }
         }
       ]
@@ -10209,8 +10413,8 @@
             "totalCount": 0
           },
           "author": {
-            "login": "DoubleRayWang",
-            "url": "https://github.com/DoubleRayWang"
+            "login": "rex-ll",
+            "url": "https://github.com/rex-ll"
           }
         },
         {
@@ -10341,6 +10545,17 @@
             "login": "EricWong1994",
             "url": "https://github.com/EricWong1994"
           }
+        },
+        {
+          "id": "IC_kwDODQzyOs5eia43",
+          "body": "React Hooks 是 React 16.8 引入的一个新特性，它允许在函数组件中使用状态和其他 React 功能，而无需编写类组件。它的实现原理是通过利用 JavaScript 的闭包和函数式编程的思想来实现。\r\n\r\n每个 Hook 都是一个函数，它可以对组件的状态进行操作或者访问 React 的其他功能。当组件渲染时，React 会根据每个 Hook 调用的顺序来维护内部的状态并执行相应的操作。\r\n\r\n使用 Hook 的过程中，React 维护了每个组件的“Hook 状态链”，它是一个单向链表结构，存储着所有使用 Hook 的状态信息。每次组件更新时，React 会检查使用的 Hook 是否发生变化，并根据变化来更新状态链中的对应状态。\r\n\r\n总体来说，React Hooks 的实现原理是基于函数式编程的思想来实现的，通过函数的调用和闭包的机制来管理状态，使得组件代码更加简洁、易于维护。",
+          "star": {
+            "totalCount": 0
+          },
+          "author": {
+            "login": "hjxhjxhjx1997",
+            "url": "https://github.com/hjxhjxhjx1997"
+          }
         }
       ]
     },
@@ -10367,8 +10582,8 @@
             "totalCount": 0
           },
           "author": {
-            "login": "DoubleRayWang",
-            "url": "https://github.com/DoubleRayWang"
+            "login": "rex-ll",
+            "url": "https://github.com/rex-ll"
           }
         },
         {
@@ -10700,8 +10915,8 @@
             "totalCount": 0
           },
           "author": {
-            "login": "vikoala",
-            "url": "https://github.com/vikoala"
+            "login": "bantangzm",
+            "url": "https://github.com/bantangzm"
           }
         }
       ]
@@ -11089,6 +11304,17 @@
             "login": "haotie1990",
             "url": "https://github.com/haotie1990"
           }
+        },
+        {
+          "id": "IC_kwDODQzyOs5VkkxG",
+          "body": "3个步骤：路径分析、模块定位、编译执行\r\n\r\n按顺序加载：系统缓存→系统模块→文件模块→目录模块→node_modules目录",
+          "star": {
+            "totalCount": 0
+          },
+          "author": {
+            "login": "maya1900",
+            "url": "https://github.com/maya1900"
+          }
         }
       ]
     },
@@ -11400,7 +11626,19 @@
     "title": "【Q300】node 中 exec，fork 与 spawn 有何区别",
     "body": "",
     "comments": {
-      "nodes": []
+      "nodes": [
+        {
+          "id": "IC_kwDODQzyOs5Vkk0t",
+          "body": "- child_process.spawn()：适用于返回大量数据\r\n    \r\n    ```jsx\r\n    const spawn = require('child_process').spawn;\r\n    const child = spawn('ls', ['-l'], { cwd: '/usr' });\r\n    child.stdout.pipe(process.stdout);\r\n    console.log(process.pid, child.pid);\r\n    ```\r\n    \r\n- child_process.exec()：执行命令，有回调函数获知进程情况，可设置超时\r\n    \r\n    ```jsx\r\n    const exec = require('child_process').exec;\r\n    exec(`node -v`, (err, stdout, stderr) => {\r\n      console.log({ err, stdout, stderr });\r\n      // { err: null, stdout: 'v16.14.2\\n', stderr: '' }\r\n    });\r\n    ```\r\n    \r\n- child_process.execFile()：执行可执行文件\r\n    \r\n    ```jsx\r\n    const execFile = require('child_process').execFile;\r\n    execFile('node', ['-v'], (error, stdout, stderr) => {\r\n      console.log({ error, stdout, stderr });\r\n    });\r\n    ```\r\n    \r\n- child_process.fork()：执行js文件，衍生新的进程，每个进程都有自己的实例、内存\r\n    \r\n    ```jsx\r\n    const fork = require('child_process').fork;\r\n    fork('./worker.js');\r\n    ```",
+          "star": {
+            "totalCount": 0
+          },
+          "author": {
+            "login": "maya1900",
+            "url": "https://github.com/maya1900"
+          }
+        }
+      ]
     },
     "labels": {
       "nodes": [
@@ -11594,8 +11832,8 @@
             "totalCount": 0
           },
           "author": {
-            "login": "WangKang1555",
-            "url": "https://github.com/WangKang1555"
+            "login": "Lonely-bear",
+            "url": "https://github.com/Lonely-bear"
           }
         },
         {
@@ -11738,17 +11976,6 @@
           "author": {
             "login": "shfshanyue",
             "url": "https://github.com/shfshanyue"
-          }
-        },
-        {
-          "id": "IC_kwDODQzyOs5EI5pI",
-          "body": "CSS优先级中应该着重讲解CSS权重值计算：\r\n\r\n更具w3给出的解释,我们可以讲CSS的权重等级分为A、B、C 3类，他们分别对应着id选择器，class选择器、属性选择器、伪类选择器，标签选择器、伪元素选择器。\r\n\r\n将一个选择器整体计算ABC分别进行求和得到一个数组(A，B ，C)，数组值依次比较，选取最高的，如果都相等那么选取靠后的。\r\n\r\n当然也有一些比较特殊的伪类选择器进行权重进行特殊的处理：\r\n\r\n1. 选择器`:is()`、`:not()`、`:has()`的优先级是选择器列表中最具有复杂性的选择器的优先级取代。\r\n\r\n2. 选择器`:nth-child()`、`:nth-last-child()`的优先级是伪类本身的优先级（计为一个伪类选择器，也就是计为B），再加上选择器列表中最具复杂性的选择器的优先级。\r\n\r\n3. 选择器`:where()`伪类的优先级被零代替，也就是没有优先级，再优先级计算中不做数。\r\n\r\n4. 通用选择符以及其他选择符在优先级中不计数。",
-          "star": {
-            "totalCount": 0
-          },
-          "author": {
-            "login": "onemue",
-            "url": "https://github.com/onemue"
           }
         }
       ]
@@ -11965,6 +12192,17 @@
             "login": "Psycho-Monster",
             "url": "https://github.com/Psycho-Monster"
           }
+        },
+        {
+          "id": "IC_kwDODQzyOs5YJ-PN",
+          "body": "```\r\n<!DOCTYPE html>\r\n<html lang=\"en\">\r\n  <head>\r\n    <meta charset=\"UTF-8\" />\r\n    <title>title</title>\r\n    <style>\r\n      /* + 选择器选取紧接着的相邻连续兄弟元素 */\r\n      .d1 p + p {\r\n        color: red;\r\n      }\r\n\r\n      /* ~ 选择器选取后面所有的同级兄弟元素 */\r\n      .d2 p ~ p {\r\n        font-weight: bold;\r\n      }\r\n    </style>\r\n  </head>\r\n\r\n  <body>\r\n    <div class=\"d1\">\r\n      <p>第一个段落</p>\r\n      <p>第二个段落</p>\r\n      <p>第二个段落</p>\r\n      <span>span</span>\r\n      <p>第三个段落</p>\r\n    </div>\r\n    <br />\r\n    <div class=\"d2\">\r\n      <p>第一个段落</p>\r\n      <p>第二个段落</p>\r\n      <span>span</span>\r\n      <p>第三个段落</p>\r\n    </div>\r\n  </body>\r\n</html>\r\n\r\n```\r\n\r\n![image](https://user-images.githubusercontent.com/9338717/226824998-d0061db1-e9fb-4d82-8ac5-c6e2d80ad019.png)\r\n\"+\" 选择器匹配紧邻的连续兄弟元素，这样描述更准确",
+          "star": {
+            "totalCount": 0
+          },
+          "author": {
+            "login": "yxw007",
+            "url": "https://github.com/yxw007"
+          }
         }
       ]
     },
@@ -12008,8 +12246,19 @@
             "totalCount": 0
           },
           "author": {
-            "login": "vikoala",
-            "url": "https://github.com/vikoala"
+            "login": "bantangzm",
+            "url": "https://github.com/bantangzm"
+          }
+        },
+        {
+          "id": "IC_kwDODQzyOs5b714H",
+          "body": "https://juejin.cn/post/6917061427958120461 ",
+          "star": {
+            "totalCount": 0
+          },
+          "author": {
+            "login": "darkboom",
+            "url": "https://github.com/darkboom"
           }
         }
       ]
@@ -12344,7 +12593,19 @@
     "title": "【Q330】mysql 如何开启及查看慢查询日志",
     "body": "",
     "comments": {
-      "nodes": []
+      "nodes": [
+        {
+          "id": "IC_kwDODQzyOs5Wuhpc",
+          "body": "slow_query_log：是否启用慢查询日志，默认为0，可设置为0、1，1表示开启。\r\nslow_query_log_file：慢查询日志存放的位置，需要MySQL运行账号的可写权限。\r\nlong_query_time：定义慢查询的时间阈值，单位为秒，默认为10。\r\n\r\n如果要查看慢查询日志，你可以直接打开slow_query_log_file指定的文件或者使用工具如pt-query-digest进行分析",
+          "star": {
+            "totalCount": 0
+          },
+          "author": {
+            "login": "Palai-s",
+            "url": "https://github.com/Palai-s"
+          }
+        }
+      ]
     },
     "labels": {
       "nodes": [
@@ -12395,7 +12656,19 @@
     "title": "【Q333】mysql 是如何实现 MVCC 的",
     "body": "",
     "comments": {
-      "nodes": []
+      "nodes": [
+        {
+          "id": "IC_kwDODQzyOs5Wuh2Q",
+          "body": "MySQL是通过在每行记录后面保存两个隐藏的列来实现MVCC的。这两个列分别是：\r\n\r\nDB_TRX_ID：表示最后修改该行记录的事务ID。\r\nDB_ROLL_PTR：表示指向该行记录上一个版本的指针。\r\n当一个事务要读取一行记录时，它会根据自己的Read View（一个存储了当前活跃事务ID列表的数据结构）来判断该行记录是否对自己可见。如果不可见，它会通过DB_ROLL_PTR找到undo log中的历史版本，并判断是否可见，直到找到合适的版本或者没有更早的版本为止\r\n\r\n这样，每个事务都可以看到数据在某个时间点的快照，从而保证了数据一致性和访问性能。",
+          "star": {
+            "totalCount": 0
+          },
+          "author": {
+            "login": "Palai-s",
+            "url": "https://github.com/Palai-s"
+          }
+        }
+      ]
     },
     "labels": {
       "nodes": [
@@ -12818,7 +13091,7 @@
           "id": "MDEyOklzc3VlQ29tbWVudDY2MTA5NzQzMQ==",
           "body": "**一句话：`exports` 是 `module.exports` 的引用，如果 `exports` 没有重赋值，则二者没有任何区别**，原理就在于 CommonJS 的 `module_wrapper`，`compiledWrapper.call(thisValue, module.exports, require, module)`。\r\n\r\n类似如下所示\r\n\r\n``` js\r\nconst exports = module.exports\r\n```\r\n\r\n那以下代码结果会如何导出？\r\n\r\n``` js\r\nmodule.exports = 100\r\nexports = 3\r\n```\r\n\r\n很显然会导出 100，毕竟 `exports` 进行了重赋值。\r\n\r\n**那在 node 源码中如何实现的呢？** 从源码里可以看出 **exports** 的实质\r\n\r\n![module wrapper](https://shanyue.tech/assets/img/module-wrapper.70557e4e.png)\r\n\r\n详见源码: <https://github.com/nodejs/node/blob/master/lib/internal/modules/cjs/loader.js#L1252>，可以看出符合猜想\r\n\r\n众所周知，node 中所有的模块代码都被包裹在这个函数中\r\n\r\n``` js\r\nexports = module.exports\r\n(function(exports, require, module, __filename, __dirname) {\r\n  exports.a = 3\r\n});\r\n```\r\n\r\n而以下源码指出，`exports` 是如何得来\r\n\r\n``` js\r\nconst dirname = path.dirname(filename);\r\nconst require = makeRequireFunction(this, redirects);\r\nlet result;\r\n// 从这里可以看出来 exports 的实质\r\nconst exports = this.exports;\r\nconst thisValue = exports;\r\nconst module = this;\r\nif (requireDepth === 0) statCache = new Map();\r\nif (inspectorWrapper) {\r\n  result = inspectorWrapper(compiledWrapper, thisValue, exports,\r\n                            require, module, filename, dirname);\r\n} else {\r\n\r\n  // 这里是模块包装函数\r\n  result = compiledWrapper.call(thisValue, exports, require, module,\r\n                                filename, dirname);\r\n}\r\n```\r\n\r\n我们再对示例代码放在包裹函数中，最终导出结果如何一目了然\r\n\r\n``` js\r\nconst exports = module.exports\r\n(function(exports, require, module, __filename, __dirname) {\r\n  module.exports = 100\r\n  exports = 3\r\n});\r\n```\r\n\r\n",
           "star": {
-            "totalCount": 0
+            "totalCount": 1
           },
           "author": {
             "login": "shfshanyue",
@@ -13599,7 +13872,7 @@
           "id": "IC_kwDODQzyOs4-j4sa",
           "body": "实现方式：\r\n```css\r\n    html[theme=\"dark-model\"] {\r\n        filter: invert(1) hue-rotate(180);\r\n        transition: color 300ms, background-color 300ms; /*过渡动画*/\r\n    }\r\n```\r\n\r\n解释：\r\n  css 的 filter属性 是将用于图片上的过滤，颜色变化等图形效果应用与元素上，\r\n  上面所使用到的 invert 可以用来反转应用程序的颜色; hue-rotate 是用来改变图像上的应用色颜色\r\n  通过invert(1)将白色变成黑色，那么为了适配颜色的变化，网页上的图像的颜色应该也做一个改变，这个改变就是通过hue-rotate(180edg)来实现的\r\n  filter属性 其他著名的应用还有:\r\n    * blur() 模糊图像\r\n    * opacity() 图像透明程度\r\n    * drop-shadow() 对图像应用阴影效果\r\n    * ...\r\n\r\n## Reference \r\n[MDN Docs](https://developer.mozilla.org/zh-CN/docs/Web/CSS/filter)\r\n[如何实现网页dark-model](https://segmentfault.com/a/1190000023598551)",
           "star": {
-            "totalCount": 0
+            "totalCount": 1
           },
           "author": {
             "login": "CsongL",
@@ -14624,6 +14897,17 @@
             "login": "haotie1990",
             "url": "https://github.com/haotie1990"
           }
+        },
+        {
+          "id": "IC_kwDODQzyOs5aqcUK",
+          "body": "这样也可以吧：\r\n```js\r\nconst isPlainObject = o => Object.prototype.toString.call(o).slice(8, -1) === 'Object'\r\n```",
+          "star": {
+            "totalCount": 0
+          },
+          "author": {
+            "login": "justorez",
+            "url": "https://github.com/justorez"
+          }
         }
       ]
     },
@@ -14968,7 +15252,7 @@
         },
         {
           "id": "MDEyOklzc3VlQ29tbWVudDc5MDY5NjAzMA==",
-          "body": "使用`document.querySelectorAll`实现如下（包括可能次数一样多的标签）\r\n```\r\nfunction getMostFrequentTag() {\r\n  const counter = {};\r\n\r\n  document.querySelectorAll(\"*\").forEach((element) => {\r\n    counter[element.tagName] = counter[element.tagName]\r\n      ? counter[element.tagName] + 1\r\n      : 1;\r\n  });\r\n\r\n  const orderedTags = Object.entries(counter).sort((tag1, tag2) => {\r\n    if (tag1[1] < tag2[1]) {\r\n      return 1;\r\n    }\r\n    if (tag1[1] > tag2[1]) {\r\n      return -1;\r\n    }\r\n    return 0;\r\n  });\r\n\r\n  const result = [];\r\n  for (const tag of orderedTags) {\r\n    if (tag[1] < orderedTags[0][1]) {\r\n      break;\r\n    }\r\n    result.push(tag[0]);\r\n  }\r\n  return result;\r\n}\r\n```",
+          "body": "使用`document.querySelectorAll`实现如下（包括可能次数一样多的标签）\r\n```javascript\r\nfunction getMostFrequentTag() {\r\n  const counter = {};\r\n\r\n  document.querySelectorAll(\"*\").forEach((element) => {\r\n    counter[element.tagName] = counter[element.tagName]\r\n      ? counter[element.tagName] + 1\r\n      : 1;\r\n  });\r\n\r\n  const orderedTags = Object.entries(counter).sort((tag1, tag2) => {\r\n    if (tag1[1] < tag2[1]) {\r\n      return 1;\r\n    }\r\n    if (tag1[1] > tag2[1]) {\r\n      return -1;\r\n    }\r\n    return 0;\r\n  });\r\n\r\n  const result = [];\r\n  for (const tag of orderedTags) {\r\n    if (tag[1] < orderedTags[0][1]) {\r\n      break;\r\n    }\r\n    result.push(tag[0]);\r\n  }\r\n  return result;\r\n}\r\n```",
           "star": {
             "totalCount": 1
           },
@@ -14979,7 +15263,7 @@
         },
         {
           "id": "MDEyOklzc3VlQ29tbWVudDc5MDcyNDY5Ng==",
-          "body": "使用`Element.children`递归实现如下\r\n```\r\nfunction getMostFrequentTag() {\r\n  const counter = {};\r\n\r\n  const traversalElement = (parent) => {\r\n    if (parent.tagName !== undefined) {\r\n      counter[parent.tagName] = counter[parent.tagName]\r\n        ? counter[parent.tagName] + 1\r\n        : 1;\r\n    }\r\n    const children = parent.children;\r\n    for (let i = 0, length = children.length; i < length; i++) {\r\n      traversalElement(children[i]);\r\n    }\r\n  };\r\n\r\n  traversalElement(document);\r\n\r\n  const orderedTags = Object.entries(counter).sort((tag1, tag2) => {\r\n    if (tag1[1] < tag2[1]) {\r\n      return 1;\r\n    }\r\n    if (tag1[1] > tag2[1]) {\r\n      return -1;\r\n    }\r\n    return 0;\r\n  });\r\n\r\n  const result = [];\r\n  for (const tag of orderedTags) {\r\n    if (tag[1] < orderedTags[0][1]) {\r\n      break;\r\n    }\r\n    result.push(tag[0]);\r\n  }\r\n  return result;\r\n}\r\n```",
+          "body": "使用`Element.children`递归实现如下\r\n```javascript\r\nfunction getMostFrequentTag() {\r\n  const counter = {};\r\n\r\n  const traversalElement = (parent) => {\r\n    if (parent.tagName !== undefined) {\r\n      counter[parent.tagName] = counter[parent.tagName]\r\n        ? counter[parent.tagName] + 1\r\n        : 1;\r\n    }\r\n    const children = parent.children;\r\n    for (let i = 0, length = children.length; i < length; i++) {\r\n      traversalElement(children[i]);\r\n    }\r\n  };\r\n\r\n  traversalElement(document);\r\n\r\n  const orderedTags = Object.entries(counter).sort((tag1, tag2) => {\r\n    if (tag1[1] < tag2[1]) {\r\n      return 1;\r\n    }\r\n    if (tag1[1] > tag2[1]) {\r\n      return -1;\r\n    }\r\n    return 0;\r\n  });\r\n\r\n  const result = [];\r\n  for (const tag of orderedTags) {\r\n    if (tag[1] < orderedTags[0][1]) {\r\n      break;\r\n    }\r\n    result.push(tag[0]);\r\n  }\r\n  return result;\r\n}\r\n```",
           "star": {
             "totalCount": 0
           },
@@ -15008,6 +15292,17 @@
           "author": {
             "login": "ethanlamm",
             "url": "https://github.com/ethanlamm"
+          }
+        },
+        {
+          "id": "IC_kwDODQzyOs5aK0MD",
+          "body": "```javascript\r\n// 利用hash\r\nconst map =new Map();\r\n[...document.querySelectorAll(\"*\")].forEach(item => {\r\n    const tagName = item.tagName.toLowerCase(); \r\n    map.set( tagName , map.has(tagName) ? map.get(tagName)+1 : 1);\r\n});\r\n```",
+          "star": {
+            "totalCount": 0
+          },
+          "author": {
+            "login": "hatedMe",
+            "url": "https://github.com/hatedMe"
           }
         }
       ]
@@ -15498,6 +15793,28 @@
           "author": {
             "login": "zfy171",
             "url": "https://github.com/zfy171"
+          }
+        },
+        {
+          "id": "IC_kwDODQzyOs5XWIR7",
+          "body": "自己尝试写了一版，不过不是懒计算，调用一次算一次，计算的结果利用闭包缓存：\r\n```ts\r\nfunction sum(\r\n  ...args: number[]\r\n) {\r\n  const value = args.reduce((pre, cur) => pre + cur, 0);\r\n\r\n  const _sum = function (..._arg: number[]) {\r\n    return sum.call(null, value, ..._arg);\r\n  };\r\n\r\n _sum.valueOf = () => console.log(value)\r\n\r\n return _sum\r\n\r\n}\r\n\r\n```\r\n",
+          "star": {
+            "totalCount": 0
+          },
+          "author": {
+            "login": "kirazZ1",
+            "url": "https://github.com/kirazZ1"
+          }
+        },
+        {
+          "id": "IC_kwDODQzyOs5YJ5sg",
+          "body": "> 追问:\r\n> \r\n> 如果不使用 `valueOf`，可直接进行计算，如下示例，应如何处理。\r\n> \r\n> ```js\r\n> //=> 15\r\n> sum(1, 2, 3) + sum(4, 5)\r\n> \r\n> //=> 100\r\n> sum(10) * sum(10)\r\n> ```\r\n\r\n实现这个效果：覆写 `toString` 或 `Symbol.toPrimitive` 即可。\r\n\r\n```js\r\nfunction sum(...args) {\r\n    const f = (...fArgs) => !fArgs.length ? f.toString() : sum(...args, ...fArgs)\r\n    f.toString = () => args.reduce((cur, next) => cur + next)\r\n    return f\r\n}\r\n```\r\n",
+          "star": {
+            "totalCount": 0
+          },
+          "author": {
+            "login": "justorez",
+            "url": "https://github.com/justorez"
           }
         }
       ]
@@ -16447,7 +16764,7 @@
           "id": "MDEyOklzc3VlQ29tbWVudDc1MjY3NDg4MQ==",
           "body": "在 ES2019 之前，可通过 **`reduce` + `concat`** 实现，由于 `Array.prototype.concat` 既可以连接数组又可以连接单项，十分巧妙\r\n\r\n``` js\r\nconst flatten = list => list.reduce( (a, b) => a.concat(b), [])\r\n```\r\n\r\n一个更简单的实现方式是 `Array.prototype.concat` 与 `...` 运算符\r\n\r\n``` js\r\nconst flatten = list => [].concat(...list)\r\n```\r\n\r\n如果要求深层数组打平，则如下实现\r\n\r\n``` js\r\nconst flatten = list => list.reduce((a, b) => a.concat(Array.isArray(b) ? flatten(b) : b), [])\r\n```\r\n\r\n如果要求如同原生 API `Array.prototype.flat` 一致的 API，可传入可扁平的深度。代码可见 [【Q443】实现一个数组扁平化的函数 flatten](https://codepen.io/shanyue/pen/xxdjQXG?editors=0012)\r\n\r\n``` js\r\nfunction flatten (list, depth = 1) {\r\n  if (depth === 0) return list\r\n  return list.reduce((a, b) => a.concat(Array.isArray(b) ? flatten(b, depth - 1) : b), [])\r\n}\r\n```\r\n\r\n在 ES2019 之后，可通过 **`Array.prototype.flat`** 直接实现！",
           "star": {
-            "totalCount": 4
+            "totalCount": 5
           },
           "author": {
             "login": "shfshanyue",
@@ -17889,7 +18206,19 @@
     "title": "【Q475】什么是 commonjs2 ",
     "body": "",
     "comments": {
-      "nodes": []
+      "nodes": [
+        {
+          "id": "IC_kwDODQzyOs5Vki1v",
+          "body": "commonjs 规范只定义了exports，而 module.exports是nodejs对commonjs的实现，实现往往会在满足规范前提下作些扩展，我们这里把这种实现称为了commonjs2.",
+          "star": {
+            "totalCount": 0
+          },
+          "author": {
+            "login": "maya1900",
+            "url": "https://github.com/maya1900"
+          }
+        }
+      ]
     },
     "labels": {
       "nodes": [
@@ -18197,6 +18526,17 @@
             "login": "haotie1990",
             "url": "https://github.com/haotie1990"
           }
+        },
+        {
+          "id": "IC_kwDODQzyOs5bcW7n",
+          "body": "来自 ChatGPT：\r\n\r\n前端工程化是指通过使用工具和技术来优化前端开发流程，提高开发效率和代码质量，以及降低项目维护成本的一种开发方式。它包括但不限于以下几个方面：\r\n1. 自动化构建：使用构建工具和任务管理器（如webpack、Gulp、Grunt等）对前端资源进行打包、编译、压缩、合并、优化等操作，以提高前端项目的性能和可维护性。\r\n2. 模块化开发：通过使用模块化规范（如CommonJS、AMD、ES6）将程序分解成独立的功能模块，使代码更易于维护和测试。\r\n3. 组件化开发：将UI组件抽象成独立的模块，以便于在不同的项目中复用，从而提高生产效率。\r\n4. 自动化测试：通过使用单元测试、端对端测试、性能测试等多种测试手段来确保代码的质量和稳定性。\r\n5. 代码规范和静态检查：通过使用代码规范和静态检查工具（如ESLint、JSLint、JSHint、Prettier等）来保证代码的规范和质量，减少出错概率，提高团队协作的效率和代码的可维护性。\r\n\r\n6. 版本控制和协作：使用版本控制工具（如Git、SVN等）来管理代码，协同开发和维护项目。\r\n\r\n通过前端工程化的实践，可以提高前端开发的效率和质量，减少错误和重复工作，提高可维护性和可扩展性，从而实现快速迭代和持续交付的目标。",
+          "star": {
+            "totalCount": 0
+          },
+          "author": {
+            "login": "justorez",
+            "url": "https://github.com/justorez"
+          }
         }
       ]
     },
@@ -18393,6 +18733,17 @@
             "login": "voezy",
             "url": "https://github.com/voezy"
           }
+        },
+        {
+          "id": "IC_kwDODQzyOs5YKAkC",
+          "body": "```js\r\nPromise.all = function (promises = []) {\r\n    return new Promise((resolve, reject) => {\r\n        let count = 0\r\n        let values = new Array(promises.length)\r\n        const collect = index => value => {\r\n            values[index] = value\r\n            ++count === promises.length && resolve(values)\r\n        }\r\n        promises.forEach((promise, i) => {\r\n            if (promise instanceof Promise) {\r\n                promise.then(collect(i), reject)\r\n            } else {\r\n                collect(i)(promise)\r\n            }\t\r\n        })\r\n    })\r\n}\r\n```",
+          "star": {
+            "totalCount": 0
+          },
+          "author": {
+            "login": "justorez",
+            "url": "https://github.com/justorez"
+          }
         }
       ]
     },
@@ -18510,6 +18861,17 @@
             "login": "shfshanyue",
             "url": "https://github.com/shfshanyue"
           }
+        },
+        {
+          "id": "IC_kwDODQzyOs5arKdE",
+          "body": "```js\r\nconst compact = (array) => array.filter(x => x)\r\n```",
+          "star": {
+            "totalCount": 0
+          },
+          "author": {
+            "login": "justorez",
+            "url": "https://github.com/justorez"
+          }
         }
       ]
     },
@@ -18584,6 +18946,17 @@
           "author": {
             "login": "buzuosheng",
             "url": "https://github.com/buzuosheng"
+          }
+        },
+        {
+          "id": "IC_kwDODQzyOs5aVrrl",
+          "body": "用createRoot之后所有的setState都是异步了",
+          "star": {
+            "totalCount": 0
+          },
+          "author": {
+            "login": "muzichen",
+            "url": "https://github.com/muzichen"
           }
         }
       ]
@@ -19259,6 +19632,17 @@
             "login": "illumi520",
             "url": "https://github.com/illumi520"
           }
+        },
+        {
+          "id": "IC_kwDODQzyOs5X6DtP",
+          "body": "通俗的说就是函数a的内部函数b，被函数a外部的一个变量引用的时候，就创建了一个闭包。JS中,每当创建一个函数，闭包就会在函数创建的同时被创建出来。能够在函数定义的作用域外，使用函数定义作用域内的局部变量，并且不会污染全局。\r\n用处：它的最大用处有两个，一个是它可以读取函数内部的变量，另一个就是让这些变量的值始终保持在内存中。",
+          "star": {
+            "totalCount": 0
+          },
+          "author": {
+            "login": "yangzi0210",
+            "url": "https://github.com/yangzi0210"
+          }
         }
       ]
     },
@@ -19378,6 +19762,17 @@
           "author": {
             "login": "shfshanyue",
             "url": "https://github.com/shfshanyue"
+          }
+        },
+        {
+          "id": "IC_kwDODQzyOs5Vsv8f",
+          "body": "```css\r\n.box {\r\n  width:200px;\r\n  word-wrap: break-word;\r\n  overflow: hidden;\r\ndisplay: -webkit-box;\r\n-webkit-box-orient: vertical;\r\n-webkit-line-clamp: 3;\r\n}\r\n```\r\n先设置宽度 加上word-wrap属性达到换行的目的  \r\n利用-webkit-line-clamp限制行数\r\n 利用overflow属性隐藏所省略",
+          "star": {
+            "totalCount": 0
+          },
+          "author": {
+            "login": "VaCameos",
+            "url": "https://github.com/VaCameos"
           }
         }
       ]
@@ -19982,6 +20377,17 @@
             "login": "shfshanyue",
             "url": "https://github.com/shfshanyue"
           }
+        },
+        {
+          "id": "IC_kwDODQzyOs5VUhUR",
+          "body": "- `em`: \"在 font-size 中使用是相对于父元素的字体大小，在其他属性中使用是相对于自身的字体大小，如 width\"[来自MDN](https://developer.mozilla.org/zh-CN/docs/Learn/CSS/Building_blocks/Values_and_units#%E9%95%BF%E5%BA%A6)",
+          "star": {
+            "totalCount": 0
+          },
+          "author": {
+            "login": "gxr404",
+            "url": "https://github.com/gxr404"
+          }
         }
       ]
     },
@@ -20579,6 +20985,28 @@
             "login": "wuzqZZZ",
             "url": "https://github.com/wuzqZZZ"
           }
+        },
+        {
+          "id": "IC_kwDODQzyOs5VljzM",
+          "body": "> const a = []; console.log(a.constructor == Array);//true\r\n\r\nconstructor的值可以被修改 所以这种判断方式不太妥",
+          "star": {
+            "totalCount": 0
+          },
+          "author": {
+            "login": "sisipyhus",
+            "url": "https://github.com/sisipyhus"
+          }
+        },
+        {
+          "id": "IC_kwDODQzyOs5VlkK8",
+          "body": "> 完美实现一个月下载量超过一个亿的包: [isarray](https://npm.devtool.tech/isarray)\r\n> \r\n> ```js\r\n> const isArray = Array.isArray || list => ({}).toString.call(list) === '[object Array]'\r\n> ```\r\n运算符|| 后面需要加上 （）将函数包裹 不然会报错\r\n",
+          "star": {
+            "totalCount": 0
+          },
+          "author": {
+            "login": "sisipyhus",
+            "url": "https://github.com/sisipyhus"
+          }
         }
       ]
     },
@@ -20818,6 +21246,17 @@
           "author": {
             "login": "shfshanyue",
             "url": "https://github.com/shfshanyue"
+          }
+        },
+        {
+          "id": "IC_kwDODQzyOs5Zx3vk",
+          "body": "@heretic-G 简单改了下，支持 `localStorage` 默认的用法，只有传入时间过期才生效：\r\n```js\r\n;(function () {\r\n    localStorage.setItem = function (key, value, time = Infinity) {\r\n        const payload = Number.isFinite(time)\r\n            ? {\r\n                __data: value,\r\n                __expiresTime: Date.now() + time\r\n            }\r\n            : value\r\n        Storage.prototype.setItem.call(\r\n            localStorage,\r\n            key,\r\n            JSON.stringify(payload)\r\n        )\r\n    }\r\n    localStorage.getItem = function (key) {\r\n        const value = Storage.prototype.getItem.call(localStorage, key)\r\n        try {\r\n            const jsonVal = JSON.parse(value)\r\n            if (jsonVal.__expiresTime) {\r\n               return jsonVal.__expiresTime >= Date.now()\r\n                   ? JSON.stringify(jsonVal.__data)\r\n                   : void(0)\r\n            }\r\n            return value\r\n        } catch (error) {\r\n            return value\r\n        }\r\n    }\r\n})()\r\n```",
+          "star": {
+            "totalCount": 0
+          },
+          "author": {
+            "login": "justorez",
+            "url": "https://github.com/justorez"
           }
         }
       ]
@@ -21177,6 +21616,17 @@
             "login": "shfshanyue",
             "url": "https://github.com/shfshanyue"
           }
+        },
+        {
+          "id": "IC_kwDODQzyOs5VzmYJ",
+          "body": "不一定 需要考虑到是否在同一个元素层级中 不然z-index的值有限制",
+          "star": {
+            "totalCount": 0
+          },
+          "author": {
+            "login": "sisipyhus",
+            "url": "https://github.com/sisipyhus"
+          }
         }
       ]
     },
@@ -21363,7 +21813,7 @@
           "id": "MDEyOklzc3VlQ29tbWVudDg3MTg4MjM3Mw==",
           "body": "如果处于非严格模式下，要绑定的`this`指定为`null`或`undefined`时会自动替换为全局对象，原始值则会被包装\r\n\r\n严格模式：\r\n``` js\r\n'use strict';\r\n\r\nfunction test() {\r\n    console.log(this)\r\n}\r\n\r\ntest.call(2)\r\n// 2\r\n```\r\n\r\n非严格模式\r\n``` js\r\nfunction test() {\r\n    console.log(this)\r\n}\r\ntest.call(2)\r\n// Number {2}\r\n```",
           "star": {
-            "totalCount": 0
+            "totalCount": 1
           },
           "author": {
             "login": "mrrs878",
@@ -21586,6 +22036,17 @@
           "author": {
             "login": "shfshanyue",
             "url": "https://github.com/shfshanyue"
+          }
+        },
+        {
+          "id": "IC_kwDODQzyOs5Yod-W",
+          "body": "> ```js\r\n> function F () {\r\n>   this.a = 3;\r\n>   return {\r\n>     a: 4;\r\n>   }\r\n> }\r\n> \r\n> const f = new F();\r\n> console.log(f.a);\r\n> ```\r\n\r\n返回多了一个分号，报错。去掉分号就是输出4，因为构造函数返回了对象\r\n",
+          "star": {
+            "totalCount": 0
+          },
+          "author": {
+            "login": "yxw007",
+            "url": "https://github.com/yxw007"
           }
         }
       ]
@@ -22251,14 +22712,14 @@
     "id": "MDU6SXNzdWU5MTg3MzQ5NDY=",
     "number": 610,
     "title": "【Q594】给数字添加千位符",
-    "body": "``` js\r\n//=> '123'\r\nnumberThousands(123)\r\n\r\n//=> '1,234,567'\r\nnumberThousands(1234567)\r\n```\r\n\r\n问题追问：\r\n\r\n+ 如果考虑小数应该如何处理?",
+    "body": "``` js\r\n//=> '123'\r\nnumberThousands(123)\r\n\r\n//=> '1,234,567'\r\nnumberThousands(1234567)\r\n```\r\n\r\n问题追问：\r\n\r\n+ 如果考虑正负数应该如何处理\r\n+ 如果考虑小数应该如何处理?\r\n\r\n``` js\r\n//=> '123'\r\nnumberThousands(123)\r\n\r\n//=> '1,234,567'\r\nnumberThousands(1234567)\r\n\r\n// 可以处理正负数\r\n// => '-123,456'\r\nnumberThousands(123456)\r\n\r\n// 可以处理小数\r\n// => '-123,456.123456789'\r\nnumberThousands(123456.123456789)\r\n```",
     "comments": {
       "nodes": [
         {
           "id": "MDEyOklzc3VlQ29tbWVudDg1OTU3OTMyOA==",
-          "body": "千位符替换可由正则 `/(\\d)(?=(\\d\\d\\d)+(?!\\d))/` 进行匹配\r\n\r\n``` js\r\nfunction numberThousands (number, thousandsSeperator = ',') {\r\n  return String(number).replace(/(\\d)(?=(\\d\\d\\d)+(?!\\d))/g, '$1' + thousandsSeperator)\r\n}\r\n```\r\n\r\n删除的正则或许有点复杂，如果对字符串反转，可以来一个简单的正则\r\n\r\n``` js\r\nfunction numberThousands (number, thousandsSeperator = ',') {\r\n  const reverse = str => str.split('').reverse().join('')\r\n  const str = reverse(String(number)).replace(/\\d\\d\\d(?!\\d)/g, '$1' + thousandsSeperator)\r\n  return reverse(str)\r\n}\r\n```\r\n\r\n如果你写不出来正则，也可由一段简单的代码实现\r\n\r\n``` js\r\nfunction numberThousands (number, thousandsSeperator = ',') {\r\n  const s = String(number)\r\n  let r = ''\r\n  for (let i = s.length - 1; i >= 0; i--) {\r\n    const seperator = (s.length - i - 1) % 3 ? '' : thousandsSeperator\r\n    r = `${s[i]}${seperator}${r}`\r\n  }\r\n  return r.slice(0, -1)\r\n}\r\n```",
+          "body": "千位符替换可由正则 `/(\\d)(?=(\\d\\d\\d)+(?!\\d))/` 进行匹配\r\n\r\n``` js\r\nfunction numberThousands (number, thousandsSeperator = ',') {\r\n  return String(number).replace(/(\\d)(?=(\\d\\d\\d)+(?!\\d))/g, '$1' + thousandsSeperator)\r\n}\r\n```\r\n\r\n删除的正则或许有点复杂，如果对字符串反转，可以来一个简单的正则\r\n\r\n``` js\r\nfunction numberThousands (number, thousandsSeperator = ',') {\r\n  const reverse = str => str.split('').reverse().join('')\r\n  const str = reverse(String(number)).replace(/(\\d\\d\\d)(?=\\d)/g, '$1' + thousandsSeperator)\r\n  return reverse(str)\r\n}\r\n```\r\n\r\n如果你写不出来正则，也可由一段简单的代码实现\r\n\r\n``` js\r\nfunction numberThousands (number, thousandsSeperator = ',') {\r\n  const s = String(number)\r\n  let r = ''\r\n  for (let i = s.length - 1; i >= 0; i--) {\r\n    const seperator = (s.length - i - 1) % 3 ? '' : thousandsSeperator\r\n    r = `${s[i]}${seperator}${r}`\r\n  }\r\n  return r.slice(0, -1)\r\n}\r\n```\r\n\r\n同时，再提供一个取巧的办法：\r\n\r\n``` js\r\nIntl.NumberFormat(undefined, { style: 'decimal', maximumFractionDigits: 20 }).format(number)\r\n\r\nnumber.toLocaleString(undefined, { maximumFractionDigits: 20 })\r\n```",
           "star": {
-            "totalCount": 1
+            "totalCount": 2
           },
           "author": {
             "login": "shfshanyue",
@@ -22735,7 +23196,7 @@
           "id": "MDEyOklzc3VlQ29tbWVudDg3MTA2ODM4NQ==",
           "body": "为了方便说明执行思路，把箭头函数换成了普通函数，起了名字，然后加上默认返回值 return  undefined\r\n```js\r\nPromise.resolve(console.log(0))\r\n    .then(function F1() {\r\n      console.log(1);\r\n      Promise.resolve(console.log(5))\r\n        .then(function F3() {\r\n          console.log(3)\r\n          return undefined\r\n        })\r\n        .then(function F4() {\r\n          console.log(4)\r\n          return undefined\r\n        })\r\n        .then(function F6() {\r\n          console.log(6)\r\n          return undefined\r\n        })\r\n\r\n      return undefined\r\n    })\r\n    .then(function F2() {\r\n      console.log(2)\r\n      return undefined\r\n    })\r\n    .then(function F7() {\r\n      console.log(7)\r\n      return undefined\r\n    })\r\n```\r\n\r\n执行过程：\r\n打印 0, **F1 放入 microtask**\r\n调用栈空了, 从 microtask 拿 F1 执行 \r\n打印 1, 遇到 Promise.resolve\r\n打印 5, 遇到 then, **F3 放入 microtask**\r\n继续执行同步的代码 也就是 return undefined, 然后看到 then\r\n**然后把 F2 放入 microtask**\r\n调用栈空了, 从 microtask 按顺序拿 F3 执行\r\n打印 3, 再遇到 return undefined, 然后看到 then, **再把 F4 放入 microtask**\r\n从 microtask 按顺序拿 F2 执行\r\n打印 2, 再遇到 return undefined, 然后看到 then, **再把 F7 放入 microtask**\r\n从 microtask 按顺序拿 F4 执行\r\n打印 4, 再遇到 return undefined, 然后看到 then, **再把 F6 放入 microtask**\r\n从 microtask 按顺序拿 F7 执行\r\n 打印 7 再遇到 return undefined, 没有 then 了\r\n从 microtask 按顺序拿 F6 执行\r\n打印 6\r\n\r\n\r\n画个图大概是这样：\r\n![image](https://user-images.githubusercontent.com/50768544/123897414-ecbb8980-d995-11eb-8293-01e274dd876f.png)\r\n",
           "star": {
-            "totalCount": 4
+            "totalCount": 5
           },
           "author": {
             "login": "xjxujing",
@@ -23530,7 +23991,7 @@
           "id": "IC_kwDODQzyOs400FUt",
           "body": "```js\r\n\r\nconst middlewares = [];\r\n\r\nmiddlewares.push(async function(ctx, next) {\r\n  console.log('1');\r\n  await next();\r\n  console.log('6');\r\n});\r\n\r\nmiddlewares.push(async function(ctx, next) {\r\n  console.log('2');\r\n  await next();\r\n  console.log('5');\r\n});\r\n\r\nmiddlewares.push(async function(ctx, next) {\r\n  console.log('3');\r\n  await next();\r\n  console.log('4');\r\n});\r\n\r\nasync function run() {\r\n  const middleware = middlewares.shift();\r\n  await (middleware && middleware({}, run));\r\n}\r\n\r\nrun(); // expect output: 1 2 3 4 5 6\r\n```",
           "star": {
-            "totalCount": 0
+            "totalCount": 1
           },
           "author": {
             "login": "haotie1990",
@@ -23585,7 +24046,7 @@
           "id": "MDEyOklzc3VlQ29tbWVudDg3NjEwMzQ0MQ==",
           "body": "1. [terser](https://github.com/terser/terser) 或者 [uglify](https://github.com/mishoo/UglifyJS)，及流行的使用 Rust 编写的 `swc` 压缩混淆化 JS。\r\n2. `gzip` 或者 `brotli` 压缩，在网关处(nginx)开启\r\n3. 使用 `webpack-bundle-analyzer` 分析打包体积，替换占用较大体积的库，如 `moment` -> `dayjs`\r\n4. 使用支持 Tree-Shaking 的库，对无引用的库或函数进行删除，如 `lodash` -> `lodash/es`\r\n5. 对无法 Tree Shaking 的库，进行按需引入模块，如使用 `import Button from 'antd/lib/Button'`，此处可手写 `babel-plugin` 自动完成，但不推荐\r\n6. 使用 babel (css 为 postcss) 时采用 `browserlist`，越先进的浏览器所需要的 polyfill 越少，体积更小\r\n7. code spliting，路由懒加载，只加载当前路由的包，按需加载其余的 chunk，首页 JS 体积变小 (PS: 次条不减小总体积，但减小首页体积)\r\n8. 使用 webpack 的 splitChunksPlugin，把运行时、被引用多次的库进行分包，在分包时要注意避免某一个库被多次引用多次打包。此时分为多个 chunk，虽不能把总体积变小，但可提高加载性能 (PS: 此条不减小总体积，但可提升加载性能)",
           "star": {
-            "totalCount": 2
+            "totalCount": 3
           },
           "author": {
             "login": "shfshanyue",
@@ -23677,7 +24138,7 @@
           "id": "IC_kwDODQzyOs400E2x",
           "body": "```js\r\nfunction maxBy(array, keyBy) {\r\n  if (!array || !array.length) {\r\n    return null;\r\n  }\r\n  const length = array.length;\r\n  let max = array[0];\r\n  let result = [max];\r\n  for (let i = 1; i < length; i++) {\r\n    const value = array[i];\r\n    if (keyBy(max) === keyBy(value)) {\r\n      result.push(value);\r\n    } else if (keyBy(max) < keyBy(value)) {\r\n      max = value;\r\n      result = [max];\r\n    }\r\n  }\r\n  if (result.length === 1) {\r\n    return result[0];\r\n  }\r\n  return result;\r\n}\r\n```",
           "star": {
-            "totalCount": 0
+            "totalCount": 1
           },
           "author": {
             "login": "haotie1990",
@@ -23722,6 +24183,17 @@
           "author": {
             "login": "Yu-Lxy",
             "url": "https://github.com/Yu-Lxy"
+          }
+        },
+        {
+          "id": "IC_kwDODQzyOs5c6KQD",
+          "body": "> \r\n\r\n若存在相同最大值，此法凉凉～",
+          "star": {
+            "totalCount": 0
+          },
+          "author": {
+            "login": "yinsang",
+            "url": "https://github.com/yinsang"
           }
         }
       ]
@@ -23977,6 +24449,17 @@
           "author": {
             "login": "shengrongchun",
             "url": "https://github.com/shengrongchun"
+          }
+        },
+        {
+          "id": "IC_kwDODQzyOs5YP0S9",
+          "body": "> > @cyio 使用 sort 复杂度立马就上去了\r\n> \r\n> 什么复杂度，时间？sort 更快\r\n\r\n做题看时间复杂度就行了吧，实际环境v8有各种优化，就说不清了。",
+          "star": {
+            "totalCount": 0
+          },
+          "author": {
+            "login": "justorez",
+            "url": "https://github.com/justorez"
           }
         }
       ]
@@ -24377,6 +24860,17 @@
             "login": "caomeibuaichibaicai",
             "url": "https://github.com/caomeibuaichibaicai"
           }
+        },
+        {
+          "id": "IC_kwDODQzyOs5YvE8W",
+          "body": "```javascript\r\nfunction reduce(handle, initial) {\r\n\tlet arr = this;\r\n\r\n\tif (initial != null && arr.length == 0) {\r\n\t\treturn initial;\r\n\t}\r\n\r\n\tif (arr.length <= 0) {\r\n\t\tthrow new Error(\"array can't is empty\");\r\n\t}\r\n\r\n\tfunction next(pre, index) {\r\n\t\tif (index >= arr.length) {\r\n\t\t\treturn pre;\r\n\t\t}\r\n\r\n\t\tlet r = handle(pre, arr[index], index, arr);\r\n\t\treturn next(r, index + 1);\r\n\t}\r\n\r\n\tlet res;\r\n\tif (initial) {\r\n\t\tres = next(initial, 0);\r\n\t} else {\r\n\t\tres = next(arr[0], 1);\r\n\t}\r\n\treturn res;\r\n}\r\n\r\nArray.prototype.reduce = reduce;\r\n\r\nlet arr = [1, 2, 3];\r\nlet res = arr.reduce((pre, cur, index, array) => {\r\n\treturn pre + cur;\r\n}, 0);\r\n\r\nconsole.log(res);\r\n\r\n```",
+          "star": {
+            "totalCount": 1
+          },
+          "author": {
+            "login": "yxw007",
+            "url": "https://github.com/yxw007"
+          }
         }
       ]
     },
@@ -24450,12 +24944,12 @@
     "id": "MDU6SXNzdWU5NDU1MzI3OTk=",
     "number": 661,
     "title": "【Q643】如何实现 chunk 函数，数组进行分组",
-    "body": "",
+    "body": "示例如下：\r\n\r\n``` js\r\n// => [[1, 2, 3], [4, 5, 6], [7]]\r\nchunk([1, 2, 3, 4, 5, 6, 7], 3)\r\n```",
     "comments": {
       "nodes": [
         {
           "id": "IC_kwDODQzyOs40hz5T",
-          "body": "``` js\r\nfunction chunk (list, size) {\r\n  const l = []\r\n  for (let i = 0; i < list.length; i++ ) {\r\n    const index = Math.floor(i / size)\r\n    l[index] ??= [];\r\n    l[index].push(list[i])\r\n  }\r\n  return l\r\n}\r\n\r\n```",
+          "body": "``` js\r\nfunction chunk (list, size) {\r\n  const l = []\r\n  for (let i = 0; i < list.length; i++ ) {\r\n    const index = Math.floor(i / size)\r\n    l[index] ??= [];\r\n    l[index].push(list[i])\r\n  }\r\n  return l\r\n}\r\n```\r\n\r\n或者直接构造出每一个 chunk\r\n\r\n``` js\r\nfunction chunk(list, size) {\r\n  const l = []\r\n\r\n  for (let i = 0; i < list.length; i += size) {\r\n    const chunk = list.slice(i, i + size)\r\n    l.push(chunk)\r\n  }\r\n\r\n  return l\r\n}\r\n```",
           "star": {
             "totalCount": 3
           },
@@ -24484,6 +24978,17 @@
           "author": {
             "login": "shfshanyue",
             "url": "https://github.com/shfshanyue"
+          }
+        },
+        {
+          "id": "IC_kwDODQzyOs5XHXY9",
+          "body": "```js\r\nfunction chunk(list = [], size) {\r\n  return list.reduce((pre, cur) => {\r\n    const length = pre.length;\r\n    if (length === 0 || pre[length - 1].length === size)\r\n      return pre.concat([[cur]]);\r\n    else {\r\n      pre[length - 1].push(cur);\r\n      return pre;\r\n    }\r\n  }, []);\r\n}\r\n\r\n```",
+          "star": {
+            "totalCount": 0
+          },
+          "author": {
+            "login": "kirazZ1",
+            "url": "https://github.com/kirazZ1"
           }
         }
       ]
@@ -24694,8 +25199,8 @@
             "totalCount": 0
           },
           "author": {
-            "login": "tyri1",
-            "url": "https://github.com/tyri1"
+            "login": "tyr1dev",
+            "url": "https://github.com/tyr1dev"
           }
         },
         {
@@ -24769,6 +25274,17 @@
           "author": {
             "login": "oooooooyk",
             "url": "https://github.com/oooooooyk"
+          }
+        },
+        {
+          "id": "IC_kwDODQzyOs5XW0Rm",
+          "body": "push,pop,shift,unshift,splice,reverse,sort",
+          "star": {
+            "totalCount": 0
+          },
+          "author": {
+            "login": "Elooer",
+            "url": "https://github.com/Elooer"
           }
         }
       ]
@@ -24849,6 +25365,17 @@
           "author": {
             "login": "createhappymemoryforlife",
             "url": "https://github.com/createhappymemoryforlife"
+          }
+        },
+        {
+          "id": "IC_kwDODQzyOs5YvJ92",
+          "body": "```javascript\r\nfunction trim() {\r\n\tlet str = this;\r\n\tlet len = str.length;\r\n\tif (len <= 0) {\r\n\t\treturn str;\r\n\t}\r\n\r\n\tlet l = 0;\r\n\tlet r = str.length - 1;\r\n\r\n\twhile (l <= r) {\r\n\t\tif (str[l] == \" \") {\r\n\t\t\tl++;\r\n\t\t}\r\n\t\tif (str[r] == \" \") {\r\n\t\t\tr--;\r\n\t\t}\r\n\t\tif (str[l] != \" \" && str[r] != \" \") {\r\n\t\t\tbreak;\r\n\t\t}\r\n\t}\r\n\r\n\tlet res = str.slice(l, r + 1);\r\n\treturn res;\r\n}\r\n\r\nString.prototype.trim = trim;\r\n\r\nlet s = \"  123\";\r\nconsole.log(s.trim().length);\r\n\r\nlet s1 = \"123 \";\r\nconsole.log(s1.trim().length);\r\n\r\nlet s2 = \" \";\r\nconsole.log(s2.trim().length);\r\n\r\nlet s3 = \"\";\r\nconsole.log(s3.trim().length);\r\n\r\n```",
+          "star": {
+            "totalCount": 0
+          },
+          "author": {
+            "login": "yxw007",
+            "url": "https://github.com/yxw007"
           }
         }
       ]
@@ -25111,6 +25638,17 @@
             "login": "haotie1990",
             "url": "https://github.com/haotie1990"
           }
+        },
+        {
+          "id": "IC_kwDODQzyOs5dpqhD",
+          "body": "```\r\n// 取数组交集\r\n\r\n/**\r\n * \r\n * \r\n * @param  {...any} arr 剩余数组\r\n * @returns \r\n * 思路:\r\n * 1.设置两个数组，一个存放未重复的数组元素，一个存放已重复的数组元素\r\n * 2.在总的数组的循环中，如果数组元素在未重复数组中，又出现一次，则将其推入已重复数组\r\n * 3.使用Set,去除多余的元素，使用Array.from将Set实例转化为数组，并返回\r\n */\r\nfunction intersection(...arr){\r\n  let filterArr = [];\r\n  let duplicateArr = []\r\n  let sumArr = [].concat(...arr)\r\n  sumArr.forEach(element => {\r\n    if(!filterArr.includes(element)){\r\n      filterArr.push(element)\r\n    }else{\r\n      duplicateArr.push(element)\r\n    }\r\n  });\r\n  return Array.from(new Set(duplicateArr));\r\n}\r\n\r\n//=> [2]\r\nconsole.log('intersection([2, 1], [2, 3]);: ', intersection([2, 1], [2, 3]));\r\n\r\n//=> [1, 2]\r\nconsole.log('intersection([1, 2, 2], [1, 2, 2]): ', intersection([1, 2, 2], [1, 2, 2]));\r\n\r\n//=> [1, 2]\r\nconsole.log('intersection([1, 2, 2], [1, 2, 2], [1, 2]): ', intersection([1, 2, 2], [1, 2, 2], [1, 2]));\r\n```",
+          "star": {
+            "totalCount": 0
+          },
+          "author": {
+            "login": "rujptw",
+            "url": "https://github.com/rujptw"
+          }
         }
       ]
     },
@@ -25156,7 +25694,7 @@
           "id": "IC_kwDODQzyOs41CDws",
           "body": "```javascript\r\n\r\nFunction.prototype.call = function call(arm, ...args) {\r\n    let fun = this\r\n    if (typeof fun !== 'function') throw TypeError('must is function')\r\n    let armObj = arm\r\n    if (typeof arm !== 'object') {\r\n        armObj = Object(arm)\r\n    }\r\n    \r\n    let symbolKey = Symbol('tempKey')\r\n    armObj[symbolKey] = fun\r\n    let result = armObj[symbolKey](...args)\r\n    delete armObj[symbolKey]\r\n    return result\r\n}\r\n\r\nFunction.prototype.apply = function call(arm, ...args) {\r\n    let fun = this\r\n    if (typeof fun !== 'function') throw TypeError('must is function')\r\n    let armObj = arm\r\n    if (typeof arm !== 'object') {\r\n        armObj = Object(arm)\r\n    }\r\n\r\n    let symbolKey = Symbol('tempKey')\r\n    armObj[symbolKey] = fun\r\n    let result = armObj[symbolKey](args)\r\n    delete armObj[symbolKey]\r\n    return result\r\n}\r\n\r\n// TODO 完善bind 这里其实还有很多问题\r\nFunction.prototype.bind = function aBind (that, ...args) {\r\n    let armFun = this\r\n    if (typeof armFun !== 'function') throw TypeError('must a function')\r\n    function BoundFun (...other) {\r\n        if (new.target) {\r\n            return new armFun(...args, ...other)\r\n        } else {\r\n            return armFun.call(that,...args, ...other)\r\n        }\r\n    }\r\n    BoundFun.__proto__ = armFun.__proto__\r\n    BoundFun.prototype = undefined\r\n    \r\n    return BoundFun\r\n}\r\n\r\n```",
           "star": {
-            "totalCount": 1
+            "totalCount": 2
           },
           "author": {
             "login": "heretic-G",
@@ -25205,6 +25743,28 @@
           "author": {
             "login": "zhangtuo1999",
             "url": "https://github.com/zhangtuo1999"
+          }
+        },
+        {
+          "id": "IC_kwDODQzyOs5Yb4yw",
+          "body": "实现一个call：\r\n```\r\nfunction person(a, b) {\r\n    return {\r\n        name: this.name,\r\n        sum: a + b\r\n    }\r\n}\r\n\r\nconst yeti = {\r\n    name: 'yeti'\r\n}\r\n\r\n// 实现一个call\r\nFunction.prototype.newCall = function (obj, ...args) {\r\n    const window = { windwo: 'window' }\r\n    if (!obj) {\r\n        obj = window\r\n    }\r\n    obj.p = this    //此处的this是person函数 相当于在obj中添加了一个person方法\r\n    const resCall = obj.p(...args)  //由于函数可能会返回值，所以将执行的结果保存并返回\r\n    delete obj.p\r\n    return resCall\r\n\r\n}\r\n\r\nconst res = person.newCall(yeti, 1, 2)\r\nconsole.log(res);\r\n```",
+          "star": {
+            "totalCount": 0
+          },
+          "author": {
+            "login": "Yeti-xxx",
+            "url": "https://github.com/Yeti-xxx"
+          }
+        },
+        {
+          "id": "IC_kwDODQzyOs5Yb5cI",
+          "body": "实现一个apply:\r\n```\r\nfunction person(a, b, c) {\r\n    console.log(Math.max.apply(null, [...arguments]));\r\n    console.log(Math.max.newApplay(null, [...arguments]));\r\n    return {\r\n        name: this.name,\r\n        sum: a + b + c\r\n    }\r\n}\r\n\r\nconst yeti = {\r\n    name: 'yeti'\r\n}\r\n// 实现一个apply\r\nFunction.prototype.newApplay = function (obj, arr) {\r\n    const window = { windwo: 'window' }\r\n    if (!obj) {\r\n        obj = window\r\n    }\r\n    obj.p = this\r\n    if (!arr) { //如果为传入参数数组，直接执行\r\n        const resnewApply = obj.p()\r\n        delete obj.p\r\n        return resnewApply\r\n    } else {\r\n        const resnewApply = obj.p(...arr)\r\n        delete obj.p\r\n        return resnewApply\r\n    }\r\n\r\n}\r\n\r\nconst resApplay = person.newApplay(yeti, [1, 2, 6])\r\nconsole.log(resApplay);\r\n```",
+          "star": {
+            "totalCount": 0
+          },
+          "author": {
+            "login": "Yeti-xxx",
+            "url": "https://github.com/Yeti-xxx"
           }
         }
       ]
@@ -25698,6 +26258,17 @@
             "login": "heretic-G",
             "url": "https://github.com/heretic-G"
           }
+        },
+        {
+          "id": "IC_kwDODQzyOs5YmLNG",
+          "body": "> ```diff\r\n> function binToDec (num) {\r\n>   const [_int, _fraction] = String(num).split('.')\r\n> -  const int = _int.split('').reduceRight((acc, x, i) => {\r\n>     return acc + x * 2 ** i\r\n>   }, 0)\r\n>   const fraction = _fraction ? _fraction.split('').reduce((acc, x, i) => {\r\n>     return acc + x * 2 ** -(i + 1)\r\n>   }, 0) : 0\r\n>   return `${int}${fraction ? '.' + fraction.toString().slice(2) : ''}`\r\n> }\r\n> ```\r\n\r\n @shfshanyue 这一行有错误，reducRight 里的 i 是数组元素的当前索引，不是从 0 开始的。例如 13 是 1101，上面方法会计算成 11。\r\n\r\n```js\r\n// 修正\r\nconst int = _int.split('').reduce((acc, x, i, arr) => {\r\n    return acc + Number(x) * 2 ** (arr.length - 1 - i)\r\n}, 0)\r\n```",
+          "star": {
+            "totalCount": 0
+          },
+          "author": {
+            "login": "justorez",
+            "url": "https://github.com/justorez"
+          }
         }
       ]
     },
@@ -25849,7 +26420,7 @@
           "id": "IC_kwDODQzyOs40z5k-",
           "body": "不支持iframe 而且有一个理念问题 大屏是为了更大更清晰还是为了承载更多内容 \r\n\r\n其实这也是现在很多舍弃rem的原因  1:1还原之后 你希望pad也和手机一样？ 大屏手机也和普通手机一样？ 这个我觉得你体验过其实会发现这里其实不是一个好的展示逻辑\r\n\r\n还有一个找到的 但是没有实际踩过得坑 就是在很高的高倍屏上rem会有展示问题 但是我没遇到过...",
           "star": {
-            "totalCount": 2
+            "totalCount": 3
           },
           "author": {
             "login": "heretic-G",
@@ -26198,6 +26769,17 @@
             "login": "voezy",
             "url": "https://github.com/voezy"
           }
+        },
+        {
+          "id": "IC_kwDODQzyOs5cjadb",
+          "body": "不知道这样可不可以，从随机挑选的数，组成的数组，长度达到size，就返回\r\n```\r\nfunction sampleSize(array,size){\r\n  let len = array.length,i,pickArr = [];\r\n  while(len&&size){\r\n    i = Math.floor(Math.random()*len);\r\n    len--;\r\n    pickArr.push(array.splice(i,1)[0]);\r\n    size--;\r\n  }\r\n  return pickArr\r\n}\r\n```\r\n",
+          "star": {
+            "totalCount": 0
+          },
+          "author": {
+            "login": "rujptw",
+            "url": "https://github.com/rujptw"
+          }
         }
       ]
     },
@@ -26226,6 +26808,17 @@
           "author": {
             "login": "shfshanyue",
             "url": "https://github.com/shfshanyue"
+          }
+        },
+        {
+          "id": "IC_kwDODQzyOs5Zkm2k",
+          "body": "这里其实是利用对象的键都是有序的，把类数组转成了对象",
+          "star": {
+            "totalCount": 0
+          },
+          "author": {
+            "login": "Yinzhuo19970516",
+            "url": "https://github.com/Yinzhuo19970516"
           }
         }
       ]
@@ -26475,6 +27068,17 @@
             "login": "borraken",
             "url": "https://github.com/borraken"
           }
+        },
+        {
+          "id": "IC_kwDODQzyOs5Zx3t7",
+          "body": "```js\r\nfunction fizzbuzz(n) {\r\n  if(n%5===0 && n%3 === 0) {\r\n    return 'FizzBuzz'\r\n  } else if(n%5===0) {\r\n    return 'Buzz'\r\n  } else if(n%3===0) {\r\n    return 'Fizz'\r\n  } else {\r\n    return n\r\n  }\r\n}\r\n```",
+          "star": {
+            "totalCount": 0
+          },
+          "author": {
+            "login": "Yinzhuo19970516",
+            "url": "https://github.com/Yinzhuo19970516"
+          }
         }
       ]
     },
@@ -26503,6 +27107,17 @@
           "author": {
             "login": "jyehn",
             "url": "https://github.com/jyehn"
+          }
+        },
+        {
+          "id": "IC_kwDODQzyOs5dit5M",
+          "body": "```\r\n// 字符串转驼峰\r\nlet str = \"--talk-much--\"\r\nlet str2 = \"__talk_much__\"\r\nlet str3 = \"Talk Much\"\r\nlet reg = /([-|_|\\s]\\w)/g;\r\nfunction camelCase(str){\r\n  let formatStr = str.replace(reg,function(match){\r\n    return match.slice(1).toUpperCase()\r\n  })\r\n  formatStr = formatStr.replace(/[-|_|\\s]/g,'')\r\n  formatStr = formatStr[0].toLowerCase() + formatStr.slice(1,formatStr.length+1)\r\n  return formatStr\r\n}\r\nconsole.log(\"camelCase\",camelCase(str));\r\nconsole.log(\"camelCase\",camelCase(str2));\r\nconsole.log(\"camelCase\",camelCase(str3));\r\n```",
+          "star": {
+            "totalCount": 0
+          },
+          "author": {
+            "login": "rujptw",
+            "url": "https://github.com/rujptw"
           }
         }
       ]
@@ -26753,7 +27368,7 @@
           "id": "IC_kwDODQzyOs41VIOs",
           "body": "``` js\r\nfunction fakeInstanceOf (instance, parent) {\r\n  if (typeof(instance) !== 'object' && typeof(instance) !== 'function') {\r\n    return false\r\n  }\r\n  let proto = instance?.__proto__ || null\r\n  while (true) {\r\n    if (proto === null) { return false }\r\n    if (proto === parent.prototype) { return true }\r\n    proto = proto.__proto__\r\n  }\r\n}\r\n```",
           "star": {
-            "totalCount": 1
+            "totalCount": 2
           },
           "author": {
             "login": "shfshanyue",
@@ -26786,7 +27401,7 @@
           "id": "IC_kwDODQzyOs41VxWv",
           "body": "```js\r\n// left instanceof right\r\nfunction _instanceof(left, right) {\r\n  // 构造函数原型\r\n  const prototype = right.prototype\r\n  // 实列对象属性，指向其构造函数原型\r\n  left = left.__proto__\r\n  // 查实原型链\r\n  while (true) {\r\n    // 如果为null，说明原型链已经查找到最顶层了，真接返回false\r\n    if (left === null) {\r\n      return false\r\n    }\r\n    // 查找到原型\r\n    if (prototype === left){\r\n      return true\r\n    }\r\n    // 继续向上查找\r\n    left = left.__proto__\r\n  }\r\n}\r\n\r\nconst str = \"abc\"\r\n_instanceof(str, String) // true\r\n```",
           "star": {
-            "totalCount": 2
+            "totalCount": 3
           },
           "author": {
             "login": "lizheng0515",
@@ -26833,8 +27448,8 @@
             "totalCount": 0
           },
           "author": {
-            "login": "vikoala",
-            "url": "https://github.com/vikoala"
+            "login": "bantangzm",
+            "url": "https://github.com/bantangzm"
           }
         }
       ]
@@ -27673,8 +28288,8 @@
             "totalCount": 0
           },
           "author": {
-            "login": "coderXixi",
-            "url": "https://github.com/coderXixi"
+            "login": "coderxixi",
+            "url": "https://github.com/coderxixi"
           }
         },
         {
@@ -28473,11 +29088,22 @@
           "id": "IC_kwDODQzyOs4_dpcR",
           "body": "Bundleless 的优势。\r\n1.项目启动快。因为不需要过多的打包，只需要处理修改后的单个文件，所以响应速度是 O(1) 级别，刷新即可即时生效，速度很快。\r\n2.浏览器加载块。利用浏览器自主加载的特性，跳过打包的过程。\r\n3.本地文件更新，重新请求单个文件。\r\n![Bundleless](http://oss.tianmasport.com/gx/size/2022-03-11/196/951803225336446976.png) ",
           "star": {
-            "totalCount": 0
+            "totalCount": 1
           },
           "author": {
             "login": "wenreq",
             "url": "https://github.com/wenreq"
+          }
+        },
+        {
+          "id": "IC_kwDODQzyOs5Zfzgr",
+          "body": "> 为了在生产环境中获得最佳的加载性能，最好还是将代码进行 tree-shaking、懒加载和 chunk 分割（以获得更好的缓存）\r\n\r\nhttps://cn.vitejs.dev/guide/why.html",
+          "star": {
+            "totalCount": 0
+          },
+          "author": {
+            "login": "justorez",
+            "url": "https://github.com/justorez"
           }
         }
       ]
@@ -28907,6 +29533,30 @@
           "name": "前端工程化"
         }
       ]
+    }
+  },
+  {
+    "id": "I_kwDODQzyOs5mN1vM",
+    "number": 800,
+    "title": "【Q743】实现 batchFn 函数，可以批量执行函数",
+    "body": "补全及实现一下函数\r\n\r\n``` js\r\n\r\nlet executeCount = 0;\r\nconst targetFn = async nums => {\r\n  executeCount++;\r\n  return nums.map(num => 2 * num + 1);\r\n};\r\n\r\nconst batcher = (fn) => {\r\n  // todo batch logic\r\n  return () => {\r\n\r\n  }\r\n}\r\n\r\nconst batchedFn = batcher(targetFn);\r\n\r\nconst main = async () => {\r\n  const [result1, result2, result3] = await Promise.all([\r\n    batchedFn([1, 2, 3]),\r\n    batchedFn([4, 5]),\r\n    batchedFn([6, 7]),\r\n  ]);\r\n  \r\n  console.log(result1, result2, result3) \r\n  console.log(executeCount)  // 预期为 1\r\n}\r\n\r\nmain()\r\n```",
+    "comments": {
+      "nodes": [
+        {
+          "id": "IC_kwDODQzyOs5ch7Tl",
+          "body": "``` js\r\nconst batcher = (fn) => {\r\n  // todo batch logic\r\n  let options = []\r\n  let cache = undefined\r\n  return async (args) => {\r\n    options = [...options, ...args]\r\n    if (cache) {\r\n      return cache\r\n    }\r\n    const p = new Promise(async resolve => {\r\n      const result = await fn(options)\r\n      const map = result.reduce((acc, x, i) => {\r\n        const v = options[i]\r\n        acc[v] = x\r\n        return acc\r\n      }, {})\r\n      resolve(args.map(a => map[a]))\r\n    })\r\n    cache = p\r\n    return p\r\n  }\r\n}\r\n```",
+          "star": {
+            "totalCount": 0
+          },
+          "author": {
+            "login": "shfshanyue",
+            "url": "https://github.com/shfshanyue"
+          }
+        }
+      ]
+    },
+    "labels": {
+      "nodes": []
     }
   }
 ]
