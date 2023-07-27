@@ -167,8 +167,8 @@
             "totalCount": 0
           },
           "author": {
-            "login": "CroatiaParanoia",
-            "url": "https://github.com/CroatiaParanoia"
+            "login": "croatialu",
+            "url": "https://github.com/croatialu"
           }
         },
         {
@@ -3267,8 +3267,8 @@
             "totalCount": 0
           },
           "author": {
-            "login": "yunshenpro",
-            "url": "https://github.com/yunshenpro"
+            "login": "zhangjinzhepro",
+            "url": "https://github.com/zhangjinzhepro"
           }
         },
         {
@@ -3291,6 +3291,17 @@
           "author": {
             "login": "wjw-gavin",
             "url": "https://github.com/wjw-gavin"
+          }
+        },
+        {
+          "id": "IC_kwDODQzyOs5iKK3z",
+          "body": "1、提取第三方库或通过引用外部文件的方式引入第三方库\r\n2、代码压缩插件UglifyJsPlugin\r\n3、服务器启用gzip压缩\r\n4、剥离css文件，单独打包\r\n5、Tree Shaking 在构建打包过程中，移除那些引入但未被使用的无效代码",
+          "star": {
+            "totalCount": 0
+          },
+          "author": {
+            "login": "ajiaosong",
+            "url": "https://github.com/ajiaosong"
           }
         }
       ]
@@ -3439,7 +3450,7 @@
           "id": "IC_kwDODQzyOs46fev4",
           "body": "# Long Term Cache\r\n\r\n使用 `webpack` 等打包器进行打包时，每个资源都可生成一个带有 hash 的路径。如\r\n\r\n+ `build/main.071b73.js`\r\n+ `build/main.94474e.css`\r\n+ `build/logo.18bac8.png`\r\n\r\n此处对添加 `hash` 的资源设置永久缓存，可大幅度提高该网站的缓存能力，从而大幅度提高网站的二次加载性能。\r\n\r\n通过在服务器端/网关端对资源设置以下 Response Header，进行强缓存一年时间，称为永久缓存，即 `Long Term Cache`。\r\n\r\n``` bash\r\nCache-Control: public,max-age=31536000,immutable\r\n```\r\n\r\n**而当源文件内容发生变更时，资源的 `hash` 发生变化，生成新的可永久缓存的资源地址。**\r\n\r\n因此在实践中，可对打包处理后带有 hash 资源的所有文件设置永久缓存。\r\n\r\n如果前端通过 docker/k8s/helm 进行部署，可由团队人员自行在构建 nginx 镜像时进行添加响应头字段。此处可作为前端性能优化的 kpi/okr。\r\n\r\n可在浏览器控制台 Network 中查看响应头来验证所属项目是否已成功添加永久缓存。\r\n\r\n![](https://cdn.jsdelivr.net/gh/shfshanyue/assets/2021-11-29/clipboard-1625.748311.webp)\r\n\r\n## 一个问题与更强的永久缓存\r\n\r\n假设有两个文件: `index.js` 和 `lib.js`，且 index 依赖于 lib，其内容如下。\r\n\r\n**index.js**\r\n\r\n``` js\r\n// index.js\r\nimport('./lib').then(o => console.log(o))\r\n```\r\n\r\n**lib.js**\r\n\r\n``` js\r\nexport const a = 3\r\n```\r\n\r\n由 webpack 等打包器打包后将会生生两个 chunk (为了方便讲解，以下 aaaaaa 为 hash 值)\r\n\r\n+ `index.aaaaaa.js`\r\n+ `lib.aaaaaa.js`\r\n\r\n*问: 假设 lib.js 文件内容发生变更，index.js 由于引用了 lib.js，可能包含其文件名，那么它的 hash 是否会发生变动*\r\n\r\n答: 不一定。打包后的 `index.js` 中引用 lib 时并不会包含 `lib.aaaaaa.js`，而是采用 chunkId 的形式，如果 chunkId 是固定的话，则不会发生变更。\r\n\r\n``` js\r\n// 打包前\r\nimport('./lib')\r\n\r\n// 打包后，201 为固定的 chunkId (chunkIds = deterministic 时)\r\n__webpack_require__.e(/* import() | lib */ 201)\r\n```\r\n\r\n在 webpack 中，通过 `optimization.chunkIds` 可设置确定的 chunId，来增强 Long Term Cache 能力。\r\n\r\n``` bash\r\n{\r\n  optimization: {\r\n    chunkIds: 'deterministic'\r\n  }\r\n}\r\n```\r\n\r\n设置该选项且 `lib.js` 内容发生变更后，打包 chunk 如下，仅仅 `lib.js` 路径发生了变更。\r\n\r\n+ `index.aaaaaa.js`\r\n+ `lib.bbbbbb.js`",
           "star": {
-            "totalCount": 1
+            "totalCount": 2
           },
           "author": {
             "login": "shfshanyue",
@@ -4070,6 +4081,17 @@
           "author": {
             "login": "shfshanyue",
             "url": "https://github.com/shfshanyue"
+          }
+        },
+        {
+          "id": "IC_kwDODQzyOs5fY6fR",
+          "body": "5min，2minCI，3minCD",
+          "star": {
+            "totalCount": 0
+          },
+          "author": {
+            "login": "zhenghuilin",
+            "url": "https://github.com/zhenghuilin"
           }
         }
       ]
@@ -7216,6 +7238,17 @@
           "author": {
             "login": "kirazZ1",
             "url": "https://github.com/kirazZ1"
+          }
+        },
+        {
+          "id": "IC_kwDODQzyOs5giMeD",
+          "body": "```js\r\n const compose = (...fns) => ((params) => fns.reduce((prev, cur) => (prev = cur(prev ?? params), prev), null))\r\n```\r\n看了大佬的实现，感觉我的实现突然不香了",
+          "star": {
+            "totalCount": 0
+          },
+          "author": {
+            "login": "Hazel-Lin",
+            "url": "https://github.com/Hazel-Lin"
           }
         }
       ]
@@ -12221,7 +12254,19 @@
     "title": "【Q316】node 中如何查看函数异步调用栈",
     "body": "",
     "comments": {
-      "nodes": []
+      "nodes": [
+        {
+          "id": "IC_kwDODQzyOs5gNrvs",
+          "body": "const async_hooks = require('async_hooks');\r\n\r\n// 创建一个 AsyncHooks 实例\r\nconst asyncHook = async_hooks.createHook({ init, destroy });\r\n\r\n// 初始化回调函数\r\nfunction init(asyncId, type, triggerAsyncId, resource) {\r\n  const currentStack = new Error().stack;\r\n  console.log(`Init asyncId: ${asyncId}, type: ${type}, stack: ${currentStack}`);\r\n}\r\n\r\n// 销毁回调函数\r\nfunction destroy(asyncId) {\r\n  console.log(`Destroy asyncId: ${asyncId}`);\r\n}\r\n\r\n// 启用 AsyncHooks 实例\r\nasyncHook.enable();",
+          "star": {
+            "totalCount": 0
+          },
+          "author": {
+            "login": "z54749412",
+            "url": "https://github.com/z54749412"
+          }
+        }
+      ]
     },
     "labels": {
       "nodes": [
@@ -14060,7 +14105,7 @@
           "id": "MDEyOklzc3VlQ29tbWVudDY2ODk0MDc5OA==",
           "body": "**我们先来看看什么是 2MSL ？**\r\nMSL: Maximum Segment Lifetime, 最长报文段寿命\r\n意思是，需要等候 2 * MSL 时间，才会进入关闭状态\r\n\r\n\r\n------------\r\n\r\n\r\n**然后再来看哪个阶段需要 2MSL ？**\r\n\r\n![image](https://user-images.githubusercontent.com/8110936/89364080-470b8600-d704-11ea-9bc7-edd882481c1e.png)\r\n从上图来看，是在 [发送方] 发送完 ACK 后，进入 **TIME_WAIT** 阶段，这个阶段需要等候 2*MSL，才将 TCP 关闭\r\n\r\n------------\r\n\r\n**为什么要等候 2*MSL ？**\r\n\r\n1. 用足够长的等候时间，来确保 [接收方] 能收到 ACK 包\r\n\r\n\t- 如果 [接收方] 在一定时间没收到 (ACK)，会重发 (FIN, ACK)，[发送方] 收到后，会重发 (ACK)，再重置 2*MSL 定时器\r\n\t.\r\n\r\n\r\n2. 防止当前连接延迟到达的数据段，被新的 TCP 连接收到\r\n\r\n\t- 新的 TCP 连接：相同端口，相同地址\r\n\r\n\r\n------------\r\n\r\n**TIME_WAIT 等候时间长短问题**\r\n\r\n1. 等候时间过短\r\n \r\n\t- 可能会收到上一个 TCP 连接延迟到达的数据段\r\n\t.\r\n\r\n2. 等候时间过长\r\n\r\n \t- TCP 连接一直占用着端口，需要关闭后才能建立新的连接，高并发下压力比较大\r\n\r\n",
           "star": {
-            "totalCount": 1
+            "totalCount": 2
           },
           "author": {
             "login": "zzetao",
@@ -14955,7 +15000,19 @@
     "title": "【Q404】在 React 应用中如何排查性能问题",
     "body": "",
     "comments": {
-      "nodes": []
+      "nodes": [
+        {
+          "id": "IC_kwDODQzyOs5fxX5E",
+          "body": "1、使用 Performance 录制应用快照，查看调用情况\r\n2、查看network中网络请求情况，是否有资源因过大请求阻塞，导致后续资源无法加载，这种情况一般选择分包或固定资源选择cdn分担（多域名。浏览器设置的http2.0以下同域名仅允许同时最多6个tcp的限制）\r\n3、可以通过 React Developer Tools 的 Profiler 的 Flamegraph（火焰图）或 Ranked（渲染时长排行榜） 查看各组件的渲染时长，根据对应的组件可以进行排查渲染问题，以下作答：\r\na). 通过检查代码中是否有重复触发的 useEffect\r\nb). 检查是否有多次不同渲染周期中触发的setState导致的渲染（比如在一个事件中导致的state更新，导致依赖于该state的useEffect触发，而该effect中又有其他的setState，导致多个有依赖项的useEffect不同批次连环触发）\r\nc). 检查是否在某个超大组件中需要渲染的元素过多，可使用子组件可考虑使用 pureComponent，或 React.mome ，或使用useMome来根据依赖项更新子组件，或在父组件中将子组件需要的props通过使用useMome或useCallback缓存， 或在子组件中使用 shouldComponentUpdate 中校验是否需要更新来减少更新\r\nd). 检查是否存在拖拽业务，这类业务一般会导致大量的diff存在，可以的话可以考虑不使用React的方式去实现，使用第三方非React的JS库去实现。\r\ne). 同上情况，存在大量增删改查逻辑，会导致大量的的diff可以检查列表元素是否存在唯一的key，通过key可以让React复用Fiber从而避免重复创建 Fiber节点与 Dom 节点\r\nf). 存在未清除掉的定时器或dom监听事件",
+          "star": {
+            "totalCount": 0
+          },
+          "author": {
+            "login": "CAN1177",
+            "url": "https://github.com/CAN1177"
+          }
+        }
+      ]
     },
     "labels": {
       "nodes": [
@@ -15298,7 +15355,7 @@
           "id": "IC_kwDODQzyOs5aK0MD",
           "body": "```javascript\r\n// 利用hash\r\nconst map =new Map();\r\n[...document.querySelectorAll(\"*\")].forEach(item => {\r\n    const tagName = item.tagName.toLowerCase(); \r\n    map.set( tagName , map.has(tagName) ? map.get(tagName)+1 : 1);\r\n});\r\n```",
           "star": {
-            "totalCount": 0
+            "totalCount": 1
           },
           "author": {
             "login": "hatedMe",
@@ -15509,6 +15566,17 @@
           "author": {
             "login": "coderWxs",
             "url": "https://github.com/coderWxs"
+          }
+        },
+        {
+          "id": "IC_kwDODQzyOs5g_Pxb",
+          "body": "```js\r\n// => a4b3c2\r\nconsole.log(encode('aaaabbbcc'))\r\n\r\n// => a4b3a4\r\nconsole.log(encode('aaaabbbaaaa'))\r\n\r\n// => a2b2c2\r\nconsole.log(encode('aabbcc'))\r\n\r\n// =>a3b\r\nconsole.log(encode('aaab'))\r\n\r\nfunction encode(str) {\r\n  const list = str.split('');\r\n  let res = '';\r\n  let count = 1;\r\n\r\n  for (let i = 0; i < list.length; i++) {\r\n    if (list[i] !== list[i + 1]) {\r\n      if (count === 1) {\r\n        res += list[i];\r\n      } else {\r\n        res += list[i] + count;\r\n      }\r\n      count = 1;\r\n    } else {\r\n      count++;\r\n    }\r\n  }\r\n  return res;\r\n}\r\n```",
+          "star": {
+            "totalCount": 0
+          },
+          "author": {
+            "login": "Hazel-Lin",
+            "url": "https://github.com/Hazel-Lin"
           }
         }
       ]
@@ -15815,6 +15883,17 @@
           "author": {
             "login": "justorez",
             "url": "https://github.com/justorez"
+          }
+        },
+        {
+          "id": "IC_kwDODQzyOs5g1JAM",
+          "body": "```js\r\nfunction sum(...args){\r\n  const foo = (...rest) => sum(...args, ...rest)\r\n  foo.toString = () => args.reduce((x, y) => x + y, 0)\r\n  return foo\r\n}\r\nconsole.log(sum(1)(2, 3) + sum(1)) // 7\r\nconsole.log(sum(10) * sum(10)) // 100\r\n```\r\n\r\n被这一波操作秀到了reduce真好用",
+          "star": {
+            "totalCount": 0
+          },
+          "author": {
+            "login": "Hazel-Lin",
+            "url": "https://github.com/Hazel-Lin"
           }
         }
       ]
@@ -20497,6 +20576,17 @@
             "login": "shfshanyue",
             "url": "https://github.com/shfshanyue"
           }
+        },
+        {
+          "id": "IC_kwDODQzyOs5h7NrW",
+          "body": "> * lint\r\n> * type\r\n> * test\r\n> * code review\r\n> * git hooks\r\n> * CI\r\n\r\n这里的type只的是类似typescript吗",
+          "star": {
+            "totalCount": 0
+          },
+          "author": {
+            "login": "ChenKun1997",
+            "url": "https://github.com/ChenKun1997"
+          }
         }
       ]
     },
@@ -21006,6 +21096,17 @@
           "author": {
             "login": "sisipyhus",
             "url": "https://github.com/sisipyhus"
+          }
+        },
+        {
+          "id": "IC_kwDODQzyOs5fXQxO",
+          "body": "const isArray = Array.isArray || list => ({}).toString.call(list) === '[object Array]'",
+          "star": {
+            "totalCount": 0
+          },
+          "author": {
+            "login": "DyCoder2015",
+            "url": "https://github.com/DyCoder2015"
           }
         }
       ]
@@ -22999,6 +23100,17 @@
             "login": "shfshanyue",
             "url": "https://github.com/shfshanyue"
           }
+        },
+        {
+          "id": "IC_kwDODQzyOs5hmROH",
+          "body": "```\r\nimport {useState,useCallback} from 'react';\r\n\r\nconst [state,setState] = useState({})\r\n\r\nconst handleForceUpdate = useCallback(() => {\r\n    setState({})\r\n},[])\r\n```",
+          "star": {
+            "totalCount": 0
+          },
+          "author": {
+            "login": "wongchisum",
+            "url": "https://github.com/wongchisum"
+          }
         }
       ]
     },
@@ -23017,7 +23129,19 @@
     "title": "【Q601】什么是认证与授权",
     "body": "",
     "comments": {
-      "nodes": []
+      "nodes": [
+        {
+          "id": "IC_kwDODQzyOs5hmtxL",
+          "body": "\r\n认证（Authentication）和授权（Authorization）是信息安全领域中的两个重要概念，用于确保用户的身份验证和访问权限控制。\r\n认证就像是您去银行取钱时需要出示身份证明，以证明您是账户持有人。在计算机系统中，认证是确认用户是谁的过程，通过提供用户名和密码等凭据来验证身份的有效性。\r\n\r\n授权就像是银行根据您的身份和账户类型决定您可以进行哪些操作，比如取款或转账。在计算机系统中，授权是确定用户可以访问哪些资源或执行哪些操作的过程。系统会根据您的身份和权限规则来控制您的访问权限，确保您只能访问您被授权的资源或执行您被授权的操作。\r\n\r\n通过认证和授权机制，计算机系统可以确保只有经过身份验证并被授权的用户才能访问受保护的信息和功能。这就像是银行确保只有账户持有人才能操作自己的账户一样，保护用户的隐私和系统的安全",
+          "star": {
+            "totalCount": 0
+          },
+          "author": {
+            "login": "Fightingllc",
+            "url": "https://github.com/Fightingllc"
+          }
+        }
+      ]
     },
     "labels": {
       "nodes": [
@@ -23555,6 +23679,17 @@
           "author": {
             "login": "leblancy",
             "url": "https://github.com/leblancy"
+          }
+        },
+        {
+          "id": "IC_kwDODQzyOs5gutuI",
+          "body": "```js\r\n// 实现发布订阅模式\r\n// on 订阅\r\n// emit 发布\r\n// off 取消订阅\r\n\r\nclass EventEmitter{\r\n  constructor(){\r\n    this.events = {}\r\n  }\r\n  // 订阅\r\n  on(type, callback){\r\n    this.events[type] = this.events[type] || [];\r\n    this.events[type].push(callback);\r\n  }\r\n  // 取消订阅\r\n  off(type, callback){\r\n    if(!this.events[type]) return;\r\n    this.events[type] = this.events[type].filter(event => event !== callback)\r\n  }\r\n  // 发布\r\n  emit(type, ...args){\r\n   if(!this.events[type]) return\r\n    // 遍历事件\r\n    this.events[type].forEach(event => {\r\n      event(...args)\r\n    })\r\n  }\r\n}\r\n\r\nconst e = new EventEmitter()\r\nconst callback2 = (data) => console.log(`${data.name}`);\r\n\r\ne.on('click',callback2)\r\n\r\ne.emit('click',{name:'xiaoming'})\r\n\r\ne.off('click', callback2)\r\n\r\ne.emit('click',{name:'lili'})\r\n```",
+          "star": {
+            "totalCount": 0
+          },
+          "author": {
+            "login": "Hazel-Lin",
+            "url": "https://github.com/Hazel-Lin"
           }
         }
       ]
@@ -24195,6 +24330,17 @@
             "login": "yinsang",
             "url": "https://github.com/yinsang"
           }
+        },
+        {
+          "id": "IC_kwDODQzyOs5g9YLN",
+          "body": "```js\r\nconst arr = [1, 2, 3, 4, 20, 20]\r\nconst arr2 = [0, -1]\r\nconst arr3 = []\r\n\r\nfunction findLargestTwoNumbers(arr){\r\n  if(!arr.length) return\r\n\r\n  let max = -Infinity, second = -Infinity\r\n\r\n  for(let i of arr){\r\n    console.log(i)\r\n    if(i > max){\r\n      second = max\r\n      max = i \r\n    }else if(i > second){\r\n      second = i\r\n    }\r\n  }\r\n  return [max, second]\r\n}\r\nconsole.log(findLargestTwoNumbers(arr))\r\nconsole.log(findLargestTwoNumbers(arr2))\r\nconsole.log(findLargestTwoNumbers(arr3))\r\n```",
+          "star": {
+            "totalCount": 0
+          },
+          "author": {
+            "login": "Hazel-Lin",
+            "url": "https://github.com/Hazel-Lin"
+          }
         }
       ]
     },
@@ -24356,7 +24502,7 @@
           "id": "MDEyOklzc3VlQ29tbWVudDg3Nzc1MTg2MQ==",
           "body": "见代码实现: [统计字符串中出现次数最多的字符及次数- codepen](https://codepen.io/shanyue/pen/YzVGjrv?editors=0012)\r\n\r\n``` js\r\nfunction getFrequentChar (str) {\r\n  const dict = {}\r\n  for (const char of str) {\r\n    dict[char] = (dict[char] || 0) + 1\r\n  }\r\n  const maxBy = (list, keyBy) => list.reduce((x, y) => keyBy(x) > keyBy(y) ? x : y)\r\n  return maxBy(Object.entries(dict), x => x[1])\r\n}\r\n```\r\n\r\n以下方案一边进行计数统计一遍进行大小比较，只需要 1 次 `O(n)` 的算法复杂度\r\n\r\n``` js\r\nfunction getFrequentChar2 (str) {\r\n  const dict = {}\r\n  let maxChar = ['', 0]\r\n  for (const char of str) {\r\n    dict[char] = (dict[char] || 0) + 1\r\n    if (dict[char] > maxChar[1]) {\r\n      maxChar = [char, dict[char]]\r\n    }\r\n  }\r\n  return maxChar\r\n}\r\n```",
           "star": {
-            "totalCount": 2
+            "totalCount": 3
           },
           "author": {
             "login": "shfshanyue",
@@ -24460,6 +24606,17 @@
           "author": {
             "login": "justorez",
             "url": "https://github.com/justorez"
+          }
+        },
+        {
+          "id": "IC_kwDODQzyOs5g-k1Q",
+          "body": "```js\r\nconsole.log(getFrequentChar('aacc'))\r\nconsole.log(getFrequentChar('aaccccaaaa'))\r\nconsole.log(getFrequentChar('baaaabbcc'))\r\n\r\nfunction getFrequentChar(string) {\r\n  let obj = {}\r\n  let maxStr = ['', 0]\r\n  for (const char of string) {\r\n    obj[char] = (obj[char] || 0) + 1\r\n    // obj[char] ? obj[char]++ : (obj[char] = 1)\r\n    if (obj[char] > maxStr[1]) {\r\n      maxStr = [char, obj[char]]\r\n    } else if (obj[char] === maxStr[1]) {\r\n      maxStr = maxStr.concat([char, obj[char]])\r\n    }\r\n  }\r\n  return maxStr\r\n}\r\n```\r\n\r\n学到了，学到就是赚到 😄",
+          "star": {
+            "totalCount": 0
+          },
+          "author": {
+            "login": "Hazel-Lin",
+            "url": "https://github.com/Hazel-Lin"
           }
         }
       ]
@@ -25199,8 +25356,8 @@
             "totalCount": 0
           },
           "author": {
-            "login": "tyr1dev",
-            "url": "https://github.com/tyr1dev"
+            "login": "okyokuto",
+            "url": "https://github.com/okyokuto"
           }
         },
         {
@@ -25272,8 +25429,8 @@
             "totalCount": 0
           },
           "author": {
-            "login": "oooooooyk",
-            "url": "https://github.com/oooooooyk"
+            "login": "avatar0813",
+            "url": "https://github.com/avatar0813"
           }
         },
         {
@@ -25648,6 +25805,17 @@
           "author": {
             "login": "rujptw",
             "url": "https://github.com/rujptw"
+          }
+        },
+        {
+          "id": "IC_kwDODQzyOs5gnUSR",
+          "body": "```js\r\nconst intersection = (...arr) => [...new Set(arr.reduce((pre, cur) => pre.filter(item => cur.includes(item))))]\r\n// [ 2, 3 ]\r\nconsole.log(intersection([2, 3, 3], [2, 2, 3, 1], [2, 3, 1, 5]))\r\n```",
+          "star": {
+            "totalCount": 0
+          },
+          "author": {
+            "login": "Hazel-Lin",
+            "url": "https://github.com/Hazel-Lin"
           }
         }
       ]
@@ -27079,6 +27247,17 @@
             "login": "Yinzhuo19970516",
             "url": "https://github.com/Yinzhuo19970516"
           }
+        },
+        {
+          "id": "IC_kwDODQzyOs5gub7c",
+          "body": "```js\r\nfunction fizzbuzz(number){\r\n  return number % 3 === 0 && number % 5 === 0\r\n  ? 'fizzbuzz'\r\n  : number % 5 === 0\r\n  ? 'buzz'\r\n  : number % 3 === 0\r\n  ? 'fizz'\r\n  : number;\r\n}\r\n```",
+          "star": {
+            "totalCount": 0
+          },
+          "author": {
+            "login": "Hazel-Lin",
+            "url": "https://github.com/Hazel-Lin"
+          }
         }
       ]
     },
@@ -27118,6 +27297,17 @@
           "author": {
             "login": "rujptw",
             "url": "https://github.com/rujptw"
+          }
+        },
+        {
+          "id": "IC_kwDODQzyOs5gaY4v",
+          "body": "```js\r\nconst camelCase = (variableName) =>{\r\n  const wordList = variableName.split(/[-_\\s]+/)\r\n  let camelCaseList = wordList.map((word,index) =>{\r\n    if(!index) {\r\n      return word.toLowerCase()\r\n    }\r\n    return word.charAt(0).toUpperCase() + word.slice(1)\r\n  })\r\n  return camelCaseList.join('')\r\n}\r\n\r\nconsole.log(camelCase('third variable'));\r\nconsole.log(camelCase('Third variable'));\r\nconsole.log(camelCase('third_variable'));\r\nconsole.log(camelCase('third-variable'));\r\nconsole.log(camelCase('thirdVariable'));\r\n```",
+          "star": {
+            "totalCount": 0
+          },
+          "author": {
+            "login": "Hazel-Lin",
+            "url": "https://github.com/Hazel-Lin"
           }
         }
       ]
@@ -29491,8 +29681,8 @@
             "totalCount": 0
           },
           "author": {
-            "login": "CroatiaParanoia",
-            "url": "https://github.com/CroatiaParanoia"
+            "login": "croatialu",
+            "url": "https://github.com/croatialu"
           }
         }
       ]
