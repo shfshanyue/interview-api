@@ -16,7 +16,7 @@
   },
   "license": "MIT",
   "dependencies": {
-    "@apollo/server": "^4.1.0",
+    "@apollo/server": "^4.9.3",
     "@types/lodash": "^4.14.187",
     "graphql": "^16.6.0",
     "graphql-tag": "^2.12.6",
